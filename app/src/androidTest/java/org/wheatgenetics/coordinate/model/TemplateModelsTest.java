@@ -40,7 +40,7 @@ extends Object implements StringGetter
     {
         switch (resId)
         {
-            case R.string.DateOptionalFieldDateFieldName:
+            case R.string.TimestampOptionalFieldDateFieldName:
                 return "Date";
 
 

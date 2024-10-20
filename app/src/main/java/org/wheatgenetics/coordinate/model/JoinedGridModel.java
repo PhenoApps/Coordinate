@@ -1,20 +1,18 @@
 package org.wheatgenetics.coordinate.model;
 
-import android.icu.util.Output;
 import android.os.Build;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import androidx.documentfile.provider.DocumentFile;
 
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
+import org.wheatgenetics.coordinate.exporter.CsvWriter;
 import org.wheatgenetics.coordinate.optionalField.BaseOptionalField;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 import org.wheatgenetics.coordinate.preference.Utils;
-import org.wheatgenetics.coordinate.exporter.CsvWriter;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -107,40 +105,40 @@ public class JoinedGridModel extends GridModel
             @NonNull final CsvWriter csvWriter,
             final String exportFileName,
             final boolean includeHeader) throws IOException {
-        final String tray_idValue, personValue, dateValue;
+        final String tray_idValue, personValue, timestampValue;
         {
             final NonNullOptionalFields optionalFields =
                     this.optionalFields();
             if (null == optionalFields)
-                tray_idValue = personValue = dateValue = null;
+                tray_idValue = personValue = timestampValue = null;
             else {
                 // noinspection CStyleArrayDeclaration
                 final String values[];
                 {
-                    final String trayName, personName, dateName;
+                    final String trayName, personName, timestampName;
                     {
                         @NonNull final StringGetter stringGetter =
                                 this.stringGetter();
 
                         trayName = stringGetter.get(R.string.NonNullOptionalFieldsTrayIDFieldName);
                         personName = stringGetter.get(R.string.NonNullOptionalFieldsSeedTrayPersonFieldName);
-                        dateName = stringGetter.get(R.string.JoinedGridModelSeedTrayDateFieldName);
+                        timestampName = stringGetter.get(R.string.JoinedGridModelSeedTrayTimestampFieldName);
                     }
                     values = optionalFields.values(
-                            /* names[] => */ new String[]{trayName, personName, dateName});
+                            /* names[] => */ new String[]{trayName, personName, timestampName});
                 }
                 if (null == values)
-                    tray_idValue = personValue = dateValue = null;
+                    tray_idValue = personValue = timestampValue = null;
                 else {
                     tray_idValue = values[0];
                     personValue = values[1];
-                    dateValue = values[2];
+                    timestampValue = values[2];
                 }
             }
         }
 
         if (includeHeader) csvWriter.writeRecord(new String[]{"tray_id", "cell_id",
-                "tray_num", "tray_column", "tray_row", "seed_id", "person", "date"});
+                "tray_num", "tray_column", "tray_row", "seed_id", "person", "timestamp"});
         {
             @IntRange(from = 1) final int
                     cols = this.getCols(), rows = this.getRows();
@@ -157,7 +155,7 @@ public class JoinedGridModel extends GridModel
                         csvWriter.write(row);    // tray_row
                         csvWriter.write(entryModel.getSeedExportValue());    // seed_id
                         csvWriter.write(personValue);    // person
-                        csvWriter.write(dateValue);    // date
+                        csvWriter.write(timestampValue);    // timestamp
 
                         csvWriter.endRecord();
                     }
@@ -175,40 +173,40 @@ public class JoinedGridModel extends GridModel
             @Nullable final JoinedGridModel.Helper
                     helper,
             final boolean includeHeader) throws IOException {
-        final String tray_idValue, personValue, dateValue;
+        final String tray_idValue, personValue, timestampValue;
         {
             final NonNullOptionalFields optionalFields =
                     this.optionalFields();
             if (null == optionalFields)
-                tray_idValue = personValue = dateValue = null;
+                tray_idValue = personValue = timestampValue = null;
             else {
                 // noinspection CStyleArrayDeclaration
                 final String values[];
                 {
-                    final String trayName, personName, dateName;
+                    final String trayName, personName, timestampName;
                     {
                         @NonNull final StringGetter stringGetter =
                                 this.stringGetter();
 
                         trayName = stringGetter.get(R.string.NonNullOptionalFieldsTrayIDFieldName);
                         personName = stringGetter.get(R.string.NonNullOptionalFieldsSeedTrayPersonFieldName);
-                        dateName = stringGetter.get(R.string.JoinedGridModelSeedTrayDateFieldName);
+                        timestampName = stringGetter.get(R.string.JoinedGridModelSeedTrayTimestampFieldName);
                     }
                     values = optionalFields.values(
-                            /* names[] => */ new String[]{trayName, personName, dateName});
+                            /* names[] => */ new String[]{trayName, personName, timestampName});
                 }
                 if (null == values)
-                    tray_idValue = personValue = dateValue = null;
+                    tray_idValue = personValue = timestampValue = null;
                 else {
                     tray_idValue = values[0];
                     personValue = values[1];
-                    dateValue = values[2];
+                    timestampValue = values[2];
                 }
             }
         }
 
         if (includeHeader) {
-            write(output, "tray_id, cell_id, tray_num, tray_column, tray_row, seed_id, person, date", "\n");
+            write(output, "tray_id, cell_id, tray_num, tray_column, tray_row, seed_id, person, timestamp", "\n");
         }
 
         {
@@ -228,7 +226,7 @@ public class JoinedGridModel extends GridModel
                         write(output, String.valueOf(row), ",");
                         write(output, entryModel.getSeedExportValue(), ",");
                         write(output, personValue, ",");
-                        write(output, dateValue, "\n");
+                        write(output, timestampValue, "\n");
                     }
                 }
                 if (null != helper) helper.publishProgress(col);
@@ -240,25 +238,25 @@ public class JoinedGridModel extends GridModel
     private void exportDNA(
             @NonNull final CsvWriter csvWriter,
             final boolean includeHeader) throws IOException {
-        final String dateValue, plate_idValue, plate_nameValue,
+        final String timestampValue, plate_idValue, plate_nameValue,
                 dna_personValue, notesValue, tissue_typeValue, extractionValue;
         {
             final NonNullOptionalFields optionalFields =
                     this.optionalFields();
             if (null == optionalFields)
-                dateValue = plate_idValue = plate_nameValue = dna_personValue =
+                timestampValue = plate_idValue = plate_nameValue = dna_personValue =
                         notesValue = tissue_typeValue = extractionValue = null;
             else {
                 // noinspection CStyleArrayDeclaration
                 final String values[];
                 {
-                    final String dateName, plate_idName, plate_nameName,
+                    final String timestampName, plate_idName, plate_nameName,
                             dna_personName, notesName, tissue_typeName, extractionName;
                     {
                         @NonNull final StringGetter stringGetter =
                                 this.stringGetter();
 
-                        dateName = stringGetter.get(R.string.JoinedGridModelDNAPlateDateFieldName);
+                        timestampName = stringGetter.get(R.string.JoinedGridModelDNAPlateTimestampFieldName);
                         plate_idName = stringGetter.get(R.string.NonNullOptionalFieldsPlateIDFieldName);
                         plate_nameName = stringGetter.get(R.string.NonNullOptionalFieldsPlateNameFieldName);
                         dna_personName = stringGetter.get(R.string.NonNullOptionalFieldsDNAPlatePersonFieldName);
@@ -267,14 +265,14 @@ public class JoinedGridModel extends GridModel
                         extractionName = stringGetter.get(R.string.NonNullOptionalFieldsExtractionFieldName);
                     }
                     values = optionalFields.values(/* names[] => */ new String[]{
-                            dateName, plate_idName, plate_nameName, dna_personName,
+                            timestampName, plate_idName, plate_nameName, dna_personName,
                             notesName, tissue_typeName, extractionName});
                 }
                 if (null == values)
-                    dateValue = plate_idValue = plate_nameValue = dna_personValue =
+                    timestampValue = plate_idValue = plate_nameValue = dna_personValue =
                             notesValue = tissue_typeValue = extractionValue = null;
                 else {
-                    dateValue = values[0];
+                    timestampValue = values[0];
                     plate_idValue = values[1];
                     plate_nameValue = values[2];
                     dna_personValue = values[3];
@@ -286,7 +284,7 @@ public class JoinedGridModel extends GridModel
         }
 
         if (includeHeader) csvWriter.writeRecord(new String[]{
-                "date", "plate_id", "plate_name", "sample_id", "well_A01", "well_01A",
+                "timestamp", "plate_id", "plate_name", "sample_id", "well_A01", "well_01A",
                 "tissue_id", "dna_person", "notes", "tissue_type", "extraction"});
         {
             @IntRange(from = 1) final int
@@ -298,7 +296,7 @@ public class JoinedGridModel extends GridModel
                     final EntryModel entryModel =
                             this.getEntryModel(row, col);
                     if (null != entryModel) {
-                        csvWriter.write(dateValue);
+                        csvWriter.write(timestampValue);
                         csvWriter.write(plate_idValue);
                         csvWriter.write(plate_nameValue);
                         {
@@ -336,25 +334,25 @@ public class JoinedGridModel extends GridModel
             @Nullable final JoinedGridModel.Helper
                     helper,
             final boolean includeHeader) throws IOException {
-        final String dateValue, plate_idValue, plate_nameValue,
+        final String timestampValue, plate_idValue, plate_nameValue,
                 dna_personValue, notesValue, tissue_typeValue, extractionValue;
         {
             final NonNullOptionalFields optionalFields =
                     this.optionalFields();
             if (null == optionalFields)
-                dateValue = plate_idValue = plate_nameValue = dna_personValue =
+                timestampValue = plate_idValue = plate_nameValue = dna_personValue =
                         notesValue = tissue_typeValue = extractionValue = null;
             else {
                 // noinspection CStyleArrayDeclaration
                 final String values[];
                 {
-                    final String dateName, plate_idName, plate_nameName,
+                    final String timestampName, plate_idName, plate_nameName,
                             dna_personName, notesName, tissue_typeName, extractionName;
                     {
                         @NonNull final StringGetter stringGetter =
                                 this.stringGetter();
 
-                        dateName = stringGetter.get(R.string.JoinedGridModelDNAPlateDateFieldName);
+                        timestampName = stringGetter.get(R.string.JoinedGridModelDNAPlateTimestampFieldName);
                         plate_idName = stringGetter.get(R.string.NonNullOptionalFieldsPlateIDFieldName);
                         plate_nameName = stringGetter.get(R.string.NonNullOptionalFieldsPlateNameFieldName);
                         dna_personName = stringGetter.get(R.string.NonNullOptionalFieldsDNAPlatePersonFieldName);
@@ -363,14 +361,14 @@ public class JoinedGridModel extends GridModel
                         extractionName = stringGetter.get(R.string.NonNullOptionalFieldsExtractionFieldName);
                     }
                     values = optionalFields.values(/* names[] => */ new String[]{
-                            dateName, plate_idName, plate_nameName, dna_personName,
+                            timestampName, plate_idName, plate_nameName, dna_personName,
                             notesName, tissue_typeName, extractionName});
                 }
                 if (null == values)
-                    dateValue = plate_idValue = plate_nameValue = dna_personValue =
+                    timestampValue = plate_idValue = plate_nameValue = dna_personValue =
                             notesValue = tissue_typeValue = extractionValue = null;
                 else {
-                    dateValue = values[0];
+                    timestampValue = values[0];
                     plate_idValue = values[1];
                     plate_nameValue = values[2];
                     dna_personValue = values[3];
@@ -382,7 +380,7 @@ public class JoinedGridModel extends GridModel
         }
 
         if (includeHeader) {
-            write(output, "date, plate_id, plate_name, sample_id, well_A01, well_01A, tissue_id, dna_person, notes, tissue_type, extraction", "\n");
+            write(output, "timestamp, plate_id, plate_name, sample_id, well_A01, well_01A, tissue_id, dna_person, notes, tissue_type, extraction", "\n");
         }
 
         {
@@ -395,7 +393,7 @@ public class JoinedGridModel extends GridModel
                     final EntryModel entryModel =
                             this.getEntryModel(row, col);
                     if (null != entryModel) {
-                        write(output, dateValue, ",");
+                        write(output, timestampValue, ",");
                         write(output, plate_idValue, ",");
                         write(output, plate_nameValue, ",");
                         {
@@ -730,7 +728,7 @@ public class JoinedGridModel extends GridModel
     @NonNull
     String name() {
         return String.format(Locale.getDefault(),
-                "Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", this.getPerson(),
+                "Person: %s\n Template: %s\n Size: (%d, %d) Timestamp: %s\n", this.getPerson(),
                 this.getTemplateTitle(), this.getCols(), this.getRows(), this.getFormattedTimestamp());
     }
     // endregion

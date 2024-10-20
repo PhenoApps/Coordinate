@@ -4,27 +4,30 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 import org.json.JSONObject;
-import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 @VisibleForTesting(
         otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-public class DateOptionalField extends OptionalField {
+public class TimestampOptionalField extends OptionalField {
     // region Constructors
-    DateOptionalField(@NonNull final StringGetter stringGetter) {
+    TimestampOptionalField(@NonNull final StringGetter stringGetter) {
         // noinspection ConstantConditions
         super(
                 /* name => */ null == stringGetter.get(
-                        R.string.DateOptionalFieldDateFieldName) ? "Date" :
+                        R.string.TimestampOptionalFieldDateFieldName) ? "Timestamp" :
                         stringGetter.get(
-                                R.string.DateOptionalFieldDateFieldName),
-                /* hint => */ BaseOptionalField.DATE_HINT,
+                                R.string.TimestampOptionalFieldDateFieldName),
+                /* hint => */ BaseOptionalField.TIMESTAMP_HINT,
                 /* stringGetter => */ stringGetter);
     }
 
-    DateOptionalField(final JSONObject jsonObject,
-                      @NonNull final StringGetter stringGetter) {
+    TimestampOptionalField(final JSONObject jsonObject,
+                           @NonNull final StringGetter stringGetter) {
         this(stringGetter);
         this.setChecked(OptionalField.getChecked(
                 jsonObject, stringGetter));
@@ -34,17 +37,17 @@ public class DateOptionalField extends OptionalField {
     @VisibleForTesting(
             otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     @NonNull
-    public static String getCurrentDate() {
-        return Utils.formatDate(
-                System.currentTimeMillis()).toString();
+    public static String getCurrentTimestamp() {
+        SimpleDateFormat timeStamp = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.getDefault());
+        return timeStamp.format(Calendar.getInstance().getTime());
     }
 
     // region Overridden Methods
     @Override
     @NonNull
     public Object clone() {
-        final DateOptionalField result =
-                new DateOptionalField(this.stringGetter());
+        final TimestampOptionalField result =
+                new TimestampOptionalField(this.stringGetter());
         result.setValue(this.getValue());
         result.setChecked(this.getChecked());
         return result;
@@ -54,6 +57,6 @@ public class DateOptionalField extends OptionalField {
     @Override
     @NonNull
     public String getValue() {
-        return DateOptionalField.getCurrentDate();
+        return TimestampOptionalField.getCurrentTimestamp();
     }
 }

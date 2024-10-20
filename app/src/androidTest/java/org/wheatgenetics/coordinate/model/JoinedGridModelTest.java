@@ -12,7 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
-import org.wheatgenetics.coordinate.optionalField.DateOptionalField;
+import org.wheatgenetics.coordinate.optionalField.TimestampOptionalField;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 import org.wheatgenetics.coordinate.preference.Utils;
 
@@ -69,7 +69,7 @@ extends Object implements StringGetter
                 return "Identification";
 
 
-            case R.string.DateOptionalFieldDateFieldName:
+            case R.string.TimestampOptionalFieldDateFieldName:
                 return "Date";
 
 
@@ -113,9 +113,9 @@ extends Object implements StringGetter
                 return "person";
 
 
-            case R.string.JoinedGridModelSeedTrayDateFieldName:
+            case R.string.JoinedGridModelSeedTrayTimestampFieldName:
                 return "date";
-            case R.string.JoinedGridModelDNAPlateDateFieldName:
+            case R.string.JoinedGridModelDNAPlateTimestampFieldName:
                 return "date";
 
             default: Assert.fail(); return null;
@@ -565,7 +565,7 @@ extends Object implements StringGetter
             {
                 final String
                     safePerson = person.replace(' ','_'),
-                    date       = DateOptionalField.getCurrentDate();
+                    date       = TimestampOptionalField.getCurrentTimestamp();
                 expectedString =
                     "tray_id,cell_id,tray_num,tray_column,tray_row,seed_id,person,date\n"           +
                     trayId + ",exportFileName_C01_R1,,1,1,BLANK_," + safePerson + ',' + date + '\n' +
@@ -788,7 +788,7 @@ extends Object implements StringGetter
             {
                 final String
                     safePerson = person.replace(' ','_'),
-                    date       = DateOptionalField.getCurrentDate();
+                    date       = TimestampOptionalField.getCurrentTimestamp();
                 expectedString =
                     "date,plate_id,plate_name,sample_id,well_A01,well_01A,t" +
                         "issue_id,dna_person,notes,tissue_type,extraction\n" +
@@ -1021,7 +1021,7 @@ extends Object implements StringGetter
             {
                 final String
                     safePerson = person.replace(' ','_'),             // TODO: Use?
-                    date       = DateOptionalField.getCurrentDate();
+                    date       = TimestampOptionalField.getCurrentTimestamp();
                 expectedString =
                     "Value,Column,Row,Identification,Person,Date\n"                 +
                     "\"\",1,A," + identification + ',' + person + ',' + date + '\n' +

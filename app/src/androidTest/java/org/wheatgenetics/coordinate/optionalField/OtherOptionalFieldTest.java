@@ -66,7 +66,7 @@ extends Object implements StringGetter
         new OtherOptionalField(
             OptionalField.makeJSONObject(
                 "testName",null,
-                BaseOptionalField.DATE_HINT,
+                BaseOptionalField.TIMESTAMP_HINT,
                 this),this);
     }
 
