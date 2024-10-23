@@ -166,8 +166,8 @@ class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_excl
                 mRows = template.rows
                 mCols = template.cols
 
-                val rows = (1..template.rows).map { Cell(it.toString()) }
-                val cols = (1..template.cols).map { Cell(it.toString()) }
+                val rows = (1..template.rows).map { if (template.rowNumbering) Cell(it.toString()) else Cell(('A' + it - 1).toString())}
+                val cols = (1..template.cols).map { if (template.colNumbering) Cell(it.toString()) else Cell(('A' + it - 1).toString())}
                 val cells = arrayListOf<List<org.wheatgenetics.coordinate.fragments.template_creator.Cell>>()
 
                 //load items into adapter
