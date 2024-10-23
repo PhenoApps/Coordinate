@@ -172,29 +172,33 @@ abstract class BaseCollector extends Object implements
 
     @Override
     public void toggle(@Nullable final ElementModel elementModel) {
-        if (this.joinedGridModelIsLoaded()) {
-            final EntriesTable entriesTable =
-                    this.entriesTable();
-            if (null != entriesTable) {
-                final EntryModel entryModel =
-                        (EntryModel) elementModel;
-                if (this.joinedGridModel instanceof
-                        CurrentGridUniqueJoinedGridModel) {
-                    final CurrentGridUniqueJoinedGridModel
-                            currentGridUniqueJoinedGridModel =
-                            (CurrentGridUniqueJoinedGridModel)
-                                    this.joinedGridModel;
-                    try {
-                        currentGridUniqueJoinedGridModel.checkThenSetEntryModel(entryModel);//throws
-                    } catch (final
-                    CheckedIncludedEntryModel.CheckException e) {
-                        return;
-                    }
-                } else this.joinedGridModel.setEntryModel(entryModel);
-                entriesTable.insertOrUpdate(entryModel);
-                if (entryModel instanceof ExcludedEntryModel)
-                    if (this.joinedGridModel.getActiveEntryModel() == entryModel)
-                        this.goToNext(entryModel);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        boolean togglePreference = prefs.getBoolean(GeneralKeys.TOGGLE_EXCLUSION_STATE, false);
+        if (togglePreference) {
+            if (this.joinedGridModelIsLoaded()) {
+                final EntriesTable entriesTable =
+                        this.entriesTable();
+                if (null != entriesTable) {
+                    final EntryModel entryModel =
+                            (EntryModel) elementModel;
+                    if (this.joinedGridModel instanceof
+                            CurrentGridUniqueJoinedGridModel) {
+                        final CurrentGridUniqueJoinedGridModel
+                                currentGridUniqueJoinedGridModel =
+                                (CurrentGridUniqueJoinedGridModel)
+                                        this.joinedGridModel;
+                        try {
+                            currentGridUniqueJoinedGridModel.checkThenSetEntryModel(entryModel);//throws
+                        } catch (final
+                        CheckedIncludedEntryModel.CheckException e) {
+                            return;
+                        }
+                    } else this.joinedGridModel.setEntryModel(entryModel);
+                    entriesTable.insertOrUpdate(entryModel);
+                    if (entryModel instanceof ExcludedEntryModel)
+                        if (this.joinedGridModel.getActiveEntryModel() == entryModel)
+                            this.goToNext(entryModel);
+                }
             }
         }
     }
