@@ -27,7 +27,24 @@
             android:name="title"
             app:argType="string" />
         <action
-            android:id="@+id/action_template_optional_fields_to_template_exclude_options"
+            android:id="@+id/action_template_optional_fields_to_template_naming"
+            app:destination="@id/template_naming" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/template_naming"
+        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorNaming"
+        android:label="Template Naming"
+        tools:layout="@layout/fragment_template_creator_naming">
+        <action
+            android:id="@+id/action_template_naming_pop"
+            app:popUpTo="@id/template_naming"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_template_naming_to_template_exclude_options"
             app:destination="@id/template_exclude_options" />
     </fragment>
 
@@ -50,8 +67,8 @@
             android:id="@+id/action_template_exclude_options_to_template_exclude_selection"
             app:destination="@id/template_exclude_selection" />
         <action
-            android:id="@+id/action_template_exclude_options_to_template_naming"
-            app:destination="@id/template_naming" />
+            android:id="@+id/action_template_exclude_options_to_template_preview"
+            app:destination="@id/template_preview" />
     </fragment>
 
     <fragment
@@ -67,8 +84,8 @@
             android:name="title"
             app:argType="string" />
         <action
-            android:id="@+id/action_template_exclude_to_template_naming"
-            app:destination="@id/template_naming" />
+            android:id="@+id/action_template_exclude_to_template_preview"
+            app:destination="@id/template_preview" />
     </fragment>
 
     <fragment
@@ -84,24 +101,7 @@
             android:name="title"
             app:argType="string" />
         <action
-            android:id="@+id/action_template_exclude_to_template_naming"
-            app:destination="@id/template_naming" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/template_naming"
-        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorNaming"
-        android:label="Template Naming"
-        tools:layout="@layout/fragment_template_creator_naming">
-        <action
-            android:id="@+id/action_template_naming_pop"
-            app:popUpTo="@id/template_naming"
-            app:popUpToInclusive="true" />
-        <argument
-            android:name="title"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_template_naming_to_template_preview"
+            android:id="@+id/action_template_exclude_to_template_preview"
             app:destination="@id/template_preview" />
     </fragment>
 

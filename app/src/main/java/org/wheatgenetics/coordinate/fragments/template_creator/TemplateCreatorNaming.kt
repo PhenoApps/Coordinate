@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.CheckedTextView
+import android.widget.ListView
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -58,7 +61,7 @@ class TemplateCreatorNaming : Fragment(R.layout.fragment_template_creator_naming
         nextButton?.setOnClickListener {
             writeToDatabase(mSelectedColEnumeration.ordinal, mSelectedRowEnumeration.ordinal)
             findNavController().navigate(TemplateCreatorNamingDirections
-                .actionTemplateNamingToTemplatePreview(args.title))
+                .actionTemplateNamingToTemplateExcludeOptions(args.title))
         }
     }
 
