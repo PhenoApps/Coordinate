@@ -1,5 +1,6 @@
 package org.wheatgenetics.coordinate.display.adapter;
 
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -7,8 +8,10 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.preference.PreferenceManager;
 
 import org.wheatgenetics.coordinate.model.ElementModel;
+import org.wheatgenetics.coordinate.preference.GeneralKeys;
 
 public abstract class DataViewHolder extends ViewHolder {
     // region Fields
@@ -66,8 +69,12 @@ public abstract class DataViewHolder extends ViewHolder {
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     protected void toggle() {
-        this.handler.toggle(this.elementModel);
-        this.setImage();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(itemView.getContext());
+        boolean togglePreference = prefs.getBoolean(GeneralKeys.TOGGLE_EXCLUSION_STATE, false);
+        if (togglePreference) {
+            this.handler.toggle(this.elementModel);
+            this.setImage();
+        }
     }
 
     // region onClickListener Protected Methods

@@ -16,6 +16,7 @@ class GeneralKeys private constructor() {
          */
         // Collection Preferences
         const val DIRECTION = COORDINATE_PREFIX + "DIRECTION"
+        const val TOGGLE_EXCLUSION_STATE = COORDINATE_PREFIX + "TOGGLE_EXCLUSION_STATE"
         const val UNIQUE_VALUES = COORDINATE_PREFIX + "UNIQUE_VALUES"
         const val UNIQUE_OPTIONS = COORDINATE_PREFIX + "UNIQUE_OPTIONS"
         // sounds
