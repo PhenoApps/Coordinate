@@ -105,6 +105,8 @@
         <item>@string/preferences_direction_across_then_down_entry_value</item>
     </string-array>
     <string name="preferences_direction_default">@string/preferences_direction_down_then_across_entry_value</string>
+    <string name="preferences_toggle_exclusion_state_title">Toggle Exclusion State</string>
+    <string name="preferences_toggle_exclusion_state_summary">Toggle exclusion state of a cell on long press</string>
     <!-- Sounds -->
     <string name="preferences_sound_title">Sounds</string>
     <string name="preferences_sound_filled_row_or_column_title">Navigation sound</string>
