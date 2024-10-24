@@ -1,17 +1,14 @@
 package org.wheatgenetics.coordinate.exporter;
 
 import android.content.Context;
-import android.icu.util.Output;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.documentfile.provider.DocumentFile;
 
-import org.phenoapps.permissions.RequestDir;
+import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
-import org.phenoapps.permissions.Dir;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.FileUtil;
 
 import java.io.File;
@@ -64,19 +61,23 @@ public class EntireProjectProjectExporter
 
                 try {
 
-                    if (DocumentTreeUtil.Companion.isEnabled(getContext())) {
+                    if (BaseDocumentTreeUtil.Companion.isEnabled(getContext())) {
 
-                        DocumentFile file = DocumentTreeUtil.Companion.createFile(getContext(), "Exports", this.exportFileName);
+                        DocumentFile projectDir = BaseDocumentTreeUtil.Companion.getDirectory(getContext(), R.string.export_dir);
 
-                        if (file != null) {
+                        if (projectDir != null && projectDir.exists()) {
+                            DocumentFile file = projectDir.createFile(getContext().getString(R.string.export_dir), this.exportFileName);
 
-                            final OutputStream outputStream = getContext().getContentResolver().openOutputStream(file.getUri());
+                            if (file != null) {
 
-                            this.asyncTask = new AsyncTask(this.getContext(),
-                                    outputStream, this.exportFileName, baseJoinedGridModels);
-                            this.asyncTask.execute();
+                                final OutputStream outputStream = getContext().getContentResolver().openOutputStream(file.getUri());
 
-                            FileUtil.Companion.shareFile(getContext(), file.getUri());
+                                this.asyncTask = new AsyncTask(this.getContext(),
+                                        outputStream, this.exportFileName, baseJoinedGridModels);
+                                this.asyncTask.execute();
+
+                                FileUtil.Companion.shareFile(getContext(), file.getUri());
+                            }
                         }
                     }
 

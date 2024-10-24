@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".activity.AppIntroActivity"
+            android:label="@string/app_intro_activity_label" />
+
         <activity android:name=".activity.GridCreatorActivity"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/MaterialAppTheme"/>

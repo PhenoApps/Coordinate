@@ -18,7 +18,8 @@ import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
 class FieldsAdapter(private val listener: RequiredFieldsCompleteListener, private val requiredName: String, private val fields: NonNullOptionalFields) :
     ListAdapter<BaseOptionalField, RecyclerView.ViewHolder>(DiffCallback()) {
 
-    private val values = hashMapOf<String, String>()
+    // linkedMapOf to preserve the order when doing 'get'
+    private val values = linkedMapOf<String, String>()
 
     init {
         fields.forEach { 
@@ -82,6 +83,8 @@ class FieldsAdapter(private val listener: RequiredFieldsCompleteListener, privat
             }
         }
     }
+
+    fun getAllFieldValues(): Map<String, String> = values.toMap()
 
     class DiffCallback : DiffUtil.ItemCallback<BaseOptionalField>() {
 

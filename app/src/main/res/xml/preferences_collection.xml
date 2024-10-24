@@ -12,6 +12,13 @@
         android:title="@string/preferences_direction_title"
         app:useSimpleSummaryProvider="false" />
 
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_exclude_cell"
+        android:key="org.wheatgenetics.coordinate.TOGGLE_EXCLUSION_STATE"
+        android:title="@string/preferences_toggle_exclusion_state_title"
+        android:summary="@string/preferences_toggle_exclusion_state_summary"/>
+
     <PreferenceCategory
         android:key="category_collection_unique"
         android:title="@string/preferences_unique_title"

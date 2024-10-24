@@ -1,6 +1,7 @@
 package org.wheatgenetics.coordinate.fragments.template_creator
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.CheckedTextView
 import android.widget.ImageButton
 import android.widget.ListView
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -149,6 +151,11 @@ class TemplateCreatorOptionalFields : Fragment(R.layout.fragment_template_creato
                 this?.isChecked = fields.getChecked(position)
                 if (this?.text == getString(R.string.BaseOptionalFieldIdentificationFieldName)) {
                     this.isEnabled = false
+                }
+                // Set the color of the check mark for selected item
+                if (this?.isChecked == true) {
+                    val color = ContextCompat.getColor(context, R.color.colorAccent)
+                    this.checkMarkTintList = ColorStateList.valueOf(color)
                 }
             }
             return view

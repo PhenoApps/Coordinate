@@ -59,29 +59,6 @@ class DocumentTreeUtil {
         }
 
         /**
-         * Checks whether a persisted uri has been saved; therefore, defined by the user.
-         */
-        fun isEnabled(ctx: Context): Boolean {
-            val persists = ctx.contentResolver.persistedUriPermissions
-            return persists.isNotEmpty()
-        }
-
-        fun createFile(ctx: Context, parent: String, name: String): DocumentFile? {
-
-            val dir = createDir(ctx, parent)
-            return dir?.createFile("*/*", name)
-
-        }
-
-        fun createDir(ctx: Context, parent: String, child: String): DocumentFile? {
-
-            val file = createDir(ctx, parent)
-            return if (file?.findFile(child)?.isDirectory == true) {
-                file.findFile(child)
-            } else file?.createDirectory(child)
-        }
-
-        /**
          * Function that checks if the persisted folder exists.
          * If it does not exist, show a dialog asking the user to define it.
          * @param ctx the calling context
@@ -127,26 +104,6 @@ class DocumentTreeUtil {
 
                 function(CheckDocumentResult.EXISTS)
             }
-        }
-
-        /**
-         * Finds the persisted uri and creates the basic coordinate file structure if it doesn't exist.
-         */
-        fun createDir(ctx: Context, parent: String): DocumentFile? {
-            val persists = ctx.contentResolver.persistedUriPermissions
-            if (persists.isNotEmpty()) {
-                val uri = persists.first().uri
-                DocumentFile.fromTreeUri(ctx, uri)?.let { tree ->
-                    var exportDir = tree.findFile(parent)
-                    if (exportDir == null) {
-                        exportDir = tree.createDirectory(parent)
-                    }
-
-                    return exportDir
-                }
-            }
-
-            return null
         }
     }
 }
