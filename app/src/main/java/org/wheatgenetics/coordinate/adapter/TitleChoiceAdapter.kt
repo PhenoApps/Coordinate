@@ -1,9 +1,11 @@
 package org.wheatgenetics.coordinate.adapter
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckedTextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -64,6 +66,12 @@ class TitleChoiceAdapter(
                     checkMarkDrawable = null
                 } else {
                     isChecked = text.toString() == mSelected
+
+                    // Set the color of the check mark for selected item
+                    if (isChecked) {
+                        val color = ContextCompat.getColor(context, R.color.colorAccent)
+                        checkMarkTintList = ColorStateList.valueOf(color)
+                    }
                 }
             }
         }
