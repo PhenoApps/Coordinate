@@ -17,8 +17,8 @@ import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
 import org.wheatgenetics.coordinate.adapter.GridExcludeAdapter
 import org.wheatgenetics.coordinate.database.TemplatesTable
-import org.wheatgenetics.coordinate.model.*
-import java.util.ArrayList
+import org.wheatgenetics.coordinate.model.Cell
+import org.wheatgenetics.coordinate.model.TemplateModel
 
 class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_exclude_selection),
     ITableViewListener,
@@ -87,7 +87,7 @@ class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_excl
             mRandomSelections.clear()
             randomEditText?.setText(String())
             findNavController().navigate(TemplateCreatorExcludeSelectionDirections
-                .actionTemplateExcludeToTemplateNaming(args.title))
+                .actionTemplateExcludeToTemplatePreview(args.title))
         }
     }
 
@@ -166,13 +166,13 @@ class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_excl
                 mRows = template.rows
                 mCols = template.cols
 
-                val rows = (1..template.rows).map { Cell(it.toString()) }
-                val cols = (1..template.cols).map { Cell(it.toString()) }
-                val cells = arrayListOf<List<Cell>>()
+                val rows = (1..template.rows).map { if (template.rowNumbering) Cell(it.toString()) else Cell(('A' + it - 1).toString())}
+                val cols = (1..template.cols).map { if (template.colNumbering) Cell(it.toString()) else Cell(('A' + it - 1).toString())}
+                val cells = arrayListOf<List<org.wheatgenetics.coordinate.fragments.template_creator.Cell>>()
 
                 //load items into adapter
                 rows.forEachIndexed { _, m ->
-                    val row = arrayListOf<Cell>()
+                    val row = arrayListOf<org.wheatgenetics.coordinate.fragments.template_creator.Cell>()
                     cols.forEachIndexed { _, n ->
                         row.add(Cell("${m.text}-${n.text}"))
                     }

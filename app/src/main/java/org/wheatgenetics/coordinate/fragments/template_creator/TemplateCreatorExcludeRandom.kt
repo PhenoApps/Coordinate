@@ -18,8 +18,8 @@ import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
 import org.wheatgenetics.coordinate.adapter.GridExcludeAdapter
 import org.wheatgenetics.coordinate.database.TemplatesTable
-import org.wheatgenetics.coordinate.model.*
-import java.util.ArrayList
+import org.wheatgenetics.coordinate.model.Cell
+import org.wheatgenetics.coordinate.model.TemplateModel
 import kotlin.random.Random
 
 class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude_random),
@@ -72,7 +72,7 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
             mRandomSelections.clear()
             randomEditText?.setText(String())
             findNavController().navigate(TemplateCreatorExcludeRandomDirections
-                .actionTemplateExcludeToTemplateNaming(args.title))
+                .actionTemplateExcludeToTemplatePreview(args.title))
         }
 
         randomEditText?.addTextChangedListener { it?.toString()?.let { text ->
@@ -193,11 +193,11 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
 
                 val rows = (1..template.rows).map { Cell(it.toString()) }
                 val cols = (1..template.cols).map { Cell(it.toString()) }
-                val cells = arrayListOf<List<Cell>>()
+                val cells = arrayListOf<List<org.wheatgenetics.coordinate.fragments.template_creator.Cell>>()
 
                 //load items into adapter
                 rows.forEachIndexed { _, m ->
-                    val row = arrayListOf<Cell>()
+                    val row = arrayListOf<org.wheatgenetics.coordinate.fragments.template_creator.Cell>()
                     cols.forEachIndexed { _, n ->
                         row.add(Cell("${m.text}-${n.text}"))
                     }

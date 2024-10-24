@@ -44,7 +44,7 @@ class TemplateCreatorExcludeOptions : Fragment(R.layout.fragment_template_exclud
 
         okButton?.setOnClickListener {
             findNavController().navigate(TemplateCreatorExcludeOptionsDirections
-                .actionTemplateExcludeOptionsToTemplateNaming(args.title))
+                .actionTemplateExcludeOptionsToTemplatePreview(args.title))
         }
 
         randomButton?.setOnClickListener {
