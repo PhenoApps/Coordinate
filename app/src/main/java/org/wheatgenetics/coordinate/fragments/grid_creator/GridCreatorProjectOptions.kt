@@ -55,7 +55,9 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         setupAdapter()
         setupButtons()
 
-        //check if this creator started from the projects activity (skip this fragment)
+        // check if this creator started from the projects activity
+        // or if from grids activity via project filter
+        // (skip this fragment)
         val projectId = activity?.intent?.getLongExtra("projectId", -1L)
         if (projectId != -1L) {
 

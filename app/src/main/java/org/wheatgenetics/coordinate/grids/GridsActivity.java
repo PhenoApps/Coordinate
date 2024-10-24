@@ -346,7 +346,17 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     }
 
     private void createGrid() {
-        startActivityForResult(new Intent(this, GridCreatorActivity.class), CREATE_GRID_REFRESH);
+        Intent intent = this.getIntent();
+        long projectId = intent.getLongExtra(PROJECT_ID_KEY, -1);
+        long templateId = intent.getLongExtra(TEMPLATE_ID_KEY, -1);
+
+        Intent creator = new Intent(this, GridCreatorActivity.class);
+        if (projectId != -1) {
+            creator.putExtra("projectId", projectId);
+        } else if (templateId != - 1) {
+            creator.putExtra("templateId", templateId);
+        }
+        startActivityForResult(creator, CREATE_GRID_REFRESH);
         //statelessGridCreator().create();
     }
 

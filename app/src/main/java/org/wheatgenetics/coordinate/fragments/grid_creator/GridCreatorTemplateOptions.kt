@@ -61,7 +61,9 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         setupAdapter()
         setupButtons()
 
-        //check if this creator started from the templates activity (skip this fragment)
+        // check if this creator started from the templates activity
+        // or if from grids activity via template filter
+        // (skip this fragment)
         val templateId = activity?.intent?.getLongExtra("templateId", -1L)
         if (templateId != -1L) {
             mTemplatesTable?.load()?.find { it.id == templateId }?.title?.let { title ->
