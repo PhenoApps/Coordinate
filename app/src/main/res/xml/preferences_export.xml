@@ -15,7 +15,7 @@
     <SwitchPreference
         android:defaultValue="false"
         android:icon="@drawable/ic_share"
-        android:key="org.wheatgenetics.coordinate.preferences.SHARE_EXPORTS"
+        android:key="org.wheatgenetics.coordinate.SHARE_EXPORTS"
         android:summary="@string/pref_share_on_export_summary"
         android:title="@string/pref_share_on_export_title" />
 </PreferenceScreen>

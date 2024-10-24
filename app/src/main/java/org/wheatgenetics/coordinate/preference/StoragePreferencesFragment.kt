@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
@@ -16,6 +15,7 @@ import androidx.preference.Preference
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import org.phenoapps.utils.BaseDocumentTreeUtil
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity
 import org.wheatgenetics.coordinate.database.SampleData
@@ -23,13 +23,11 @@ import org.wheatgenetics.coordinate.deleter.GridDeleter
 import org.wheatgenetics.coordinate.deleter.ProjectDeleter
 import org.wheatgenetics.coordinate.deleter.TemplateDeleter
 import org.wheatgenetics.coordinate.utils.DateUtil
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
 import org.wheatgenetics.coordinate.utils.ZipUtil
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.ObjectOutputStream
-import java.lang.Exception
 
 class StoragePreferencesFragment(private var searchResult: SearchPreferenceResult? = null) : BasePreferenceFragment() {
 
@@ -84,7 +82,7 @@ class StoragePreferencesFragment(private var searchResult: SearchPreferenceResul
                         .setTitle(R.string.dialog_database_export_title)
                         .setPositiveButton(android.R.string.ok) { dialog: DialogInterface?, _: Int ->
                             val fileName = "Coordinate_Output_${DateUtil().getTime().replace(":", "_")}.zip"
-                            if (DocumentTreeUtil.isEnabled(ctx)) {
+                            if (BaseDocumentTreeUtil.isEnabled(ctx)) {
                                 exportDatabase(fileName)
                             } else {
                                 exportChooser.launch(fileName)
@@ -315,7 +313,7 @@ class StoragePreferencesFragment(private var searchResult: SearchPreferenceResul
         context?.let { ctx ->
 
             try {
-                val databaseDir = DocumentTreeUtil.createDir(ctx, "Database")
+                val databaseDir = BaseDocumentTreeUtil.createDir(ctx, getString(R.string.database_dir))
                 if (databaseDir != null && databaseDir.exists()) {
                     val zipFile = databaseDir.createFile("*/*", fileName)
                     if (zipFile != null && zipFile.exists()) {
