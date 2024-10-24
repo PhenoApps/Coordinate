@@ -7,6 +7,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
 import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
+import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.database.GridsTable;
@@ -56,7 +57,7 @@ public class GridExportPreprocessor {
         if (joinedGridModel != null) {
             templateDirectory = joinedGridModel.getTemplateTitle();
         }
-        String message = String.format(activity.getString(R.string.export_dialog_directory_message), rootDirectory, activity.getString(R.string.FolderExport) + "/" + templateDirectory);
+        String message = String.format(activity.getString(R.string.export_dialog_directory_message), rootDirectory, activity.getString(R.string.export_dir) + "/" + templateDirectory);
 
         return (GetExportFileNameAlertDialog) new GetExportFileNameAlertDialog(this.activity,
                 GridExportPreprocessor.this::exportGrid).setTitle(R.string.grid_export_dialog_title).setMessage(message).setPositiveButton(R.string.export_dialog_positive_button_text);
@@ -76,7 +77,7 @@ public class GridExportPreprocessor {
 
     public void handleExport(final long gridId, final String fileName, GridExporter gridExporter, ExportLauncher launcher) {
         // Set up the file name and ID in the view model or any other component
-        if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+        if (BaseDocumentTreeUtil.Companion.isEnabled(activity)) {
             DocumentTreeUtil.Companion.checkDir(activity, (result) -> {
                 if (result == CheckDocumentResult.DISMISS) {
                     launcher.launch(fileName + ".csv");

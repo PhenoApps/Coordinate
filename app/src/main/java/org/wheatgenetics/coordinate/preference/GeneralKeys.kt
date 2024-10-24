@@ -12,6 +12,8 @@ class GeneralKeys private constructor() {
 
         const val FIRST_LOAD_COMPLETE = COORDINATE_PREFIX + "FIRST_LOAD_COMPLETE"
 
+        const val FROM_INTRO_AUTOMATIC = COORDINATE_PREFIX + "FROM_INTRO_AUTOMATIC"
+
         /**
          * App Intro
          */

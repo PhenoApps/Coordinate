@@ -48,7 +48,7 @@ public class TemplateExportPreprocessor {
     private GetExportFileNameAlertDialog getExportFileNameAlertDialog() {
         String rootDirectory = DocumentTreeUtil.Companion.getPath(activity);
 
-        String message = String.format(activity.getString(R.string.export_dialog_directory_message), rootDirectory, activity.getString(R.string.FolderTemplate));
+        String message = String.format(activity.getString(R.string.export_dialog_directory_message), rootDirectory, activity.getString(R.string.template_dir));
 
         return (GetExportFileNameAlertDialog) new GetExportFileNameAlertDialog(this.activity,
                 TemplateExportPreprocessor

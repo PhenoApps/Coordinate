@@ -24,6 +24,7 @@ import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
@@ -76,7 +77,7 @@ public class ProjectsActivity extends BackActivity {
                 exportProject(getContentResolver().openOutputStream(uri));
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                if (prefs.getBoolean("org.wheatgenetics.coordinate.preferences.SHARE_ON_EXPORT", false)) {
+                if (prefs.getBoolean(GeneralKeys.SHARE_EXPORTS, false)) {
                     Intent intent = new Intent();
                     intent.setAction(android.content.Intent.ACTION_SEND);
                     intent.setType("text/plain");
@@ -185,7 +186,7 @@ public class ProjectsActivity extends BackActivity {
                                final String directoryName) {
         this.projectsViewModel.setProjectIdAndDirectoryName(projectId, directoryName);
 
-        if (DocumentTreeUtil.Companion.isEnabled(this)) {
+        if (BaseDocumentTreeUtil.Companion.isEnabled(this)) {
 
             DocumentTreeUtil.Companion.checkDir(this, (result) -> {
 

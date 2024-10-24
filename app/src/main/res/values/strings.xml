@@ -53,8 +53,9 @@
     <string name="about_manual_title">Manual</string>
 
     <!-- Folder names -->
-    <string name="FolderExport">Exports</string>
-    <string name="FolderTemplate">Templates</string>
+    <string name="export_dir">exports</string>
+    <string name="template_dir">templates</string>
+    <string name="database_dir">database</string>
 
     <!-- TemplateImporter -->
     <string name="SelectExportedTemplateTitle">Import template</string>
