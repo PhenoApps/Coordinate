@@ -34,7 +34,7 @@ public class NonNullOptionalFields extends OptionalFields
     }
 
     public NonNullOptionalFields(final String json,
-                                 @NonNull final StringGetter stringGetter) {
+                                 @NonNull final StringGetter stringGetter, final Boolean checkStatusOfFields) {
         this(stringGetter);
 
         if (null != json) {
@@ -53,6 +53,7 @@ public class NonNullOptionalFields extends OptionalFields
                 final int last = jsonArray.length() - 1;
                 for (int i = 0; i <= last; i++) {
                     BaseOptionalField baseOptionalField;
+                    Boolean fieldCheckedStatus = false;
                     {
                         final JSONObject jsonObject;
                         try {
@@ -71,8 +72,19 @@ public class NonNullOptionalFields extends OptionalFields
                                     new TimestampOptionalField(
                                             jsonObject, this.stringGetter);
                         }
+                        try {
+                            fieldCheckedStatus = jsonObject.getBoolean("checked");
+                        } catch (JSONException e) {
+                            continue;
+                        }
                     }
-                    this.arrayList.add(baseOptionalField);
+                    if (checkStatusOfFields) { // if only checked items are required (for new grid)
+                        if (fieldCheckedStatus) {
+                            this.arrayList.add(baseOptionalField);
+                        }
+                    } else { // if both checked and unchecked items are required (for editing template)
+                        this.arrayList.add(baseOptionalField);
+                    }
                 }
             }
         }

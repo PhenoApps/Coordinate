@@ -7,7 +7,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -224,7 +226,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         activity?.let { act ->
 
             //query db for optional fields
-            mTemplate?.optionalFields()?.let { fields ->
+            mTemplatesTable?.getOptionalFieldsForTemplate(args.title, this)?.let { fields ->
 
                 // set hint text for optional fields
                 fields.forEach { field ->

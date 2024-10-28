@@ -5,9 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 
-import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class GridModel extends Model {
     // region Fields
@@ -82,7 +84,7 @@ public class GridModel extends Model {
         this.nonNullOptionalFieldsInstance = null == optionalFields ? null :
                 optionalFields.equals("") ? null : new
                         NonNullOptionalFields(
-                        optionalFields, stringGetter);
+                        optionalFields, stringGetter, true);
         this.timestamp = timestamp;
     }
     // endregion
@@ -136,7 +138,8 @@ public class GridModel extends Model {
     }
 
     public CharSequence getFormattedTimestamp() {
-        return Utils.formatDate(this.getTimestamp());
+        SimpleDateFormat timeStamp = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.getDefault());
+        return timeStamp.format(this.getTimestamp());
     }
 
     // region optionalFields Public Methods
