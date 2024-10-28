@@ -27,6 +27,7 @@ import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.phenoapps.androidlibrary.Utils;
+import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
@@ -235,7 +236,7 @@ public class TemplatesActivity extends BackActivity
                                 final String fileName) {
         this.templatesViewModel.setIdAndExportFileName(templateId, fileName);
 
-        if (DocumentTreeUtil.Companion.isEnabled(this)) {
+        if (BaseDocumentTreeUtil.Companion.isEnabled(this)) {
 
             //result is CheckDocumentResult 1=Exists, 2=Define, 3=Dismiss
             DocumentTreeUtil.Companion.checkDir(this, (result) -> {

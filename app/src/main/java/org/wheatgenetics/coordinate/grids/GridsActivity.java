@@ -2,14 +2,11 @@ package org.wheatgenetics.coordinate.grids;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +32,7 @@ import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
 import org.wheatgenetics.coordinate.activities.BaseMainActivity;
-import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
+import org.wheatgenetics.coordinate.activity.AppIntroActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.database.SampleData;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
@@ -51,8 +48,6 @@ import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
@@ -66,7 +61,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     private static final int EXPORT_GRID_REQUEST_CODE = 10;
     private static final int CREATE_GRID_REFRESH = 102;
     private final int REQUEST_STORAGE_DEFINER = 104;
-    private AlertDialog loadSampleDialog;
+
+    private final int REQUEST_APP_INTRO = 112;
     // endregion
     private static Intent INTENT_INSTANCE = null;                       // lazy load
     // region Fields
@@ -102,7 +98,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                 exportGrid(getContentResolver().openOutputStream(uri));
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                if (prefs.getBoolean("org.wheatgenetics.coordinate.preferences.SHARE_ON_EXPORT", false)) {
+                if (prefs.getBoolean(GeneralKeys.SHARE_EXPORTS, false)) {
                     Intent intent = new Intent();
                     intent.setAction(android.content.Intent.ACTION_SEND);
                     intent.setType("text/plain");
@@ -421,27 +417,12 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             gridsListView.setAdapter(this.gridsAdapter);
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            boolean firstLoadComplete = prefs.getBoolean(Keys.FIRST_LOAD_COMPLETE, false);
+            boolean firstLoadComplete = prefs.getBoolean(GeneralKeys.FIRST_LOAD_COMPLETE, false);
             if (!firstLoadComplete) {
-                prefs.edit().putBoolean(Keys.FIRST_LOAD_COMPLETE, true).apply();
-                loadSampleDialog = new AlertDialog.Builder(this)
-                        .setTitle(R.string.act_ask_load_sample)
-                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                            new SampleData(this).insertSampleData();
-                            notifyDataSetChanged();
-                        })
-                        .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
-                        .create();
-                loadSampleDialog.show();
 
-            }
+                Intent appIntoIntent = new Intent(this, AppIntroActivity.class);
+                startActivityForResult(appIntoIntent, REQUEST_APP_INTRO);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                if (prefs.getBoolean(GeneralKeys.STORAGE_ASK_KEY, true)) {
-
-                    startActivityForResult(new Intent(this, DefineStorageActivity.class), REQUEST_STORAGE_DEFINER);
-
-                }
             }
         }
     }
@@ -667,10 +648,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     protected void onActivityResult(final int requestCode,
                                     final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("TAG", "onActivityResult: header" + requestCode);
 
         if (Activity.RESULT_OK == resultCode && null != data) {
-            Log.d("TAG", "onActivityResult: " + requestCode);
             switch (requestCode) {
                 case Types.CREATE_TEMPLATE:
                     this.templateCreator().continueExcluding(data.getExtras());
@@ -689,14 +668,19 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                     break;
             }
         }
-        if (requestCode == REQUEST_STORAGE_DEFINER) {
-            if (resultCode != Activity.RESULT_OK) {
-                if (loadSampleDialog != null) {
-                    loadSampleDialog.dismiss();
-                }
-                finish();
+        if (requestCode == REQUEST_APP_INTRO) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            if (resultCode == Activity.RESULT_OK) {
+                prefs.edit().putBoolean(GeneralKeys.FIRST_LOAD_COMPLETE, true).apply();
             }
-            else {
+            boolean loadSampleData = prefs.getBoolean(GeneralKeys.LOAD_SAMPLE_DATA, false);
+            if (loadSampleData) {
+                new SampleData(this).insertSampleData();
+                notifyDataSetChanged();
+            }
+        }
+        if (requestCode == REQUEST_STORAGE_DEFINER) {
+            if (resultCode == Activity.RESULT_OK) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 prefs.edit().putBoolean(GeneralKeys.STORAGE_ASK_KEY, false).apply();
             }

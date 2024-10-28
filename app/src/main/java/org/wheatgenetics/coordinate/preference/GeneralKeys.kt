@@ -10,12 +10,22 @@ class GeneralKeys private constructor() {
 
         const val MIGRATE_ASK_KEY = COORDINATE_PREFIX + "MIGRATE_ASK_KEY"
 
+        const val FIRST_LOAD_COMPLETE = COORDINATE_PREFIX + "FIRST_LOAD_COMPLETE"
+
+        const val FROM_INTRO_AUTOMATIC = COORDINATE_PREFIX + "FROM_INTRO_AUTOMATIC"
+
+        /**
+         * App Intro
+         */
+        const val LOAD_SAMPLE_DATA = COORDINATE_PREFIX + "LOAD_SAMPLE_DATA"
+
 
         /**
          * Settings
          */
         // Collection Preferences
         const val DIRECTION = COORDINATE_PREFIX + "DIRECTION"
+        const val TOGGLE_EXCLUSION_STATE = COORDINATE_PREFIX + "TOGGLE_EXCLUSION_STATE"
         const val UNIQUE_VALUES = COORDINATE_PREFIX + "UNIQUE_VALUES"
         const val UNIQUE_OPTIONS = COORDINATE_PREFIX + "UNIQUE_OPTIONS"
         // sounds

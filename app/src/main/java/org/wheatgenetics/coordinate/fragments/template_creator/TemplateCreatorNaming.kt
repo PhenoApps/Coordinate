@@ -1,11 +1,16 @@
 package org.wheatgenetics.coordinate.fragments.template_creator
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.CheckedTextView
+import android.widget.ListView
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -101,6 +106,10 @@ class TemplateCreatorNaming : Fragment(R.layout.fragment_template_creator_naming
                             val selection = if (i == 0) AxisLabel.Alphabetic else AxisLabel.Numeric
                             if (n == 0) mSelectedColEnumeration = selection
                             else mSelectedRowEnumeration = selection
+
+                            // Set the color of the check mark for selected item
+                            val color = ContextCompat.getColor(context, R.color.colorAccent)
+                            checkMarkTintList = ColorStateList.valueOf(color)
                         }
                     }
 
@@ -155,7 +164,11 @@ class TemplateCreatorNaming : Fragment(R.layout.fragment_template_creator_naming
     private inner class NamingAdapter(ctx: Context, private val axis: Int):
         ArrayAdapter<String>(ctx, android.R.layout.simple_list_item_checked) {
 
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            // color of the check mark for initially selected item
+            private val color = ContextCompat.getColor(context, R.color.colorAccent)
+            private val tintList = ColorStateList.valueOf(color)
+
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getView(position, convertView, parent)
 
             with (view as CheckedTextView) {
@@ -167,10 +180,12 @@ class TemplateCreatorNaming : Fragment(R.layout.fragment_template_creator_naming
                 if (axis == 0) {
                     if (position == mSelectedColEnumeration.ordinal) {
                         isChecked = true
+                        checkMarkTintList = tintList
                     }
                 } else {
                     if (position == mSelectedRowEnumeration.ordinal) {
                         isChecked = true
+                        checkMarkTintList = tintList
                     }
                 }
             }

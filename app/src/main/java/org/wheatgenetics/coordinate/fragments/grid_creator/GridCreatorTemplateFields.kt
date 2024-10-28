@@ -40,6 +40,8 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
     private var mProjectsTable: ProjectsTable? = null
     private var mEntriesTable: EntriesTable? = null
 
+    private lateinit var fieldsAdapter: FieldsAdapter
+
     private val mTemplate: TemplateModel? by lazy {
         mTemplatesTable?.load()?.find { it.title == args.title }
     }
@@ -171,12 +173,16 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
         val fields = NonNullOptionalFields(this)
 
-        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
+//        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
 
-        listView?.children?.forEach {
-            val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
-            val valueEditText = it.findViewById<EditText>(R.id.list_item_field_et)
-            fields.add(nameTextView.text.toString(), valueEditText.text.toString(), null)
+//        listView?.children?.forEach {
+//            val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
+//            val valueEditText = it.findViewById<EditText>(R.id.list_item_field_et)
+//            fields.add(nameTextView.text.toString(), valueEditText.text.toString(), null)
+//        }
+
+        fieldsAdapter.getAllFieldValues().forEach { (name, value) ->
+            fields.add(name, value, null)
         }
 
         return fields
@@ -235,7 +241,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
                     }
                 }
 
-                val adapter = FieldsAdapter(this, requiredName, fields)
+                fieldsAdapter = FieldsAdapter(this, requiredName, fields)
 
                 val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
 
@@ -245,7 +251,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
                 listView?.layoutManager = LinearLayoutManager(act)
 
-                listView?.adapter = adapter
+                listView?.adapter = fieldsAdapter
 
                 (listView?.adapter as FieldsAdapter).submitList(fields.map { it })
 
