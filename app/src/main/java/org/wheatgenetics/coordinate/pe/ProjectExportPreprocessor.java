@@ -11,6 +11,7 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.database.ProjectsTable;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.TimestampUtil;
 
 public class ProjectExportPreprocessor {
     // region Fields
@@ -57,7 +58,10 @@ public class ProjectExportPreprocessor {
     }
 
     private void preprocessAfterSettingProjectId(@Nullable final ProjectModel projectModel) {
-        if (null != projectModel) this.getExportFileNameAlertDialog().show(projectModel.getTitle());
+        if (null != projectModel) {
+            String initialFileName = projectModel.getTitle() + "_" + new TimestampUtil().getTime();
+            this.getExportFileNameAlertDialog().show(initialFileName);
+        }
     }
     // endregion
 

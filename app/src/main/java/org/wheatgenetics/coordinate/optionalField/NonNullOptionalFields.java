@@ -13,11 +13,9 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
+import org.wheatgenetics.coordinate.utils.TimestampUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class NonNullOptionalFields extends OptionalFields
         implements Cloneable {
@@ -383,11 +381,8 @@ public class NonNullOptionalFields extends OptionalFields
 
     @NonNull
     public String getDatedFirstValue() {
-
-        SimpleDateFormat timeStamp = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.getDefault());
-        String formattedTime = timeStamp.format(Calendar.getInstance().getTime());
         final int first = 0;
-        return this.get(first).getValue() + "_" + formattedTime;
+        return this.get(first).getValue() + "_" + new TimestampUtil().getTime();
     }
 
     @NonNull
