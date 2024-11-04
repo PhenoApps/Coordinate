@@ -14,7 +14,7 @@ Download
 Coordinate can be downloaded from [Google
 Play](https://play.google.com/store/apps/details?id=org.wheatgenetics.coordinate).
 Source code for Coordinate is hosted on
-[GitHub](https://github.com/PhenoApps/Coordinate/).
+[GitHub](https://github.com/PhenoApps/Coordinate).
 
 Layout
 ------
