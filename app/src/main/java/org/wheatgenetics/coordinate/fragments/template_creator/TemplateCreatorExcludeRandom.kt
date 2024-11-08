@@ -121,6 +121,11 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
 
             mRandomSelections.clear()
 
+            // clear the old selection from the grid
+            // if this is not done, the new random excluded
+            // cells will appear in addition to the previously excluded
+            adapter.clearSelection()
+
             //get all cells that aren't selected already
             val nonExcluded = arrayListOf<Pair<Int, Int>>()
             for (i in 0 until mRows) {
