@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +32,7 @@ public abstract class DisplayFragment extends Fragment {
     private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManagerInstance = null;//ll
     private Adapter adapterInstance = null;//ll
+    private int mCellWidth = 0;
 
     // region Private Methods
     @NonNull
@@ -125,10 +128,67 @@ public abstract class DisplayFragment extends Fragment {
                     null == this.handler ? null : this.handler.getDisplayModel();
             if (null != displayModel) {
                 this.recyclerView.setLayoutManager(this.gridLayoutManager(displayModel));
+                Adapter adapter = adapter(displayModel);
                 this.recyclerView.setAdapter(this.adapter(displayModel));
             }
         }
     }
+
+
+    public void scrollToActiveCell(int row, int col) {
+        if (recyclerView == null || gridLayoutManagerInstance == null) return;
+
+        // Calculate the position in the adapter from row and column
+        DisplayModel displayModel = (handler != null) ? handler.getDisplayModel() : null;
+        if (displayModel == null) return;
+
+        int totalCols = displayModel.getCols();
+        int position = (row * totalCols) + col;
+
+        recyclerView.scrollToPosition(position);
+
+        recyclerView.post(() -> {
+            View itemView = gridLayoutManagerInstance.findViewByPosition(position);
+            if (itemView != null) {
+                NestedScrollView nestedScrollView = (NestedScrollView) recyclerView.getParent().getParent();
+                HorizontalScrollView horizontalScrollView = (HorizontalScrollView) recyclerView.getParent();
+
+                // sometimes itemView.getWidth() returns anomalous width for certain cells
+                // therefore, we store the value
+                if (mCellWidth <= 0) {
+                    // stores the first measured item width as reference
+                    mCellWidth = itemView.getWidth();
+                }
+
+                int itemWidth = mCellWidth;
+                int itemHeight = itemView.getHeight();
+                int verticalOffset = itemView.getTop();
+
+                // calculate distance from left logically
+                // (col + 1) as we have the first column as "row header" in the grid
+                int horizontalOffset = (col + 1) * itemWidth;
+
+                int horizontalScrollViewWidth = horizontalScrollView.getWidth();
+                int nestedScrollViewHeight = nestedScrollView.getHeight();
+
+                // calculate scroll in a way to position the item in the center of the screen where possible
+                int horizontalScroll = Math.max(0, horizontalOffset - ((horizontalScrollViewWidth - itemWidth) / 2));
+                int verticalScroll = Math.max(0, verticalOffset - ((nestedScrollViewHeight - itemHeight) / 2));
+
+                // maximum scrollable distance by finding how much content extends beyond the viewport
+                int maxHorizontalScroll = horizontalScrollView.getChildAt(0).getWidth() - horizontalScrollViewWidth;
+                int maxVerticalScroll = nestedScrollView.getChildAt(0).getHeight() - nestedScrollViewHeight;
+
+                horizontalScroll = Math.min(horizontalScroll, maxHorizontalScroll);
+                verticalScroll = Math.min(verticalScroll, maxVerticalScroll);
+
+                nestedScrollView.smoothScrollTo(0, verticalScroll);
+                horizontalScrollView.smoothScrollTo(horizontalScroll, 0);
+            }
+        });
+    }
+
+
     // endregion
 
     @SuppressWarnings({"UnnecessaryInterfaceModifier"})

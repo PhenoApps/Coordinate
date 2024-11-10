@@ -393,7 +393,10 @@ abstract class BaseCollector extends Object implements
     }
 
     public void populateFragments() {
-        if (null != this.gridDisplayFragment) this.gridDisplayFragment.populate();
+        if (null != this.gridDisplayFragment) {
+            this.gridDisplayFragment.populate();
+            this.gridDisplayFragment.scrollToActiveCell(getActiveRow(), getActiveCol());
+        }
         this.populateDataEntryFragment();
     }
 
