@@ -28,6 +28,7 @@ class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_excl
 
     private var mTemplateTable: TemplatesTable? = null
     private var mRandomSelections: ArrayList<Pair<Int, Int>> = ArrayList()
+    private var mPreviousExclusions: ArrayList<Pair<Int, Int>> = ArrayList()
     private var mRows = 0
     private var mCols = 0
 
@@ -61,6 +62,18 @@ class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_excl
         table?.adapter?.notifyDataSetChanged()
     }
 
+    private fun restoreSelection() {
+        val table = view?.findViewById<TableView>(R.id.frag_template_exclude_table)
+        (table?.adapter as? GridExcludeAdapter)?.let { adapter ->
+            adapter.clearSelection()
+            // restore previous exclusions
+            mPreviousExclusions.forEach { (row, col) ->
+                adapter.setSelected(row, col)
+            }
+            adapter.notifyDataSetChanged()
+        }
+    }
+
     private fun setupButtons() {
 
         val resetButton = view?.findViewById<Button>(R.id.frag_template_exclude_reset_btn)
@@ -72,9 +85,10 @@ class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_excl
             resetSelection()
         }
 
-        //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
+        // going back we must clear the current randomly excluded selection (if any)
+        // and restore the previous selections
         backButton?.setOnClickListener {
-            resetSelection()
+            restoreSelection()
             writeToDatabase()
             mRandomSelections.clear()
             randomEditText?.setText(String())
@@ -184,11 +198,14 @@ class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_excl
 
                 adapter.setAllItems(cols, rows, cells)
 
+                mPreviousExclusions.clear()
+
                 //update ui selection based on previous exclusion
                 rows.forEachIndexed { i, _ ->
                     cols.forEachIndexed { j, _ ->
                         if (template.isExcludedCell(Cell(i+1, j+1, this))) {
                             (table.adapter as GridExcludeAdapter).setSelected(i, j)
+                            mPreviousExclusions.add(Pair(i,j))
                         }
                     }
                 }
