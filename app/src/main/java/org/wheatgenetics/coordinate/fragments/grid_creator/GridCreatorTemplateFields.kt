@@ -5,17 +5,21 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.zxing.integration.android.IntentIntegrator
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
 import org.wheatgenetics.coordinate.adapter.FieldsAdapter
@@ -46,6 +50,10 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         mTemplatesTable?.load()?.find { it.title == args.title }
     }
 
+    private val barcodeScannerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result -> parseActivityResult(result.resultCode, result.data) }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity?.let { act ->
@@ -56,10 +64,21 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_new_grid, menu)
+        val menuItem = menu.findItem(R.id.action_barcode_scanner)
+        menuItem.title = String.format(getString(R.string.new_grid_barcode_title), getRequiredName())
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 navigateBack()
+            }
+            R.id.action_barcode_scanner -> {
+                scanBarcode()
+                return true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -73,6 +92,30 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
         setupAdapter()
         setupButtons()
+    }
+
+    private fun scanBarcode(): Boolean {
+        IntentIntegrator(requireActivity()).apply {
+            setOrientationLocked(false)
+            setPrompt("Scan a barcode")
+            setBeepEnabled(true)
+        }.createScanIntent().also {
+            barcodeScannerLauncher.launch(it)
+        }
+        return true
+    }
+
+    private fun parseActivityResult(resultCode: Int, data: Intent?): Boolean {
+        val result = IntentIntegrator.parseActivityResult(resultCode, data)
+        if (result == null) {
+            return false
+        } else {
+            val barcodeScannerResult = result.contents
+            if (barcodeScannerResult != null && barcodeScannerResult.isNotEmpty()) {
+                setRequiredField(barcodeScannerResult)
+            }
+            return true
+        }
     }
 
     private fun setupButtons() {
@@ -186,6 +229,22 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         }
 
         return fields
+    }
+
+    //check that the base optional field "identification" value is entered
+    private fun setRequiredField(text: String) {
+
+        val requiredName = getRequiredName()
+
+        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
+
+        listView?.children?.forEach {
+            val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
+            if (nameTextView.text == requiredName) {
+                val valueEditText = it.findViewById<EditText>(R.id.list_item_field_et)
+                valueEditText.setText(text)
+            }
+        }
     }
 
     //check that the base optional field "identification" value is entered
