@@ -30,6 +30,7 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
 
     private var mTemplateTable: TemplatesTable? = null
     private var mRandomSelections: ArrayList<Pair<Int, Int>> = ArrayList()
+    private var mPreviousExclusions: ArrayList<Pair<Int, Int>> = ArrayList()
     private var mRows = 0
     private var mCols = 0
 
@@ -85,10 +86,17 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
     private fun navigateBack() {
         val randomEditText = view?.findViewById<EditText>(R.id.frag_template_creator_exclude_random_et)
 
-        //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
+        // going back we must clear the current randomly excluded selection (if any)
+        // and restore the previous selections
         val table = view?.findViewById<TableView>(R.id.frag_template_exclude_table)
-        (table?.adapter as? GridExcludeAdapter)?.clearSelection()
-        table?.adapter?.notifyDataSetChanged()
+        (table?.adapter as? GridExcludeAdapter)?.let { adapter ->
+            adapter.clearSelection()
+            // restore previous exclusions
+            mPreviousExclusions.forEach { (row, col) ->
+                adapter.setSelected(row, col)
+            }
+            adapter.notifyDataSetChanged()
+        }
         writeToDatabase()
         mRandomSelections.clear()
         randomEditText?.setText(String())
@@ -214,11 +222,14 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
 
                 adapter.setAllItems(cols, rows, cells)
 
+                mPreviousExclusions.clear()
+
                 //update ui selection based on previous exclusion
                 rows.forEachIndexed { i, _ ->
                     cols.forEachIndexed { j, _ ->
                         if (template.isExcludedCell(Cell(i+1, j+1, this))) {
                             (table.adapter as GridExcludeAdapter).setSelected(i, j)
+                            mPreviousExclusions.add(Pair(i, j))
                         }
                     }
                 }
