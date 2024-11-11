@@ -56,7 +56,7 @@ class CreateProjectDialogFragment : DialogFragment() {
                 projectTitleEditText?.let { SoftKeyboardUtil.closeKeyboard(requireActivity(), it) }
                 dialog.cancel()
             }
-            .setNeutralButton(R.string.tutorial_collector_barcode_title, null)
+            .setNeutralButton(R.string.create_project_dialog_barcode_button, null)
 
         createProjectAlertDialog = builder.create()
 
