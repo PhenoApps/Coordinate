@@ -78,7 +78,6 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
             }
             R.id.action_barcode_scanner -> {
                 scanBarcode()
-                return true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -94,7 +93,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         setupButtons()
     }
 
-    private fun scanBarcode(): Boolean {
+    private fun scanBarcode() {
         IntentIntegrator(requireActivity()).apply {
             setOrientationLocked(false)
             setPrompt("Scan a barcode")
@@ -102,7 +101,6 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         }.createScanIntent().also {
             barcodeScannerLauncher.launch(it)
         }
-        return true
     }
 
     private fun parseActivityResult(resultCode: Int, data: Intent?): Boolean {

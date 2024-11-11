@@ -18,10 +18,10 @@ import org.wheatgenetics.coordinate.database.GridsTable
 import org.wheatgenetics.coordinate.database.ProjectsTable
 import org.wheatgenetics.coordinate.interfaces.TitleSelectedListener
 import org.wheatgenetics.coordinate.model.ProjectModel
-import org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog
+import org.wheatgenetics.coordinate.pc.CreateProjectDialogFragment
 
 class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_project_options),
-    CreateProjectAlertDialog.Handler, TitleSelectedListener, StringGetter {
+    TitleSelectedListener, StringGetter {
 
     private var mProjectsTable: ProjectsTable? = null
 
@@ -177,11 +177,16 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
     }
 
     override fun onAddNewItemClicked() {
-        CreateProjectAlertDialog(activity, this).show()
+        val createProjectAlertDialog = CreateProjectDialogFragment.newInstance(object : CreateProjectDialogFragment.Handler {
+            override fun handleCreateProjectDone(projectTitle: String): Boolean {
+                return onCreateProjectDone(projectTitle)
+            }
+        })
+        activity?.supportFragmentManager?.let { createProjectAlertDialog.show(it, "CreateProjectDialogFragment") }
     }
 
     //here we must check if the project already exists in projects table
-    override fun handleCreateProjectDone(projectTitle: String?): Boolean {
+    fun onCreateProjectDone(projectTitle: String?): Boolean {
         return if (!(mProjectsTable?.load()?.titles() ?: arrayOf()).contains(projectTitle)) {
             val id = mProjectsTable?.insert(ProjectModel(projectTitle, this))
             setupAdapter()

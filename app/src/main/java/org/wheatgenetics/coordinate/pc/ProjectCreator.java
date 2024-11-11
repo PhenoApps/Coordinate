@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.StringRes;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.database.ProjectsTable;
@@ -112,7 +114,9 @@ public class ProjectCreator implements StringGetter {
     // endregion
 
     public void createAndReturn() {
-        this.createAndReturnProjectAlertDialog().show();
+        DialogFragment createProjectDialogFragment = CreateProjectDialogFragment.Companion.newInstance(
+                projectTitle -> ProjectCreator.this.insertAndReturn(projectTitle));
+        createProjectDialogFragment.show(((FragmentActivity) activity).getSupportFragmentManager(), "CreateProjectDialogFragment");
     }
 
     @SuppressWarnings({"UnnecessaryInterfaceModifier"})
