@@ -8,6 +8,24 @@
     <!-- MainActivity, NavigationItemSelectedListener, TemplatesActivity -->
     <string name="TemplateNotCreatedToast">%s not created</string>
     <string name="TemplateCreatedToast">%s created</string>
+    <!-- AppIntroActivity -->
+    <string name="app_intro_activity_label">App Intro</string>
+    <string name="app_intro_intro_title_slide1">Welcome to Coordinate!</string>
+    <string name="app_intro_intro_summary_slide1">Coordinate is a data collection app that organizes sample names into grids that are based on predefined templates. Templates are highly customizable and can include custom fields for metadata, alphabetical or numeric row and column naming, and specific or randomly excluded cells.</string>
+    <string name="app_intro_intro_title_slide2">Features and Customization</string>
+    <string name="app_intro_intro_summary_slide2">Feature description goes here.\n\n Customization.</string>
+    <string name="app_intro_required_setup_title">Required Setup</string>
+    <string name="app_intro_required_setup_summary">To get started using Coordinate, grant the necessary permissions for the app and then define a folder where your data will be stored.</string>
+    <string name="app_intro_permissions_title">Permissions</string>
+    <string name="app_intro_permissions_summary">Please grant the necessary permissions</string>
+    <string name="app_intro_storage_title">Define Storage</string>
+    <string name="app_intro_storage_summary">Define a folder where your data will be stored.</string>
+    <string name="app_intro_permissions_warning">Permissions not granted</string>
+    <string name="app_intro_storage_warning">Storage directory not set</string>
+    <string name="app_intro_optional_setup_title">Optional Setup</string>
+    <string name="app_intro_optional_setup_summary">Optional settings customize how Coordinate is set up for data collection.</string>
+    <string name="app_intro_load_sample_data_title">Load Sample Data</string>
+    <string name="app_intro_load_sample_data_summary">Import a sample database that includes example grids, templates, and projects.</string>
     <!-- CollectorActivity -->
     <string name="CollectorActivityLabel">Collect Data</string>
     <!-- AboutActivity -->
@@ -26,8 +44,9 @@
     <string name="libraries_title">Libraries</string>
     <string name="about_manual_title">Manual</string>
     <!-- Folder names -->
-    <string name="export_dir">Exports</string>
-    <string name="template_dir">Templates</string>
+    <string name="export_dir">exports</string>
+    <string name="template_dir">templates</string>
+    <string name="database_dir">database</string>
     <!-- TemplateImporter -->
     <string name="SelectExportedTemplateTitle">Import template</string>
     <!-- TemplatesActivity -->
@@ -105,6 +124,8 @@
         <item>@string/preferences_direction_across_then_down_entry_value</item>
     </string-array>
     <string name="preferences_direction_default">@string/preferences_direction_down_then_across_entry_value</string>
+    <string name="preferences_toggle_exclusion_state_title">Toggle Exclusion State</string>
+    <string name="preferences_toggle_exclusion_state_summary">Toggle exclusion state of a cell on long press</string>
     <!-- Sounds -->
     <string name="preferences_sound_title">Sounds</string>
     <string name="preferences_sound_filled_row_or_column_title">Navigation sound</string>
@@ -204,7 +225,7 @@
     <string name="BaseOptionalFieldIdentificationFieldName">Identification</string>
     <string name="optional_field_hint_text">Optional</string>
     <!-- DateOptionalField -->
-    <string name="TimestampOptionalFieldDateFieldName">Date</string>
+    <string name="TimestampOptionalFieldDateFieldName">Timestamp</string>
     <!-- NonNullOptionalFields seed tray template -->
     <string name="NonNullOptionalFieldsTrayIDFieldName">Tray</string>
     <string name="NonNullOptionalFieldsTrayIDFieldHint">Tray ID</string>
@@ -257,8 +278,8 @@
     <!-- FullyUniqueEntryModels -->
     <string name="CallCheckThenSetInstead">Call checkThenSet() instead</string>
     <!-- JoinedGridModel -->
-    <string name="JoinedGridModelSeedTrayTimestampFieldName">date</string>
-    <string name="JoinedGridModelDNAPlateTimestampFieldName">date</string>
+    <string name="JoinedGridModelSeedTrayTimestampFieldName">Timestamp</string>
+    <string name="JoinedGridModelDNAPlateTimestampFieldName">Timestamp</string>
     <!-- CurrentGridUniqueJoinedGridModel -->
     <string name="CallCheckThenSetEntryModelInstead">Call checkThenSetEntryModel() instead</string>
     <!-- GridDisplay Strings -->
