@@ -22,7 +22,7 @@ import org.wheatgenetics.coordinate.database.SampleData
 import org.wheatgenetics.coordinate.deleter.GridDeleter
 import org.wheatgenetics.coordinate.deleter.ProjectDeleter
 import org.wheatgenetics.coordinate.deleter.TemplateDeleter
-import org.wheatgenetics.coordinate.utils.DateUtil
+import org.wheatgenetics.coordinate.utils.TimestampUtil
 import org.wheatgenetics.coordinate.utils.ZipUtil
 import java.io.File
 import java.io.FileOutputStream
@@ -81,7 +81,7 @@ class StoragePreferencesFragment(private var searchResult: SearchPreferenceResul
                     AlertDialog.Builder(ctx)
                         .setTitle(R.string.dialog_database_export_title)
                         .setPositiveButton(android.R.string.ok) { dialog: DialogInterface?, _: Int ->
-                            val fileName = "Coordinate_Output_${DateUtil().getTime().replace(":", "_")}.zip"
+                            val fileName = "Coordinate_Output_${TimestampUtil().getTime()}.zip"
                             if (BaseDocumentTreeUtil.isEnabled(ctx)) {
                                 exportDatabase(fileName)
                             } else {
