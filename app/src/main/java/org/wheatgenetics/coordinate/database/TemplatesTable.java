@@ -8,12 +8,13 @@ import android.database.SQLException;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.model.TemplateModels;
 import org.wheatgenetics.coordinate.model.TemplateType;
-import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 
 public class TemplatesTable extends Table {
     // region Constants
@@ -43,6 +44,30 @@ public class TemplatesTable extends Table {
                         templateType.getCode());
     }
     // endregion
+
+    // get optional fields for a template
+    public NonNullOptionalFields getOptionalFieldsForTemplate(String templateTitle, StringGetter stringGetter) {
+        NonNullOptionalFields optionalFields = null;
+
+        Cursor cursor = queryAll(
+                TITLE_FIELD_NAME + " = ?",
+                Utils.stringArray(templateTitle)
+        );
+
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    String json = cursor.getString(cursor.getColumnIndexOrThrow(OPTIONS_FIELD_NAME));
+                    if (json != null && !json.isEmpty()) {
+                        optionalFields = new NonNullOptionalFields(json, stringGetter, true);
+                    }
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        return optionalFields;
+    }
 
     @Nullable
     private TemplateModels

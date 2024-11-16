@@ -10,7 +10,7 @@ import org.wheatgenetics.coordinate.StringGetter;
 import org.phenoapps.androidlibrary.Utils;
 
 public abstract class BaseOptionalField {
-    static final String DATE_HINT = "yyyy-mm-dd";
+    static final String TIMESTAMP_HINT = "yyyy-MM-dd-hh-mm-ss";
 
     // region Fields
     // region Constructor Fields

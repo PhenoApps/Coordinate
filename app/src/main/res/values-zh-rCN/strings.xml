@@ -201,7 +201,7 @@
     <string name="BaseOptionalFieldIdentificationFieldName">Identification</string>
     <string name="optional_field_hint_text">Optional</string>
     <!-- DateOptionalField -->
-    <string name="DateOptionalFieldDateFieldName">Date</string>
+    <string name="TimestampOptionalFieldDateFieldName">Date</string>
     <!-- NonNullOptionalFields seed tray template -->
     <string name="NonNullOptionalFieldsTrayIDFieldName">Tray</string>
     <string name="NonNullOptionalFieldsTrayIDFieldHint">Tray ID</string>
@@ -253,8 +253,8 @@
     <!-- FullyUniqueEntryModels -->
     <string name="CallCheckThenSetInstead">Call checkThenSet() instead</string>
     <!-- JoinedGridModel -->
-    <string name="JoinedGridModelSeedTrayDateFieldName">date</string>
-    <string name="JoinedGridModelDNAPlateDateFieldName">date</string>
+    <string name="JoinedGridModelSeedTrayTimestampFieldName">date</string>
+    <string name="JoinedGridModelDNAPlateTimestampFieldName">date</string>
     <!-- CurrentGridUniqueJoinedGridModel -->
     <string name="CallCheckThenSetEntryModelInstead">Call checkThenSetEntryModel() instead</string>
     <!-- GridDisplay Strings -->

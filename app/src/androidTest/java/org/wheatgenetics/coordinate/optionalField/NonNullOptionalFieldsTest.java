@@ -60,7 +60,7 @@ public class NonNullOptionalFieldsTest extends Object
                     return "Identification";
 
 
-                case R.string.DateOptionalFieldDateFieldName:
+                case R.string.TimestampOptionalFieldDateFieldName:
                     return "Date";
 
 
@@ -152,7 +152,7 @@ public class NonNullOptionalFieldsTest extends Object
             NonNullOptionalFieldsTest.makeJSONObject());
         result.put(OptionalField.makeJSONObject(
             "name2","value2",
-            BaseOptionalField.DATE_HINT           ,
+            BaseOptionalField.TIMESTAMP_HINT,
             NonNullOptionalFieldsTest.stringGetter));
         return result;
     }
@@ -364,7 +364,7 @@ public class NonNullOptionalFieldsTest extends Object
             NonNullOptionalFieldsTest.HINT1 );
         Assert.assertEquals(
             NonNullOptionalFieldsTest.VALUE1 +
-                "_" + DateOptionalField.getCurrentDate()
+                "_" + TimestampOptionalField.getCurrentTimestamp()
                     .replace(".","_"),
             nonNullOptionalFields.getDatedFirstValue());
     }
@@ -383,7 +383,7 @@ public class NonNullOptionalFieldsTest extends Object
                 jsonArray.put(jsonObject);
             }
             jsonArray.put(new
-                DateOptionalField(NonNullOptionalFieldsTest.stringGetter)
+                    TimestampOptionalField(NonNullOptionalFieldsTest.stringGetter)
                         .makeJSONObject(NonNullOptionalFieldsTest.stringGetter));
             expectedJSON = jsonArray.toString();
         }
@@ -406,7 +406,7 @@ public class NonNullOptionalFieldsTest extends Object
             nonNullOptionalFields = NonNullOptionalFieldsTest.makeNonNullOptionalFields();
         Assert.assertArrayEquals(new String[]{
                 NonNullOptionalFieldsTest.VALUE1  ,
-                DateOptionalField.getCurrentDate()},
+                TimestampOptionalField.getCurrentTimestamp()},
             nonNullOptionalFields.values());
     }
 
@@ -429,7 +429,7 @@ public class NonNullOptionalFieldsTest extends Object
                 NonNullOptionalFieldsTest.NAME1)));
         Assert.assertArrayEquals(
             Utils.stringArray(
-                DateOptionalField.getCurrentDate()),
+                TimestampOptionalField.getCurrentTimestamp()),
             nonNullOptionalFields.values(Utils.stringArray(
                 "Date")));
     }

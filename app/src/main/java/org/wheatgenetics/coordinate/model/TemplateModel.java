@@ -388,7 +388,7 @@ public class TemplateModel extends DisplayTemplateModel {
         if (null != json) json = json.trim();
         this.nonNullOptionalFieldsInstance = null == json ? null : json.equals("") ? null :
                 new NonNullOptionalFields(
-                        json, this.stringGetter());
+                        json, this.stringGetter(), false);
     }
 
     // region Overridden Methods

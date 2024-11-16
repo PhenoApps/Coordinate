@@ -285,7 +285,7 @@
     <string name="optional_field_hint_text">Optional</string>
 
     <!-- DateOptionalField -->
-    <string name="DateOptionalFieldDateFieldName">Date</string>
+    <string name="TimestampOptionalFieldDateFieldName">Timestamp</string>
 
     <!-- NonNullOptionalFields seed tray template -->
     <string name="NonNullOptionalFieldsTrayIDFieldName">Tray</string>
@@ -356,8 +356,8 @@
     <string name="CallCheckThenSetInstead">Call checkThenSet() instead</string>
 
     <!-- JoinedGridModel -->
-    <string name="JoinedGridModelSeedTrayDateFieldName">date</string>
-    <string name="JoinedGridModelDNAPlateDateFieldName">date</string>
+    <string name="JoinedGridModelSeedTrayTimestampFieldName">Timestamp</string>
+    <string name="JoinedGridModelDNAPlateTimestampFieldName">Timestamp</string>
 
     <!-- CurrentGridUniqueJoinedGridModel -->
     <string name="CallCheckThenSetEntryModelInstead">Call checkThenSetEntryModel() instead</string>

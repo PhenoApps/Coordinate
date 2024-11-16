@@ -28,7 +28,7 @@ class OtherOptionalField extends OptionalField {
             throws OtherOptionalField.WrongClass {
         super(jsonObject, stringGetter);
 
-        if (BaseOptionalField.DATE_HINT.equals(
+        if (BaseOptionalField.TIMESTAMP_HINT.equals(
                 this.getHint()))
             throw new OtherOptionalField.WrongClass();
     }

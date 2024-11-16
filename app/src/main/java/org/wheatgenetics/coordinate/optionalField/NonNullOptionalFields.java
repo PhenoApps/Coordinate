@@ -34,7 +34,7 @@ public class NonNullOptionalFields extends OptionalFields
     }
 
     public NonNullOptionalFields(final String json,
-                                 @NonNull final StringGetter stringGetter) {
+                                 @NonNull final StringGetter stringGetter, final Boolean checkStatusOfFields) {
         this(stringGetter);
 
         if (null != json) {
@@ -53,6 +53,7 @@ public class NonNullOptionalFields extends OptionalFields
                 final int last = jsonArray.length() - 1;
                 for (int i = 0; i <= last; i++) {
                     BaseOptionalField baseOptionalField;
+                    Boolean fieldCheckedStatus = false;
                     {
                         final JSONObject jsonObject;
                         try {
@@ -68,11 +69,22 @@ public class NonNullOptionalFields extends OptionalFields
                         } catch (final
                         OtherOptionalField.WrongClass e) {
                             baseOptionalField =
-                                    new DateOptionalField(
+                                    new TimestampOptionalField(
                                             jsonObject, this.stringGetter);
                         }
+                        try {
+                            fieldCheckedStatus = jsonObject.getBoolean("checked");
+                        } catch (JSONException e) {
+                            continue;
+                        }
                     }
-                    this.arrayList.add(baseOptionalField);
+                    if (checkStatusOfFields) { // if only checked items are required (for new grid)
+                        if (fieldCheckedStatus) {
+                            this.arrayList.add(baseOptionalField);
+                        }
+                    } else { // if both checked and unchecked items are required (for editing template)
+                        this.arrayList.add(baseOptionalField);
+                    }
                 }
             }
         }
@@ -256,13 +268,13 @@ public class NonNullOptionalFields extends OptionalFields
         for (final BaseOptionalField baseOptionalField :
                 this)
             if (baseOptionalField instanceof
-                    DateOptionalField) {
-                final DateOptionalField
-                        dateOptionalField =
-                        (DateOptionalField)
+                    TimestampOptionalField) {
+                final TimestampOptionalField
+                        timestampOptionalField =
+                        (TimestampOptionalField)
                                 baseOptionalField;
-                result.arrayList.add((DateOptionalField)
-                        dateOptionalField.clone());
+                result.arrayList.add((TimestampOptionalField)
+                        timestampOptionalField.clone());
             } else if (baseOptionalField instanceof
                     OtherOptionalField) {
                 final OtherOptionalField
@@ -297,7 +309,7 @@ public class NonNullOptionalFields extends OptionalFields
 
     @NonNull
     private NonNullOptionalFields addDate() {
-        this.arrayList.add(new DateOptionalField(
+        this.arrayList.add(new TimestampOptionalField(
                 this.stringGetter));
         return this;
     }
@@ -397,12 +409,12 @@ public class NonNullOptionalFields extends OptionalFields
         for (final BaseOptionalField baseOptionalField :
                 this)
             if (baseOptionalField instanceof
-                    DateOptionalField) {
-                final DateOptionalField
-                        dateOptionalField =
-                        (DateOptionalField)
+                    TimestampOptionalField) {
+                final TimestampOptionalField
+                        timestampOptionalField =
+                        (TimestampOptionalField)
                                 baseOptionalField;
-                jsonArray.put(dateOptionalField.makeJSONObject(this.stringGetter));
+                jsonArray.put(timestampOptionalField.makeJSONObject(this.stringGetter));
             } else if (baseOptionalField instanceof
                     OtherOptionalField) {
                 final OtherOptionalField
@@ -451,12 +463,12 @@ public class NonNullOptionalFields extends OptionalFields
         for (final BaseOptionalField baseOptionalField :
                 this)
             if (baseOptionalField instanceof
-                    DateOptionalField) {
-                final DateOptionalField
-                        dateOptionalField =
-                        (DateOptionalField)
+                    TimestampOptionalField) {
+                final TimestampOptionalField
+                        timestampOptionalField =
+                        (TimestampOptionalField)
                                 baseOptionalField;
-                valueArrayList.add(dateOptionalField.getValue());
+                valueArrayList.add(timestampOptionalField.getValue());
             } else if (baseOptionalField instanceof
                     OtherOptionalField) {
                 final OtherOptionalField
@@ -490,10 +502,10 @@ public class NonNullOptionalFields extends OptionalFields
                         final String safeValue;
                         {
                             if (baseOptionalField instanceof
-                                    DateOptionalField) {
-                                final DateOptionalField dateOptionalField =
-                                        (DateOptionalField) baseOptionalField;
-                                safeValue = dateOptionalField.getSafeValue();
+                                    TimestampOptionalField) {
+                                final TimestampOptionalField timestampOptionalField =
+                                        (TimestampOptionalField) baseOptionalField;
+                                safeValue = timestampOptionalField.getSafeValue();
                             } else if (baseOptionalField instanceof
                                     OtherOptionalField) {
                                 final OtherOptionalField otherOptionalField =

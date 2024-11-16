@@ -53,7 +53,7 @@ extends Object implements StringGetter
             case R.string.BaseOptionalFieldIdentificationFieldName:
                 return "Identification";
 
-            case R.string.DateOptionalFieldDateFieldName:
+            case R.string.TimestampOptionalFieldDateFieldName:
                 return "Date";
 
             default: Assert.fail(); return null;
@@ -69,36 +69,36 @@ extends Object implements StringGetter
 
     @Test() public void constructorSucceeds()
     {
-        final DateOptionalField dateOptionalField =
-            new DateOptionalField(this);
-        Assert.assertEquals("Date", dateOptionalField.getName());
+        final TimestampOptionalField timestampOptionalField =
+            new TimestampOptionalField(this);
+        Assert.assertEquals("Date", timestampOptionalField.getName());
         Assert.assertEquals(
-            BaseOptionalField.DATE_HINT,
-            dateOptionalField.getHint()                                           );
+            BaseOptionalField.TIMESTAMP_HINT,
+            timestampOptionalField.getHint()                                           );
     }
 
     // region Overridden Method Tests
     @Test() public void cloneSucceeds()
     {
-        final DateOptionalField dateOptionalField =
-            new DateOptionalField(this);
-        final DateOptionalField clonedDateOptionalField =
-            (DateOptionalField)
-                    dateOptionalField.clone();
-        Assert.assertEquals("Date", clonedDateOptionalField.getName());
+        final TimestampOptionalField timestampOptionalField =
+            new TimestampOptionalField(this);
+        final TimestampOptionalField clonedTimestampOptionalField =
+            (TimestampOptionalField)
+                    timestampOptionalField.clone();
+        Assert.assertEquals("Date", clonedTimestampOptionalField.getName());
         Assert.assertEquals(
-            BaseOptionalField.DATE_HINT,
-            clonedDateOptionalField.getHint()                                     );
+            BaseOptionalField.TIMESTAMP_HINT,
+            clonedTimestampOptionalField.getHint()                                     );
 
         // noinspection SimplifiableJUnitAssertion
-        Assert.assertTrue(dateOptionalField.equals(clonedDateOptionalField));
+        Assert.assertTrue(timestampOptionalField.equals(clonedTimestampOptionalField));
     }
 
     @Test() public void getValue()
     {
         Assert.assertEquals(
             DateOptionalFieldTest.expectedCurrentDate(),
-            new DateOptionalField(
+            new TimestampOptionalField(
                 this).getValue());
     }
     // endregion
@@ -107,6 +107,6 @@ extends Object implements StringGetter
     {
         Assert.assertEquals(
             DateOptionalFieldTest.expectedCurrentDate(),
-            DateOptionalField.getCurrentDate()         );
+            TimestampOptionalField.getCurrentTimestamp()         );
     }
 }

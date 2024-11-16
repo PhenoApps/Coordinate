@@ -232,7 +232,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         activity?.let { act ->
 
             //query db for optional fields
-            mTemplate?.optionalFields()?.let { fields ->
+            mTemplatesTable?.getOptionalFieldsForTemplate(args.title, this)?.let { fields ->
 
                 // set hint text for optional fields
                 fields.forEach { field ->

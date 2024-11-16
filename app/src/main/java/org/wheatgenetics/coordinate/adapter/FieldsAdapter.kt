@@ -14,6 +14,7 @@ import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.interfaces.RequiredFieldsCompleteListener
 import org.wheatgenetics.coordinate.optionalField.BaseOptionalField
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+import org.wheatgenetics.coordinate.optionalField.TimestampOptionalField
 
 class FieldsAdapter(private val listener: RequiredFieldsCompleteListener, private val requiredName: String, private val fields: NonNullOptionalFields) :
     ListAdapter<BaseOptionalField, RecyclerView.ViewHolder>(DiffCallback()) {
@@ -80,6 +81,9 @@ class FieldsAdapter(private val listener: RequiredFieldsCompleteListener, privat
                 }
                 this@ViewHolder.watcher = watcher
                 valueEditText.addTextChangedListener(this@ViewHolder.watcher)
+
+                // if the field is a TimestampOptionalField, disable the editText
+                valueEditText.isEnabled = getItem(bindingAdapterPosition) !is TimestampOptionalField
             }
         }
     }
