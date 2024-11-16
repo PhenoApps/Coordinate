@@ -63,7 +63,7 @@ class TemplateCreatorNaming : Fragment(R.layout.fragment_template_creator_naming
         nextButton?.setOnClickListener {
             writeToDatabase(mSelectedColEnumeration.ordinal, mSelectedRowEnumeration.ordinal)
             findNavController().navigate(TemplateCreatorNamingDirections
-                .actionTemplateNamingToTemplatePreview(args.title))
+                .actionTemplateNamingToTemplateExcludeOptions(args.title))
         }
     }
 
