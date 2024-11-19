@@ -510,7 +510,7 @@
     <string name="frag_template_creator_preview_summary">This is a miniaturized preview of your template.</string>
     <string name="frag_template_creator_preview_additional_info">Columns will have %s labels and rows will have %s labels. There will be %s excluded cells.</string>
     <string name="new_grid_title">New Grid</string>
-    <string name="new_grid_barcode_title">Scan %s</string>
+    <string name="new_grid_barcode_title">Scan Barcode</string>
     <string name="new_template_title">New Template</string>
     <string name="edit_template_title">Edit Template</string>
     <string name="frag_exclude_selection_button">Selection</string>

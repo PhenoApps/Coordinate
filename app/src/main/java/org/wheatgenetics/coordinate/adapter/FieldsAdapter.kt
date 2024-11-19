@@ -6,27 +6,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.wheatgenetics.coordinate.R
-import org.wheatgenetics.coordinate.interfaces.RequiredFieldsCompleteListener
+import org.wheatgenetics.coordinate.interfaces.FieldsAdapterListener
 import org.wheatgenetics.coordinate.optionalField.BaseOptionalField
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
 
-class FieldsAdapter(private val listener: RequiredFieldsCompleteListener, private val requiredName: String, private val fields: NonNullOptionalFields) :
-    ListAdapter<BaseOptionalField, RecyclerView.ViewHolder>(DiffCallback()) {
+class FieldsAdapter(
+    private val listener: FieldsAdapterListener,
+    private val requiredName: String,
+    fields: NonNullOptionalFields
+) : ListAdapter<BaseOptionalField, RecyclerView.ViewHolder>(DiffCallback()) {
 
     // linkedMapOf to preserve the order when doing 'get'
     private val values = linkedMapOf<String, String>()
 
     init {
-        fields.forEach { 
+        fields.forEach {
             values[it.name] = it.value
         }
     }
-    
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return ViewHolder(LayoutInflater.from(parent.context)
@@ -41,6 +45,7 @@ class FieldsAdapter(private val listener: RequiredFieldsCompleteListener, privat
 
                 itemView.tag = holder
                 
+
                 bind(it.name, this@FieldsAdapter.values[it.name] ?: it.value, it.hint, object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -48,7 +53,7 @@ class FieldsAdapter(private val listener: RequiredFieldsCompleteListener, privat
 
                         if (it.name == requiredName) {
 
-                            listener.completed()
+                            listener.onRequiredFieldCompleted()
 
                         }
 
@@ -63,15 +68,18 @@ class FieldsAdapter(private val listener: RequiredFieldsCompleteListener, privat
 
         private val valueEditText: EditText = view.findViewById(R.id.list_item_field_et)
         private val fieldTextView: TextView = view.findViewById(R.id.list_item_field_tv)
+        private val scanButton: ImageButton = view.findViewById(R.id.list_item_scan_button)
         private var watcher: TextWatcher? = null
         fun bind(field: String, value: String, hint: String, watcher: TextWatcher) {
 
             with(view) {
-                
-                setOnClickListener { 
+
+                setOnClickListener {
                     valueEditText.requestFocus()
                 }
-                
+
+                setupBarcodeScanner(getItem(bindingAdapterPosition).name)
+
                 fieldTextView.text = field
                 valueEditText.hint = hint
                 valueEditText.setText(this@FieldsAdapter.values[field])
@@ -80,6 +88,17 @@ class FieldsAdapter(private val listener: RequiredFieldsCompleteListener, privat
                 }
                 this@ViewHolder.watcher = watcher
                 valueEditText.addTextChangedListener(this@ViewHolder.watcher)
+            }
+        }
+
+        private fun setupBarcodeScanner(fieldName: String) {
+            if (fieldName != requiredName) {
+                scanButton.visibility = View.GONE
+            } else {
+                scanButton.visibility = View.VISIBLE
+                scanButton.setOnClickListener {
+                    listener.onBarcodeScanRequested()
+                }
             }
         }
     }

@@ -27,14 +27,14 @@ import org.wheatgenetics.coordinate.database.EntriesTable
 import org.wheatgenetics.coordinate.database.GridsTable
 import org.wheatgenetics.coordinate.database.ProjectsTable
 import org.wheatgenetics.coordinate.database.TemplatesTable
-import org.wheatgenetics.coordinate.interfaces.RequiredFieldsCompleteListener
+import org.wheatgenetics.coordinate.interfaces.FieldsAdapterListener
 import org.wheatgenetics.coordinate.model.Cell
 import org.wheatgenetics.coordinate.model.JoinedGridModel
 import org.wheatgenetics.coordinate.model.TemplateModel
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
 
 class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields),
-    RequiredFieldsCompleteListener,
+    FieldsAdapterListener,
     StringGetter {
 
     private val args: GridCreatorTemplateFieldsArgs by navArgs()
@@ -65,9 +65,6 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_new_grid, menu)
-        val menuItem = menu.findItem(R.id.action_barcode_scanner)
-        menuItem.title = String.format(getString(R.string.new_grid_barcode_title), getRequiredName())
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -75,9 +72,6 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         when (item.itemId) {
             android.R.id.home -> {
                 navigateBack()
-            }
-            R.id.action_barcode_scanner -> {
-                scanBarcode()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -93,7 +87,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         setupButtons()
     }
 
-    private fun scanBarcode() {
+    override fun onBarcodeScanRequested() {
         IntentIntegrator(requireActivity()).apply {
             setOrientationLocked(false)
             setPrompt("Scan a barcode")
@@ -322,7 +316,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
     @SuppressLint("ResourceType")
     override fun getQuantity(resId: Int, quantity: Int, vararg formatArgs: Any?) = activity?.getString(resId, formatArgs) ?: String()
 
-    override fun completed() {
+    override fun onRequiredFieldCompleted() {
 
         if (checkRequiredFieldsEntered()) setNextText() else setDisabledNext()
 
