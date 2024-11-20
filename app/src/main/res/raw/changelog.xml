@@ -1,5 +1,17 @@
 <changelog>
     <release
+        date="2024-11-20"
+        versionCode="410"
+        versionName="v4.1">
+        <new>Updated documentation</new>
+        <new>In-app tutorial</new>
+        <info>Reorganized settings</info>
+        <info>New translate page</info>
+        <bugfix>Fixed issue with plate ID not being saved</bugfix>
+        <bugfix>Numerous bug fixes and performance enhancements</bugfix>
+    </release>
+
+    <release
         date="2022-04-20"
         versionCode="400"
         versionName="v4.0">
