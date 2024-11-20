@@ -33,7 +33,7 @@
         android:id="@+id/list_item_scan_button"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
+        android:layout_margin="8dp"
         android:background="@drawable/edit_text_rounded_box"
         android:backgroundTint="@color/colorPrimary"
         android:contentDescription="@string/new_grid_barcode_title"
@@ -42,7 +42,7 @@
         app:layout_constraintBottom_toBottomOf="@id/list_item_field_et"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/list_item_field_et"
-        app:layout_constraintTop_toTopOf="@id/list_item_field_et" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
