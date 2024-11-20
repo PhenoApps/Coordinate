@@ -103,8 +103,11 @@ public class GridDisplayFragment extends DisplayFragment {
     }
 
     public void notifyDataSetChanged() {
-        if (null != this.adapter)
+        if (null != this.adapter){
             this.adapter.notifyDataSetChanged(this.getActiveRow(), this.getActiveCol());
+            scrollToActiveCell(this.getActiveRow(), this.getActiveCol());
+
+        }
     }
     // endregion
 

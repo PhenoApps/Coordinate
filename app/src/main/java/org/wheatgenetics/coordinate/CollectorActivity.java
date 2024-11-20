@@ -11,15 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.core.widget.NestedScrollView;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
@@ -110,11 +114,40 @@ public class CollectorActivity extends BackActivity implements
             dataEntryEt.setOnEditorActionListener(
                     new ClearingEditorActionListener(dataEntryEt,
                     this, BuildConfig.DEBUG));
+
+            keepCollectorETinFocus(dataEntryEt);
         }
 
         attachKeyboardListeners();
         setupBottomNavigationBar();
         setupBarcodeButton();
+    }
+
+    private void keepCollectorETinFocus(EditText dataEntryEt) {
+        GridDisplayFragment gridDisplayFragment =
+                (GridDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.gridDisplayFragment);
+
+        RecyclerView recyclerView = findViewById(R.id.displayRecyclerView);
+        if (recyclerView != null && gridDisplayFragment != null && gridDisplayFragment.getView() != null) {
+            NestedScrollView nestedScrollView = (NestedScrollView) recyclerView.getParent().getParent();
+            HorizontalScrollView horizontalScrollView = (HorizontalScrollView) recyclerView.getParent();
+
+            View.OnTouchListener touchListener = (v, event) -> {
+                if (dataEntryEt.hasFocus()) {
+                    dataEntryEt.post(() -> {
+                        // make sure the editText is in focus and keyboard stays visible
+                        dataEntryEt.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(dataEntryEt, InputMethodManager.SHOW_IMPLICIT);
+                    });
+                }
+                // Don't consume the event
+                return false;
+            };
+
+            nestedScrollView.setOnTouchListener(touchListener);
+            horizontalScrollView.setOnTouchListener(touchListener);
+        }
     }
 
     private void setupBarcodeButton() {
