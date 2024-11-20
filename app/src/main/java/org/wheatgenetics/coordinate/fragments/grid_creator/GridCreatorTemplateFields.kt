@@ -5,17 +5,21 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.zxing.integration.android.IntentIntegrator
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
 import org.wheatgenetics.coordinate.adapter.FieldsAdapter
@@ -23,14 +27,14 @@ import org.wheatgenetics.coordinate.database.EntriesTable
 import org.wheatgenetics.coordinate.database.GridsTable
 import org.wheatgenetics.coordinate.database.ProjectsTable
 import org.wheatgenetics.coordinate.database.TemplatesTable
-import org.wheatgenetics.coordinate.interfaces.RequiredFieldsCompleteListener
+import org.wheatgenetics.coordinate.interfaces.FieldsAdapterListener
 import org.wheatgenetics.coordinate.model.Cell
 import org.wheatgenetics.coordinate.model.JoinedGridModel
 import org.wheatgenetics.coordinate.model.TemplateModel
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
 
 class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields),
-    RequiredFieldsCompleteListener,
+    FieldsAdapterListener,
     StringGetter {
 
     private val args: GridCreatorTemplateFieldsArgs by navArgs()
@@ -46,6 +50,10 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         mTemplatesTable?.load()?.find { it.title == args.title }
     }
 
+    private val barcodeScannerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result -> parseActivityResult(result.resultCode, result.data) }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity?.let { act ->
@@ -54,6 +62,10 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
             mProjectsTable = ProjectsTable(act)
             mEntriesTable = EntriesTable(act)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -73,6 +85,29 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
         setupAdapter()
         setupButtons()
+    }
+
+    override fun onBarcodeScanRequested() {
+        IntentIntegrator(requireActivity()).apply {
+            setOrientationLocked(false)
+            setPrompt("Scan a barcode")
+            setBeepEnabled(true)
+        }.createScanIntent().also {
+            barcodeScannerLauncher.launch(it)
+        }
+    }
+
+    private fun parseActivityResult(resultCode: Int, data: Intent?): Boolean {
+        val result = IntentIntegrator.parseActivityResult(resultCode, data)
+        if (result == null) {
+            return false
+        } else {
+            val barcodeScannerResult = result.contents
+            if (barcodeScannerResult != null && barcodeScannerResult.isNotEmpty()) {
+                setRequiredField(barcodeScannerResult)
+            }
+            return true
+        }
     }
 
     private fun setupButtons() {
@@ -189,6 +224,22 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
     }
 
     //check that the base optional field "identification" value is entered
+    private fun setRequiredField(text: String) {
+
+        val requiredName = getRequiredName()
+
+        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
+
+        listView?.children?.forEach {
+            val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
+            if (nameTextView.text == requiredName) {
+                val valueEditText = it.findViewById<EditText>(R.id.list_item_field_et)
+                valueEditText.setText(text)
+            }
+        }
+    }
+
+    //check that the base optional field "identification" value is entered
     private fun checkRequiredFieldsEntered(): Boolean {
 
         val requiredName = getRequiredName()
@@ -265,7 +316,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
     @SuppressLint("ResourceType")
     override fun getQuantity(resId: Int, quantity: Int, vararg formatArgs: Any?) = activity?.getString(resId, formatArgs) ?: String()
 
-    override fun completed() {
+    override fun onRequiredFieldCompleted() {
 
         if (checkRequiredFieldsEntered()) setNextText() else setDisabledNext()
 
