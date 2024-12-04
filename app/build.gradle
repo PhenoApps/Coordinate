@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.firebase.crashlytics'
@@ -68,7 +70,7 @@ android {
     namespace 'org.wheatgenetics.coordinate'
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+tasks.withType(KotlinCompile).configureEach {
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -76,13 +78,13 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "androidx.appcompat:appcompat:1.4.1"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.3"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
-    implementation "androidx.preference:preference-ktx:1.2.0"
-    implementation "com.google.android.material:material:1.5.0"
-    implementation 'com.google.firebase:firebase-analytics:20.1.2'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
+    implementation "androidx.appcompat:appcompat:1.7.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7"
+    implementation "androidx.preference:preference-ktx:1.2.1"
+    implementation "com.google.android.material:material:1.12.0"
+    implementation 'com.google.firebase:firebase-analytics:22.1.2'
+    implementation 'com.google.firebase:firebase-crashlytics:19.2.1'
     implementation 'androidx.multidex:multidex:2.0.1'
 
     //noinspection GradleDependency
@@ -90,25 +92,24 @@ dependencies {
     implementation 'com.github.daniel-stoneuk:material-about-library:2.4.2'
     //noinspection GradleDependency
     implementation "com.mikepenz:aboutlibraries:6.2.3"
-    implementation('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
-    implementation 'com.google.zxing:core:3.3.3'
+    implementation('com.journeyapps:zxing-android-embedded:4.3.0') { transitive = false }
+    implementation 'com.google.zxing:core:3.5.3'
 
     implementation 'com.github.evrencoskun:TableView:v0.8.9.4'
     implementation 'com.github.phenoapps:phenolib:v0.9.50'
-    implementation 'androidx.preference:preference:1.2.1'
 
     //uvc camera java native libs
     implementation("com.serenegiant:common:2.12.4")
 
     //hilt dependency injection
-    implementation "com.google.dagger:hilt-android:2.51"
-    kapt "com.google.dagger:hilt-compiler:2.51"
+    implementation "com.google.dagger:hilt-android:2.53"
+    kapt "com.google.dagger:hilt-compiler:2.53"
 
     // SearchPreference
     implementation 'com.github.ByteHamster:SearchPreference:v2.5.1'
 
     // tutorial
-    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.3'
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.15.0'
 
     //AppIntro
     implementation 'com.github.AppIntro:AppIntro:6.3.1'
@@ -116,24 +117,24 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
 
     // Navigation
-    androidTestImplementation "androidx.navigation:navigation-testing:2.7.7"
-    implementation "androidx.navigation:navigation-fragment-ktx:2.7.7"
-    implementation "androidx.navigation:navigation-ui-ktx:2.7.7"
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.7.7"
-    implementation "androidx.navigation:navigation-runtime-ktx:2.7.7"
+    androidTestImplementation "androidx.navigation:navigation-testing:2.8.4"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.8.4"
+    implementation "androidx.navigation:navigation-ui-ktx:2.8.4"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.8.4"
+    implementation "androidx.navigation:navigation-runtime-ktx:2.8.4"
 
     testImplementation "junit:junit:4.13.2"
-    androidTestImplementation "androidx.test.ext:junit:1.1.3"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
-    androidTestImplementation "androidx.test:core:1.4.0"
-    implementation "androidx.core:core-ktx:1.7.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10"
+    androidTestImplementation "androidx.test.ext:junit:1.2.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
+    androidTestImplementation "androidx.test:core:1.6.1"
+    implementation "androidx.core:core-ktx:1.13.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.0"
     // For instrumented tests.
-    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.51'
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.53'
     // ...with Kotlin.
-    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.51'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.53'
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.3'
 }
 
 kapt {
