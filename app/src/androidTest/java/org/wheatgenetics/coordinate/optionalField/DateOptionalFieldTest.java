@@ -10,7 +10,7 @@ import androidx.annotation.StringRes;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.wheatgenetics.androidlibrary.Utils;
+import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
 
