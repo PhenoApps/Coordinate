@@ -5,16 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -111,9 +114,24 @@ public class CollectorActivity extends BackActivity implements
 
         EditText dataEntryEt = findViewById(R.id.act_collector_data_entry_et);
         if (dataEntryEt != null) {
-            dataEntryEt.setOnEditorActionListener(
-                    new ClearingEditorActionListener(dataEntryEt,
-                    this, BuildConfig.DEBUG));
+            dataEntryEt.setOnEditorActionListener((TextView v, int actionId, KeyEvent key) -> {
+                // handle both IME_ACTION_DONE (soft keyboard) and external barcode scanner
+                if (actionId == EditorInfo.IME_ACTION_DONE ||
+                        (key != null && key.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+
+                    // external barcode scanner sends both ACTION_DOWN and ACTION_UP
+                    // events on a single scan
+                    // if ACTION_UP is received, do not process
+                    if (key != null && key.getAction() != KeyEvent.ACTION_DOWN) {
+                        return true;
+                    }
+
+                    String scannedText = v.getText().toString();
+                    saveEntry(scannedText);
+                    return true;
+                }
+                return false;
+            });
 
             keepCollectorETinFocus(dataEntryEt);
         }
