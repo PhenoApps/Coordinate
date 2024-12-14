@@ -116,18 +116,9 @@ public class CollectorActivity extends BackActivity implements
         if (dataEntryEt != null) {
             dataEntryEt.setOnEditorActionListener((TextView v, int actionId, KeyEvent key) -> {
                 // handle both IME_ACTION_DONE (soft keyboard) and external barcode scanner
-                if (actionId == EditorInfo.IME_ACTION_DONE ||
-                        (key != null && key.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-
-                    // external barcode scanner sends both ACTION_DOWN and ACTION_UP
-                    // events on a single scan
-                    // if ACTION_UP is received, do not process
-                    if (key != null && key.getAction() != KeyEvent.ACTION_DOWN) {
-                        return true;
-                    }
-
-                    String scannedText = v.getText().toString();
-                    saveEntry(scannedText);
+                if (actionId == EditorInfo.IME_ACTION_DONE) {  // Only handle DONE, not ENTER
+                    String text = v.getText().toString();
+                    saveEntry(text);
                     return true;
                 }
                 return false;
@@ -139,6 +130,23 @@ public class CollectorActivity extends BackActivity implements
         attachKeyboardListeners();
         setupBottomNavigationBar();
         setupBarcodeButton();
+    }
+
+    // handle external barcode scanning
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            EditText dataEntryEt = findViewById(R.id.act_collector_data_entry_et);
+            if (!dataEntryEt.hasFocus()) dataEntryEt.requestFocus();
+
+            String barcode = dataEntryEt.getText().toString();
+            if (!barcode.isEmpty()) {
+                saveEntry(barcode);
+                dataEntryEt.requestFocus();
+            }
+            return true;
+        }
+        return false;
     }
 
     private void keepCollectorETinFocus(EditText dataEntryEt) {
