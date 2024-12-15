@@ -5,16 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -111,9 +114,15 @@ public class CollectorActivity extends BackActivity implements
 
         EditText dataEntryEt = findViewById(R.id.act_collector_data_entry_et);
         if (dataEntryEt != null) {
-            dataEntryEt.setOnEditorActionListener(
-                    new ClearingEditorActionListener(dataEntryEt,
-                    this, BuildConfig.DEBUG));
+            dataEntryEt.setOnEditorActionListener((TextView v, int actionId, KeyEvent key) -> {
+                // handle both IME_ACTION_DONE (soft keyboard) and external barcode scanner
+                if (actionId == EditorInfo.IME_ACTION_DONE) {  // Only handle DONE, not ENTER
+                    String text = v.getText().toString();
+                    saveEntry(text);
+                    return true;
+                }
+                return false;
+            });
 
             keepCollectorETinFocus(dataEntryEt);
         }
@@ -121,6 +130,23 @@ public class CollectorActivity extends BackActivity implements
         attachKeyboardListeners();
         setupBottomNavigationBar();
         setupBarcodeButton();
+    }
+
+    // handle external barcode scanning
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            EditText dataEntryEt = findViewById(R.id.act_collector_data_entry_et);
+            if (!dataEntryEt.hasFocus()) dataEntryEt.requestFocus();
+
+            String barcode = dataEntryEt.getText().toString();
+            if (!barcode.isEmpty()) {
+                saveEntry(barcode);
+                dataEntryEt.requestFocus();
+            }
+            return true;
+        }
+        return false;
     }
 
     private void keepCollectorETinFocus(EditText dataEntryEt) {
