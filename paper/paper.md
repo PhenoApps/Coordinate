@@ -1,8 +1,8 @@
 ---
 title: 'Coordinate: An Android application to organize samples into grids'
 tags:
-  - data management
   - sample tracking
+  - data management
 authors:
   - name: Trevor W. Rife
     orcid: 0000-0002-5974-6523
@@ -30,7 +30,11 @@ bibliography: paper.bib
 
 # Summary
 
-`Coordinate` is an Android application that is used to organize sample identifiers into virtual grids. Sample identifiers are collected via text or barcode into individual cells that are structured in a Cartesian coordinate grid. Grids inherit properties from user-defined templates including their size, row and column naming, metadata fields, and any specific cells to exclude from data entry. Grids are exported as CSV files that are easily integrated into downstream analysis pipelines since metadata fields can be customized. Grids can also be grouped into projects and exported as a single ZIP file. `Coordinate` can be further customized with options to change the cell travel direction, add notification sounds, and adjust the level of uniqueness required for incoming sample identifiers. Two default templates are included with `Coordinate`: DNA Plate and Seed Tray.
+Efficient and accurate sample organization is one of the most important aspects of modern biological science. `Coordinate` is an Android application that is used to organize sample identifiers into virtual grids. Sample identifiers are collected via text or barcode into individual cells that are structured in a Cartesian coordinate grid. Grids inherit properties from user-defined templates including their size, row and column naming, metadata fields, and any specific cells to exclude from data entry. Grids are exported as CSV files that are easily integrated into downstream analysis pipelines since metadata fields are user-defined. Grids can also be grouped into projects and exported as a single ZIP file. `Coordinate` can be further customized with options to change the cell travel direction, add notification sounds, and adjust the level of uniqueness required for incoming sample identifiers. Two default templates are included with `Coordinate`: DNA Plate and Seed Tray.
+
+# Statement of need
+
+Statistical power increases with the number of samples being used for analysis, but managing samples at scale requires optimized tools and worfklows to minimize mistakes. Organizational errors impede scientific progress and can lead to erroneous results or publication retractions [@Ying:2013,@Lee:2013,@Moloney:2017]. Many life science research activites organize samples into grids and require metadata to be collected for downstream analyses. `Coordinate` enables robust and customizable grid-based data collection by creating a mobile, virtual grid layout that can be populated as samples are collected. In contrast to unstructured approaches, `Coordinate` provides standardized data workflows that reduce mistakes and allow for more efficient sample collection.
 
 # Example applications
 
@@ -42,13 +46,9 @@ Collecting and organizing tissue samples is important in genotyping workflows wh
 
 Wheat breeding programs rely on short, mechanically planted experimental units, called headrows, for early generation testing. Breeders plant thousands of headrows each season which requires hundreds of headrow trays. To ensure downstream phenotypic data is collected on the right plants, headrows must be accuractly mapped to their respective field position. The `Seed Tray` template is used to track seeds as they're organized into 6 x 20 headrow trays. Exported files include the seed identifiers along with the spatial information that is used during the field season for phenotypic data collection.
 
-# Statement of need
-
-Efficient and accurate sample organization is one of the most important aspects of modern biological science. Statistical power increases with the number of samples being used for analysis, but managing samples at scale requires optimized tools and worfklows to minimize mistakes. Organizational errors impede scientific progress and can lead to erroneous results or publication retractions [@Ying:2013,@Lee:2013,@Moloney:2017]. Many life science research activites organize samples into grids and require metadata to be collected for downstream analyses. `Coordinate` enables robust and customizable grid-based data collection by creating a mobile, virtual grid layout that can be populated with sample identifiers. In contrast to unstructured approaches, `Coordinate` provides standardized data workflows that reduce mistakes and allow for more efficient sample collection.
-
 # Figures
 
-![A partially-filled grid that was created with the DNA Plate template. \label{fig:fig1}](figures/1_dna_plate.png){height="9pt"}
+![A partially-filled grid that was created with the DNA Plate template. \label{fig:fig1}](figures/1_dna_plate.png){height="20pt"}
 
 # Additional resources
 
