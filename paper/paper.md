@@ -34,7 +34,7 @@ Efficient and accurate sample organization is one of the most important aspects 
 
 # Statement of need
 
-Statistical power increases with the number of samples being used for analysis, but managing samples at scale requires optimized tools and worfklows to minimize mistakes. Organizational errors impede scientific progress and can lead to erroneous results or publication retractions [@Ying:2013,@Lee:2013,@Moloney:2017]. Many life science research activities organize samples into grids and require metadata to be collected for downstream analyses. `Coordinate` enables robust and customizable grid-based data collection by creating a mobile, virtual grid layout that can be populated as samples are collected. In contrast to unstructured approaches, `Coordinate` provides standardized data workflows that reduce mistakes and allow for more efficient sample collection.
+Statistical power increases with the number of samples being used for analysis, but managing samples at scale requires optimized tools and worfklows to minimize mistakes. Organizational errors impede scientific progress and can lead to erroneous results or publication retractions [@Ying:2013;@Lee:2013;@Moloney:2017]. Many life science research activities organize samples into grids and require metadata to be collected for downstream analyses. `Coordinate` enables robust and customizable grid-based data collection by creating a mobile, virtual grid layout that can be populated as samples are collected. In contrast to unstructured approaches, `Coordinate` provides standardized data workflows that reduce mistakes and allow for more efficient sample collection.
 
 # Example applications
 
@@ -48,7 +48,7 @@ Many plant breeding programs utilize progeny-rows, small experimental units that
 
 # Figures
 
-![A partially-filled grid that was created with the DNA Plate template. \label{fig:fig1}](figures/1_dna_plate.png){width="25%"}
+![A partially-filled grid that was created with the DNA Plate template. \label{fig:fig1}](figures/1_dna_plate.png){width="33%"}
 
 # Additional resources
 
