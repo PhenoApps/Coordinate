@@ -24,7 +24,7 @@ affiliations:
    index: 1
  - name: Biological and Environmental Science and Engineering Division, King Abdullah University of Science and Technology
    index: 2
-date: 1 January 2025
+date: 7 January 2025
 bibliography: paper.bib
 ---
 
@@ -48,7 +48,7 @@ Many plant breeding programs utilize progeny-rows, small experimental units that
 
 # Figures
 
-![A partially-filled grid that was created with the DNA Plate template. \label{fig:fig1}](figures/1_dna_plate.png){height="20pt"}
+![A partially-filled grid that was created with the DNA Plate template. \label{fig:fig1}](figures/1_dna_plate.png){height="100pt"}
 
 # Additional resources
 
