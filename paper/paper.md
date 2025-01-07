@@ -48,7 +48,7 @@ Many plant breeding programs utilize progeny-rows, small experimental units that
 
 # Figures
 
-![A partially-filled grid that was created with the DNA Plate template. \label{fig:fig1}](figures/1_dna_plate.png){height="100pt"}
+![A partially-filled grid that was created with the DNA Plate template. \label{fig:fig1}](figures/1_dna_plate.png){width="25%"}
 
 # Additional resources
 
