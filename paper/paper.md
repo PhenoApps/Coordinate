@@ -20,7 +20,7 @@ authors:
     orcid: 0000-0002-7856-1399
     affiliation: 2
 affiliations:
- - name: Pee Dee Research and Education Center, Department of Plant and Environmental Sciences, Clemson University, USA
+ - name: Pee Dee Research and Education Center, Department of Plant and Environmental Sciences, Clemson University, United States of America
    index: 1
  - name: Biological and Environmental Science and Engineering Division and Center for Desert Agriculture, King Abdullah University of Science and Technology, Thuwal, Saudi Arabia
    index: 2
