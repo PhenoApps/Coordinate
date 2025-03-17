@@ -21,7 +21,7 @@ Layout
 
 <figure align="center" class="image">
   <img src="_static/images/grid_list_framed.png" width="400px"> 
-  <figcaption><i>The main Coordinate layout</i></figcaption> 
+  <figcaption><i>The main Coordinate screen</i></figcaption> 
 </figure>
 
 Coordinate utilizes a bottom navigation toolbar that allows you to
