@@ -7,10 +7,14 @@
 [![Crowdin](https://badges.crowdin.net/coordinate/localized.svg)](https://crowdin.com/project/coordinate)
 [![All Contributors](https://img.shields.io/github/all-contributors/phenoapps/coordinate)](#contributors)
 
-Coordinate is a highly-customizable data collection app that is based on defining templates and then collecting data in grids created from those templates. Two templates are included by default: Seed Tray and DNA Plate. Documentation for Coordinate can be found [here](https://coordinate.readthedocs.io/en/latest/coordinate.html).
+Many life science research activities organize samples into grids and require metadata to be collected for downstream analyses.
+`Coordinate` enables robust and customizable grid-based data collection by creating a mobile, virtual grid layout that can be populated as samples are collected.
+In contrast to unstructured approaches, `Coordinate` provides standardized data workflows that reduce mistakes and allow for more efficient sample collection.
+Users can define custom templates and collect data in grids created from those templates.
+Two templates are included by default: Seed Tray and DNA Plate.
 
 ## 📖 Help
-Check the [user manual](https://coordinate.phenoapps.org/) for usage instructions. If you run into a problem while using Coordinate, search [existing issues](https://github.com/PhenoApps/Coordinate/issues) to see if it is currently being addressed. If you have a new feature idea or want to report a new bug, [create a new issue](https://github.com/PhenoApps/Coordinate/issues/new/choose).
+Check the [user manual](https://coordinate.phenoapps.org/) for usage instructions. If you run into a problem while using Coordinate or have an idea for a new feature, search [existing issues](https://github.com/PhenoApps/Coordinate/issues) or [create a new issue](https://github.com/PhenoApps/Coordinate/issues/new/choose).
 
 ## 🌎 Contribute
 Visit our [translation page](https://crowdin.com/project/coordinate) to help translate Coordinate to your language. To submit code or new features, please open a [pull request](https://github.com/PhenoApps/Coordinate/pulls).
