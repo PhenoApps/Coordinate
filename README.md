@@ -14,7 +14,7 @@ Users can define custom templates and collect data in grids created from those t
 Two templates are included by default: Seed Tray and DNA Plate.
 
 ## 📖 Help
-Check the [user manual](https://coordinate.phenoapps.org/) for usage instructions. If you run into a problem while using Coordinate or have an idea for a new feature, search [existing issues](https://github.com/PhenoApps/Coordinate/issues) or [create a new issue](https://github.com/PhenoApps/Coordinate/issues/new/choose).
+Check the [user manual](https://coordinate.phenoapps.org/) for usage instructions or the [wiki](https://github.com/PhenoApps/Coordinate/wiki) for development information. If you run into a problem while using Coordinate or have an idea for a new feature, search [existing issues](https://github.com/PhenoApps/Coordinate/issues) or [create a new issue](https://github.com/PhenoApps/Coordinate/issues/new/choose).
 
 ## 🌎 Contribute
 Visit our [translation page](https://crowdin.com/project/coordinate) to help translate Coordinate to your language. To submit code or new features, please open a [pull request](https://github.com/PhenoApps/Coordinate/pulls).
