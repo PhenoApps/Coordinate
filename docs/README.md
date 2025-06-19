@@ -1,30 +1,25 @@
-Coordinate
-==========
+# Coordinate
 
-Introduction
-------------
+## Background
 
-Coordinate is a flexible, open-source Android app that is used to
-collect and organize samples. Coordinate functions by defining templates
-and then collecting data in grids created from those templates.
+Statistical power increases with the number of samples being used for analysis, but managing samples at scale requires optimized tools and worfklows to minimize mistakes.
+Organizational errors impede scientific progress and can lead to erroneous results or publication retractions.
 
-Download
---------
+Many life science research activities organize samples into grids and require metadata to be collected for downstream analyses.
+`Coordinate` enables robust and customizable grid-based data collection by creating a mobile, virtual grid layout that can be populated as samples are collected.
+In contrast to unstructured approaches, `Coordinate` provides standardized data workflows that reduce mistakes and allow for more efficient sample collection.
 
-Coordinate can be downloaded from [Google
-Play](https://play.google.com/store/apps/details?id=org.wheatgenetics.coordinate).
-Source code for Coordinate is hosted on
-[GitHub](https://github.com/PhenoApps/Coordinate/).
+## Download
 
-Layout
-------
+Coordinate can be downloaded from [Google Play](https://play.google.com/store/apps/details?id=org.wheatgenetics.coordinate).
+Source code for Coordinate is hosted on [GitHub](https://github.com/PhenoApps/Coordinate/).
+
+## Layout
 
 <figure align="center" class="image">
   <img src="_static/images/grid_list_framed.png" width="400px"> 
   <figcaption><i>The main Coordinate screen</i></figcaption> 
 </figure>
 
-Coordinate utilizes a bottom navigation toolbar that allows you to
-quickly switch between <a href="#/grids">Grids</a>,
-<a href="#/templates">Templates</a>, <a href="#/projects">Projects</a>, and <a href="#/settings">Settings</a>. The top
-toolbar is reserved for actions relevant to each section of the app.
+Coordinate utilizes a bottom navigation toolbar that allows you to quickly switch between [Grids](grids.md), [Templates](templates.md), [Projects](projects.md), and [Settings](settings.md).
+The top toolbar is used for actions relevant to each section of the app.
