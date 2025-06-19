@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="_styles/styles.css">
+
 # Example Applications
 
 ## Tissue collection for genotyping
