@@ -1,6 +1,5 @@
 * [Home](/)
-* Setup
-  * [Storage](storage.md)
+* [Storage](storage.md)
 * Structure
   * [Templates](templates.md)
   * [Grids](grids.md)
@@ -8,5 +7,5 @@
 * Operation
   * [Collecting Data](collect.md)
   * [Exporting Data](export.md)
-* Settings
-  * [Settings](settings.md)
+* [Example Applications](example.md)
+* [Settings](settings.md)
