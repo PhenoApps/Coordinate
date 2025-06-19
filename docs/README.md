@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="_styles/styles.css">
+
 # Coordinate
 
 ## Background
@@ -16,10 +18,11 @@ Source code for Coordinate is hosted on [GitHub](https://github.com/PhenoApps/Co
 
 ## Layout
 
-<figure align="center" class="image">
-  <img src="_static/images/grid_list_framed.png" width="400px"> 
-  <figcaption><i>The main Coordinate screen</i></figcaption> 
+<figure class="image">
+  <img class="screenshot" src="_static/images/grid_list_framed.png" width="350px"> 
+  <figcaption class="screenshot-caption"><i>The main Coordinate screen</i></figcaption> 
 </figure>
+
 
 Coordinate utilizes a bottom navigation toolbar that allows you to quickly switch between [Grids](grids.md), [Templates](templates.md), [Projects](projects.md), and [Settings](settings.md).
 The top toolbar is used for actions relevant to each section of the app.
