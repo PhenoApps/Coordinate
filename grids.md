@@ -1,9 +1,6 @@
-# Grids
+<link rel="stylesheet" type="text/css" href="_styles/styles.css">
 
-<figure align="center" class="image">
-  <img src="_static/images/grid_list_framed.png" width="400px"> 
-  <figcaption><i>Grid list layout</i></figcaption> 
-</figure>
+# Grids
 
 <figure class="image">
   <img class="screenshot" src="_static/images/grid_list_framed.png" width="350px"> 
@@ -15,11 +12,6 @@ Each grid inherits its structure from its parent template.
 Grids can exist by themselves or as a group within a project.
 
 ## List Item Layout
-
-<figure align="center" class="image">
-  <img src="_static/images/grid_list_item.png" width="600px"> 
-  <figcaption><i>Individual grid list item</i></figcaption> 
-</figure>
 
 <figure class="image">
   <img class="screenshot" src="_static/images/grid_list_item.png" width="600px"> 
