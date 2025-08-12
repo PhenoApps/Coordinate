@@ -32,5 +32,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <org.wheatgenetics.coordinate.views.OptionalSetupItem
+            android:id="@+id/tutorial_setup_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 </LinearLayout>

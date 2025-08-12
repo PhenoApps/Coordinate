@@ -688,6 +688,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                 new SampleData(this).insertSampleData();
                 notifyDataSetChanged();
             }
+
+            invalidateOptionsMenu(); // refresh options menu to show/hide tutorial icon
         }
         if (requestCode == REQUEST_STORAGE_DEFINER) {
             if (resultCode == Activity.RESULT_OK) {
