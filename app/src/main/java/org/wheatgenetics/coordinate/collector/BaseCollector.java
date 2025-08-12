@@ -112,9 +112,14 @@ abstract class BaseCollector extends Object implements
     // endregion
 
     private void populateDataEntryFragment() {
-        ((EditText) activity.findViewById(R.id.act_collector_data_entry_et))
-                .setText(((CollectorActivity) activity).getEntryValue());
-        //if (null != this.dataEntryFragment) this.dataEntryFragment.populate();
+        EditText dataEntry = activity.findViewById(R.id.act_collector_data_entry_et);
+        if (dataEntry != null) {
+            String value = ((CollectorActivity) activity).getEntryValue();
+            if (value != null) {
+                dataEntry.setText(value);
+                dataEntry.setSelection(value.length());
+            } else dataEntry.getText().clear();
+        }
     }
 
     private void goToNext(final EntryModel entryModel) {
@@ -130,8 +135,11 @@ abstract class BaseCollector extends Object implements
     }
 
     private void setEntry(final String entry) {
-        ((EditText) activity.findViewById(R.id.act_collector_data_entry_et)).setText(entry);
-        //if (null != this.dataEntryFragment) this.dataEntryFragment.setEntry(entry);
+        EditText dataEntry = activity.findViewById(R.id.act_collector_data_entry_et);
+        if (dataEntry != null) {
+            dataEntry.setText(entry);
+            dataEntry.setSelection(dataEntry.getText().length());
+        }
     }
 
     private void handleDuplicateCheckException(

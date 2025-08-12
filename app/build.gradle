@@ -96,13 +96,15 @@ dependencies {
     implementation 'com.google.zxing:core:3.5.3'
 
     implementation 'com.github.evrencoskun:TableView:v0.8.9.4'
-    implementation 'com.github.phenoapps:phenolib:v0.9.50'
+    implementation 'com.github.phenoapps:phenolib:v0.9.53'
 
     //uvc camera java native libs
     implementation("com.serenegiant:common:2.12.4")
 
     //hilt dependency injection
     implementation "com.google.dagger:hilt-android:2.53"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.9.3'
     kapt "com.google.dagger:hilt-compiler:2.53"
 
     // SearchPreference
