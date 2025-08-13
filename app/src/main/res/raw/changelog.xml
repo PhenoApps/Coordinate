@@ -3,7 +3,7 @@
         date="2025-08-13"
         versionCode="411"
         versionName="v4.1.1">
-        <new>>Tutorial added as an option in the app intro</new>>
+        <new>Tutorial added as an option in the app intro</new>
         <bugfix>Fixed issue when deleting text from a individual cell</bugfix>
     </release>
 
