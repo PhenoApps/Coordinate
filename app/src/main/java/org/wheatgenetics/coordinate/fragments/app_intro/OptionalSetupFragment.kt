@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.preference.GeneralKeys
 import org.wheatgenetics.coordinate.views.OptionalSetupItem
@@ -20,10 +18,9 @@ class OptionalSetupFragment : Fragment(){
     private var slideBackgroundColor: Int? = null
 
     private var loadSampleDataSetupItem: OptionalSetupItem? = null
+    private var tutorialSetupItem: OptionalSetupItem? = null
 
     private var prefs: SharedPreferences? = null
-
-    private val scope by lazy { CoroutineScope(Dispatchers.Main) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +43,7 @@ class OptionalSetupFragment : Fragment(){
 
 
         loadSampleDataSetupItem = view.findViewById(R.id.load_sample_data_setup_item)
+        tutorialSetupItem = view.findViewById(R.id.tutorial_setup_item)
 
         initSetupItems()
     }
@@ -59,6 +57,18 @@ class OptionalSetupFragment : Fragment(){
                 loadSampleToggle()
             }
         }
+
+        tutorialSetupItem?.apply {
+            setTitle(getString(R.string.app_intro_enable_tutorial_title))
+            setSummary(getString(R.string.app_intro_enable_tutorial_summary))
+
+            setCheckbox(prefs?.getBoolean(GeneralKeys.TIPS, true) != false)// set as checked by default
+            prefs?.edit()?.putBoolean(GeneralKeys.TIPS, true)?.apply()
+
+            setOnClickListener {
+                tutorialToggle()
+            }
+        }
     }
 
     private fun loadSampleToggle() {
@@ -66,6 +76,14 @@ class OptionalSetupFragment : Fragment(){
             it.setCheckbox(!it.isChecked())
 
             prefs?.edit()?.putBoolean(GeneralKeys.LOAD_SAMPLE_DATA, it.isChecked())?.apply()
+        }
+    }
+
+    private fun tutorialToggle() {
+        tutorialSetupItem?.let {
+            it.setCheckbox(!it.isChecked())
+
+            prefs?.edit()?.putBoolean(GeneralKeys.TIPS, it.isChecked())?.apply()
         }
     }
 
