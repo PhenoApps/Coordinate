@@ -1,5 +1,12 @@
 <changelog>
     <release
+        date="2025-08-13"
+        versionCode="411"
+        versionName="v4.1.1">
+        <bugfix>Fixed issue when deleting text from a individual cell</bugfix>
+    </release>
+
+    <release
         date="2024-11-20"
         versionCode="410"
         versionName="v4.1">
