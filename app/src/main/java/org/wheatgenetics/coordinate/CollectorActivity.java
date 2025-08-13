@@ -146,7 +146,7 @@ public class CollectorActivity extends BackActivity implements
             }
             return true;
         }
-        return false;
+        return super.dispatchKeyEvent(event);
     }
 
     private void keepCollectorETinFocus(EditText dataEntryEt) {
