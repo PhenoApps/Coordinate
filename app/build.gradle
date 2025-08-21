@@ -37,8 +37,9 @@ android {
 
     buildTypes {
         debug {
-            manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
+            clean
             debuggable true
+            applicationIdSuffix ".debug"
         }
 
         release {
