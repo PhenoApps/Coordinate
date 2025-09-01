@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GridsRepository @Inject constructor(private val gridDao: GridDao) {
-    fun getAllJoinedGrid(): LiveData<List<JoinedGridData>> = gridDao.getAllJoinedGrids()
+    fun getAllJoinedGrids(): LiveData<List<JoinedGridData>> = gridDao.getAllJoinedGrids()
 
     suspend fun getJoinedGridById(id: Long): JoinedGridData? = gridDao.getJoinedGridById(id)
 

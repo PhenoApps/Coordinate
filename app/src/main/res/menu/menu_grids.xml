@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_main_activity"
+        android:icon="@drawable/btn_new_shutter"
+        android:title="@string/database"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_new_grid"
         android:icon="@drawable/ic_create_grid_white"
         android:title="@string/menu_grids_new"

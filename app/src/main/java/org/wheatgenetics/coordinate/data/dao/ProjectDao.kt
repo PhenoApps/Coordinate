@@ -1,11 +1,11 @@
 package org.wheatgenetics.coordinate.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 import org.wheatgenetics.coordinate.data.model.Project
 
 
@@ -15,19 +15,22 @@ interface ProjectDao {
     suspend fun getAllProjectsOnce(): List<Project>
 
     @Query("SELECT * FROM projects ORDER BY _id ASC")
-    fun getAllProjects(): LiveData<List<Project>>
+    fun getAllProjects(): Flow<List<Project>>
 
     @Query("SELECT * FROM projects WHERE _id = :id")
     suspend fun getProjectById(id: Long): Project?
 
     @Query("SELECT * FROM projects WHERE _id != :excludeId")
-    fun getAllProjectsExcept(excludeId: Long): LiveData<List<Project>>
+    fun getAllProjectsExcept(excludeId: Long): Flow<List<Project>>
 
     @Query("SELECT * FROM projects WHERE _id IN (SELECT DISTINCT projectId FROM grids WHERE projectId IS NOT NULL AND projectId > 0)")
-    fun getProjectsWithGrids(): LiveData<List<Project>>
+    fun getProjectsWithGrids(): Flow<List<Project>>
 
     @Query("SELECT EXISTS(SELECT 1 FROM projects WHERE _id = :id)")
     suspend fun exists(id: Long): Boolean
+
+    @Query("SELECT EXISTS(SELECT 1 FROM projects WHERE title = :title)")
+    suspend fun exists(title: String): Boolean
 
     @Query("SELECT EXISTS(SELECT 1 FROM projects)")
     suspend fun hasAnyProjects(): Boolean

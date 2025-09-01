@@ -280,6 +280,7 @@
     <string name="create_project_dialog_barcode_button">Scan Barcode</string>
     <string name="CreateProjectAlertDialogEmptyToast">Project name cannot be empty</string>
     <string name="CreateProjectAlertDialogInUseToast">Project name is already in use</string>
+    <string name="projects_screen_load_failed">Failed to load projects</string>
 
     <!-- BaseOptionalField -->
     <string name="BaseOptionalFieldPersonFieldName">Person</string>
