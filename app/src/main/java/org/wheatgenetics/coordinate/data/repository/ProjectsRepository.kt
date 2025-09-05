@@ -1,20 +1,14 @@
 package org.wheatgenetics.coordinate.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import org.wheatgenetics.coordinate.data.dao.ProjectDao
 import org.wheatgenetics.coordinate.data.model.Project
-import java.sql.SQLException
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ProjectsRepository @Inject constructor(private val projectDao: ProjectDao){
-    fun allProjects(): Flow<List<Project>> = projectDao.getAllProjects().map { projects ->
-        // Crash after getting data
-        throw SQLException()
-        projects // This never gets reached
-    }
+    fun allProjects(): Flow<List<Project>> = projectDao.getAllProjects()
     fun projectsWithGrids(): Flow<List<Project>> = projectDao.getProjectsWithGrids()
 
     suspend fun getProjectById(id: Long): Project? = projectDao.getProjectById(id)
