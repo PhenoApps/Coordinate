@@ -137,9 +137,9 @@
     <string name="preferences_sound_grid_filled_title">Sonido de grilla llena</string>
     <string name="preferences_sound_grid_filled_summary">Sonido de notificación cuando una grilla esta llena</string>
     <string name="preferences_sound_duplicate_entry_title">Sonido de entrada duplicada</string>
-    <string name="preferences_sound_duplicate_entry_summary">Notification sound when a non-unique sample is entered</string>
+    <string name="preferences_sound_duplicate_entry_summary">Sonido de notificación al introducir una muestra no única</string>
     <!-- Unique -->
-    <string name="preferences_unique_title">Unique</string>
+    <string name="preferences_unique_title">Único</string>
     <string name="preferences_unique_values">Require sample IDs to be unique</string>
     <string name="preferences_unique_options_summary">Samples must be unique %s</string>
     <string name="preferences_unique_option_title">Unique Options</string>
