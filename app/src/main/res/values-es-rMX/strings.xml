@@ -9,7 +9,7 @@
     <string name="TemplateNotCreatedToast">%s no creado</string>
     <string name="TemplateCreatedToast">%s creado</string>
     <!-- AppIntroActivity -->
-    <string name="app_intro_activity_label"></string>
+    <string name="app_intro_activity_label">Introducción de la App</string>
     <string name="app_intro_intro_title_slide1">¡Bienvenido a Coordinate!</string>
     <string name="app_intro_intro_summary_slide1">Coordinate es una aplicación de recolección de datos que organiza nombres de muestras en cuadrículas basadas en plantillas predefinidas. Las plantillas son altamente personalizables y pueden incluir campos personalizados para metadatos, nombres alfabéticos o numéricos de filas y columnas, y celdas excluidas específicas o aleatorias.</string>
     <string name="app_intro_intro_title_slide2">Características y Personalización</string>
@@ -18,35 +18,35 @@
     <string name="app_intro_required_setup_summary">Para empezar a usar Coordinate, otorga los permisos necesarios para la aplicación y luego define una carpeta donde tus datos serán almacenados.</string>
     <string name="app_intro_permissions_title">Permisos</string>
     <string name="app_intro_permissions_summary">Por favor, otorga los permisos necesarios</string>
-    <string name="app_intro_storage_title">Definir almacenamiento</string>
+    <string name="app_intro_storage_title">Definir Almacenamiento</string>
     <string name="app_intro_storage_summary">Defina una carpeta donde se almacenarán sus datos.</string>
     <string name="app_intro_permissions_warning">Permisos no otorgados</string>
     <string name="app_intro_storage_warning">Directorio de almacenamiento no establecido</string>
-    <string name="app_intro_optional_setup_title">Configuración opcional</string>
+    <string name="app_intro_optional_setup_title">Configuración Opcional</string>
     <string name="app_intro_optional_setup_summary">Configuración opcional personaliza cómo se configura Coordinate para la recolección de datos.</string>
-    <string name="app_intro_load_sample_data_title">Cargar datos de ejemplo</string>
-    <string name="app_intro_load_sample_data_summary">Importar una base de datos de ejemplo que incluye cuadrículas, plantillas, y proyectos de ejemplo.</string>
+    <string name="app_intro_load_sample_data_title">Cargar Datos de Ejemplo</string>
+    <string name="app_intro_load_sample_data_summary">Importar una base de datos de ejemplo que incluye grillas, plantillas, y proyectos de ejemplo.</string>
     <string name="app_intro_enable_tutorial_title">Tutorial</string>
-    <string name="app_intro_enable_tutorial_summary">Add a help icon to the top toolbar that describes features throughout the app.</string>
+    <string name="app_intro_enable_tutorial_summary">Agrega un icono de ayuda a la barra de herramientas superior que describe las funcionalidades de la aplicación.</string>
     <!-- CollectorActivity -->
-    <string name="CollectorActivityLabel">Capturar datos</string>
+    <string name="CollectorActivityLabel">Capturar Datos</string>
     <!-- AboutActivity -->
     <string name="about_version_title">Versión</string>
     <string name="about_title_pheno_apps">PhenoApps</string>
-    <string name="about_project_lead_title">Líder del proyecto</string>
-    <string name="about_email_title">Correo electrónico</string>
+    <string name="about_project_lead_title">Líder del Proyecto</string>
+    <string name="about_email_title">Email</string>
     <string name="about_contributors_title">Colaboradores</string>
     <string name="about_contributors_developers_title">Desarrolladores</string>
     <string name="about_contributors_funding_title">Financiamiento</string>
     <string name="about_rate">Califica esta app</string>
-    <string name="about_technical_title">Detalles técnicos</string>
+    <string name="about_technical_title">Detalles Técnicos</string>
     <string name="about_github_title">GitHub</string>
     <string name="about_help_translate_title">Ayúdanos a traducir</string>
     <string name="changelog_title">Historial de cambios</string>
-    <string name="libraries_title">Libraries</string>
+    <string name="libraries_title">Bibliotecas</string>
     <string name="about_manual_title">Manual</string>
     <!-- Folder names -->
-    <string name="export_dir">exports</string>
+    <string name="export_dir">exportaciones</string>
     <string name="template_dir">plantillas</string>
     <string name="database_dir">base de datos</string>
     <!-- TemplateImporter -->
@@ -69,74 +69,74 @@
     <string name="AssignTitleRowsColsAlertDialogColsEditTextHint">Número de columnas</string>
     <!-- AssignTitleRowsColsAlertDialog -->
     <string name="AssignTitleRowsColsAlertDialogTitle">Nueva plantilla</string>
-    <string name="AssignTitleRowsColsAlertDialogPositiveButtonText">Next</string>
-    <string name="AssignTitleRowsColsAlertDialogTitleToast">Template name cannot be empty</string>
-    <string name="AssignTitleRowsColsAlertDialogRowsToast">Number of rows not specified</string>
-    <string name="AssignTitleRowsColsAlertDialogColsToast">Number of columns not specified</string>
+    <string name="AssignTitleRowsColsAlertDialogPositiveButtonText">Siguiente</string>
+    <string name="AssignTitleRowsColsAlertDialogTitleToast">El nombre de la plantilla no puede estar vacío</string>
+    <string name="AssignTitleRowsColsAlertDialogRowsToast">Número de filas no especificado</string>
+    <string name="AssignTitleRowsColsAlertDialogColsToast">Número de columnas no especificado</string>
     <!-- ExcludedRowsOrColsAlertDialog -->
-    <string name="ExcludedRowsOrColsAlertDialogTitle">Exclude</string>
+    <string name="ExcludedRowsOrColsAlertDialogTitle">Excluir</string>
     <!-- ExcludedRowsOrColsAlertDialogTester -->
-    <string name="ExcludedRowsOrColsAlertDialogRowLabel">Row</string>
-    <string name="ExcludedRowsOrColsAlertDialogColumnLabel">Column</string>
+    <string name="ExcludedRowsOrColsAlertDialogRowLabel">Fila</string>
+    <string name="ExcludedRowsOrColsAlertDialogColumnLabel">Columna</string>
     <!-- generated_excluded_cells.xml -->
-    <string name="GeneratedExcludedCellsLabelTextViewText">Number of cells to randomly exclude:\u0020</string>
+    <string name="GeneratedExcludedCellsLabelTextViewText">Número de celdas a excluir aleatoriamente:\u0020</string>
     <!-- GeneratedExcludedCellsAlertDialog -->
-    <string name="GeneratedExcludedCellsAlertDialogTitle">Random</string>
+    <string name="GeneratedExcludedCellsAlertDialogTitle">Aleatorio</string>
     <!-- ExcludeAlertDialog -->
-    <string name="ExcludeAlertDialogTitle">Exclude</string>
-    <string name="ExcludeAlertDialogRowsItem">Rows</string>
-    <string name="ExcludeAlertDialogColsItem">Columns</string>
-    <string name="ExcludeAlertDialogCellsItem">Cells</string>
-    <string name="ExcludeAlertDialogRandomItem">Random</string>
+    <string name="ExcludeAlertDialogTitle">Excluir</string>
+    <string name="ExcludeAlertDialogRowsItem">Filas</string>
+    <string name="ExcludeAlertDialogColsItem">Columnas</string>
+    <string name="ExcludeAlertDialogCellsItem">Celdas</string>
+    <string name="ExcludeAlertDialogRandomItem">Aleatorio</string>
     <!-- set_numbering.xml -->
-    <string name="SetNumberingAlertDialogRowSpinnerLabel">Rows</string>
-    <string name="SetNumberingAlertDialogColSpinnerLabel">Columns</string>
+    <string name="SetNumberingAlertDialogRowSpinnerLabel">Filas</string>
+    <string name="SetNumberingAlertDialogColSpinnerLabel">Columnas</string>
     <string-array name="SetNumberingAlertDialogSpinnerEntries">
         <item>1,2,3</item>
         <item>A,B,C</item>
     </string-array>
     <!-- SetNumberingAlertDialog -->
-    <string name="SetNumberingAlertDialogTitle">Naming</string>
+    <string name="SetNumberingAlertDialogTitle">Nombrando</string>
     <!-- set_excludes_optional_fields_numbering.xml -->
-    <string name="SetExcludesOptionalFieldsNumberingAlertDialogCheckAndAddOptionalFieldsButtonText">Set Optional Fields</string>
-    <string name="SetExcludesOptionalFieldsNumberingAlertDialogExcludeButtonText">Exclude</string>
-    <string name="SetExcludesOptionalFieldsNumberingAlertDialogSetNumberingButtonText">Set Naming</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogCheckAndAddOptionalFieldsButtonText">Establecer Campos Opcionales</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogExcludeButtonText">Excluir</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogSetNumberingButtonText">Establecer Nombre</string>
     <!-- SetExcludesOptionalFieldsNumberingAlertDialog -->
-    <string name="SetExcludesOptionalFieldsNumberingAlertDialogTitle">New Template</string>
-    <string name="SetExcludesOptionalFieldsNumberingAlertDialogPositiveButtonText">Next</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogTitle">Nueva Plantilla</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogPositiveButtonText">Siguiente</string>
     <!-- ProjectsActivity -->
-    <string name="ProjectsActivityLabel">Projects</string>
+    <string name="ProjectsActivityLabel">Proyectos</string>
     <plurals name="ProjectsListNumberOfGrids">
-        <item quantity="one">%d grid</item>
-        <item quantity="other">%d grids</item>
+        <item quantity="one">Grilla %d</item>
+        <item quantity="other">Grillas %d</item>
     </plurals>
     <!-- COLLECTION PREFERENCES -->
-    <string name="preferences_collection_title">Collection</string>
+    <string name="preferences_collection_title">Colección</string>
     <!-- Direction -->
-    <string name="preferences_direction_summary">Advance %s</string>
-    <string name="preferences_direction_title">Direction</string>
+    <string name="preferences_direction_summary">Avanzar %s</string>
+    <string name="preferences_direction_title">Dirección</string>
     <string-array name="preferences_direction_entries">
-        <item>down each column</item>
-        <item>across each row</item>
+        <item>abajo de cada columna</item>
+        <item>a través de cada fila</item>
     </string-array>
-    <string name="preferences_direction_down_then_across_entry_value">DownThenAcross</string>
-    <string name="preferences_direction_across_then_down_entry_value">AcrossThenDown</string>
+    <string name="preferences_direction_down_then_across_entry_value">AbajoLuegoATraves</string>
+    <string name="preferences_direction_across_then_down_entry_value">ATravesLuegoAbajo</string>
     <string-array name="preferences_direction_entry_values">
         <item>@string/preferences_direction_down_then_across_entry_value</item>
         <item>@string/preferences_direction_across_then_down_entry_value</item>
     </string-array>
     <string name="preferences_direction_default">@string/preferences_direction_down_then_across_entry_value</string>
-    <string name="preferences_toggle_exclusion_state_title">Toggle Exclusion State</string>
-    <string name="preferences_toggle_exclusion_state_summary">Toggle exclusion state of a cell on long press</string>
+    <string name="preferences_toggle_exclusion_state_title">Cambiar Estado de Exclusión</string>
+    <string name="preferences_toggle_exclusion_state_summary">Cambiar estado de exclusión de una celda al mantenerla pulsada</string>
     <!-- Sounds -->
-    <string name="preferences_sound_title">Sounds</string>
-    <string name="preferences_sound_filled_row_or_column_title">Navigation sound</string>
-    <string name="preferences_sound_filled_row_or_column_summary">Notification sound when a %s is filled</string>
-    <string name="preferences_sound_filled_column">column</string>
-    <string name="preferences_sound_filled_row">row</string>
-    <string name="preferences_sound_grid_filled_title">Grid filled sound</string>
-    <string name="preferences_sound_grid_filled_summary">Notification sound when a grid is filled</string>
-    <string name="preferences_sound_duplicate_entry_title">Duplicate entry sound</string>
+    <string name="preferences_sound_title">Sonidos</string>
+    <string name="preferences_sound_filled_row_or_column_title">Sonido de navegación</string>
+    <string name="preferences_sound_filled_row_or_column_summary">Sonido de notificación cuando un %s es rellenado</string>
+    <string name="preferences_sound_filled_column">columna</string>
+    <string name="preferences_sound_filled_row">fila</string>
+    <string name="preferences_sound_grid_filled_title">Sonido de grilla llena</string>
+    <string name="preferences_sound_grid_filled_summary">Sonido de notificación cuando una grilla esta llena</string>
+    <string name="preferences_sound_duplicate_entry_title">Sonido de entrada duplicada</string>
     <string name="preferences_sound_duplicate_entry_summary">Notification sound when a non-unique sample is entered</string>
     <!-- Unique -->
     <string name="preferences_unique_title">Unique</string>
@@ -179,11 +179,11 @@
     <string name="pref_share_on_export_summary">Files can be automatically shared to other services after export.</string>
     <string name="pref_share_on_export_title">Share exports</string>
     <!-- Dialog -->
-    <string name="dialog_yes">Yes</string>
+    <string name="dialog_yes">Sí</string>
     <string name="dialog_no">No</string>
-    <string name="dialog_warning">Warning</string>
+    <string name="dialog_warning">Advertencia</string>
     <!-- STORAGE PREFERENCES -->
-    <string name="database">Database</string>
+    <string name="database">Base de Datos</string>
     <string name="pref_database_reset_key">org.wheatgenetics.coordinate.preferences.key.reset_database</string>
     <string name="pref_database_reset_summary">This will delete all data stored in the app.</string>
     <string name="pref_database_reset_title">Reset</string>
