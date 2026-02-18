@@ -209,6 +209,7 @@
     <string name="preferences_appearance_system_category_title">Application</string>
     <string name="preferences_appearance_tutorial_title">Tutorial</string>
     <string name="preferences_appearance_tutorial_description">Adds a tutorial icon to the collect, settings, fields, and traits screens</string>
+    <!-- Citation Dialog -->
     <!-- About -->
     <string name="preferences_about_title">About</string>
     <!-- PreferenceFragment -->
