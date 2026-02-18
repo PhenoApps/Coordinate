@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.grids;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -67,6 +68,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     // endregion
     private static Intent INTENT_INSTANCE = null;                       // lazy load
     // region Fields
+    private boolean personReminderShownThisSession = false;
     private ExportingViewModel gridsViewModel;
     private View.OnClickListener onCollectDataButtonClickListenerInstance = null,
             onDeleteButtonClickListenerInstance = null, onExportButtonClickListenerInstance = null;//lls
@@ -523,6 +525,63 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_grids_bnv);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_grids);
+
+        if (!personReminderShownThisSession) {
+            checkPersonReminder();
+        }
+    }
+
+    private void checkPersonReminder() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (!prefs.getBoolean(GeneralKeys.FIRST_LOAD_COMPLETE, false)) return;
+
+        // Respect the user's verification interval setting
+        final String intervalStr = prefs.getString(GeneralKeys.VERIFICATION_INTERVAL, "24");
+        final int intervalHours;
+        try {
+            intervalHours = Integer.parseInt(intervalStr != null ? intervalStr : "24");
+        } catch (NumberFormatException e) {
+            return;
+        }
+        if (intervalHours < 0) return; // "Never"
+
+        final String personName = prefs.getString(GeneralKeys.PERSON_NAME, "");
+        final boolean personNotSet = personName == null || personName.isEmpty();
+
+        final boolean intervalElapsed;
+        if (intervalHours == 0) {
+            intervalElapsed = true; // "Every time"
+        } else {
+            final long lastOpened = prefs.getLong(GeneralKeys.LAST_TIME_OPENED, 0L);
+            final long intervalMs = (long) intervalHours * 60 * 60 * 1000L;
+            intervalElapsed = lastOpened == 0L || (System.currentTimeMillis() - lastOpened) >= intervalMs;
+        }
+
+        if (personNotSet || intervalElapsed) {
+            personReminderShownThisSession = true;
+            showPersonReminderDialog(personName);
+        }
+    }
+
+    private void showPersonReminderDialog(final String currentPerson) {
+        final String message;
+        if (currentPerson != null && !currentPerson.isEmpty()) {
+            message = getString(R.string.pref_profile_person_verify_message, currentPerson);
+        } else {
+            message = getString(R.string.pref_profile_person_set_message);
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle(message)
+                .setNegativeButton(R.string.pref_profile_person_reminder_update, (dialog, which) -> {
+                    // Create a fresh intent to avoid mutating the cached INTENT_INSTANCE
+                    Intent intent = new Intent(this, PreferenceActivity.class);
+                    intent.putExtra(PreferenceActivity.EXTRA_OPEN_PROFILE, true);
+                    startActivity(intent);
+                })
+                .setPositiveButton(R.string.pref_profile_person_reminder_dismiss, null)
+                .show();
     }
 
     private void setupBottomNavigationBar() {

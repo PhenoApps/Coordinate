@@ -36,6 +36,7 @@ public class PreferenceFragment extends BasePreferenceFragment {
             config.setFragmentContainerViewId(R.id.act_prefs_fragment);
 
             config.index(R.xml.preferences);
+            config.index(R.xml.preferences_profile);
             config.index(R.xml.preferences_collection);
             config.index(R.xml.preferences_export);
             config.index(R.xml.preferences_storage);
@@ -66,7 +67,9 @@ public class PreferenceFragment extends BasePreferenceFragment {
     private static Fragment getFragment(SearchPreferenceResult result) {
         int resFile = result.getResourceFile();
         Fragment newFragment = null;
-        if (resFile == R.xml.preferences_collection) {
+        if (resFile == R.xml.preferences_profile) {
+            newFragment = new ProfilePreferencesFragment(result);  // null-safe: SearchPreferenceResult is nullable
+        } else if (resFile == R.xml.preferences_collection) {
             newFragment = new CollectionPreferencesFragment(result);
         } else if (resFile == R.xml.preferences_export) {
             newFragment = new ExportPreferencesFragment(result);
