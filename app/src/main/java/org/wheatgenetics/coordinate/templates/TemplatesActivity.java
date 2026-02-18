@@ -53,6 +53,7 @@ import org.wheatgenetics.coordinate.ti.TemplateImporter;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 import org.wheatgenetics.coordinate.utils.FileUtil;
+import org.wheatgenetics.coordinate.utils.InsetHandler;
 import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 
 import java.io.FileNotFoundException;
@@ -404,6 +405,10 @@ public class TemplatesActivity extends BackActivity
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_templates);
 
+        androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        InsetHandler.applyToolbarInsets(toolbar);
+
         this.templatesViewModel = new ViewModelProvider(this).get(
                 TemplatesViewModel.class);
 
@@ -411,6 +416,7 @@ public class TemplatesActivity extends BackActivity
                 R.id.templatesListView);
 
         setupBottomNavigationBar();
+        InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_templates_bnv));
 
         if (null != templatesListView) templatesListView.setAdapter(this.templatesAdapter =
 

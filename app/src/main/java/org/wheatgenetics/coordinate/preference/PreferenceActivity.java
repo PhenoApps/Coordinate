@@ -22,6 +22,7 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.InsetHandler;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -60,6 +61,11 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
 
         setContentView(R.layout.activity_preferences);
 
+        androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        InsetHandler.applyToolbarInsets(toolbar);
+
+        InsetHandler.applyBottomNavInsets(getBottomNavigationBarView());
         getBottomNavigationBarView().setSelectedItemId(R.id.action_nav_settings);
 
 

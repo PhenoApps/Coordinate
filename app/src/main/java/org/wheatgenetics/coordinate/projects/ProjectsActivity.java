@@ -43,6 +43,7 @@ import org.wheatgenetics.coordinate.preference.Utils;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
+import org.wheatgenetics.coordinate.utils.InsetHandler;
 import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 
 import java.io.OutputStream;
@@ -268,6 +269,10 @@ public class ProjectsActivity extends BackActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_projects);
 
+        androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        InsetHandler.applyToolbarInsets(toolbar);
+
         this.projectsViewModel = new ViewModelProvider(this).get(
                 ProjectsViewModel.class);
 
@@ -275,6 +280,7 @@ public class ProjectsActivity extends BackActivity {
                 R.id.projectsListView);
 
         setupBottomNavigationBar();
+        InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_projects_bnv));
 
         if (null != projectsListView) projectsListView.setAdapter(this.projectsAdapter =
                 new ProjectsAdapter(this,

@@ -46,6 +46,7 @@ import org.wheatgenetics.coordinate.preference.GeneralKeys;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.InsetHandler;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 
@@ -93,6 +94,10 @@ public class CollectorActivity extends BackActivity implements
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_collector);
 
+        androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        InsetHandler.applyToolbarInsets(toolbar);
+
         @Nullable final Intent intent = this.getIntent();
         if (null != intent) {
             final String GRID_ID_KEY =
@@ -129,6 +134,7 @@ public class CollectorActivity extends BackActivity implements
 
         attachKeyboardListeners();
         setupBottomNavigationBar();
+        InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_collector_bnv));
         setupBarcodeButton();
     }
 

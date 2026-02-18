@@ -11,16 +11,19 @@ import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.InsetHandler;
 
 public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        InsetHandler.enableEdgeToEdge(this);
 
         setContentView(R.layout.activity_about);
 
         setupBottomNavigationBar();
+        InsetHandler.applyBottomNavInsets(findViewById(R.id.act_about_bnv));
     }
 
     @Override

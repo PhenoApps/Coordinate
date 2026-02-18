@@ -3,7 +3,7 @@
     "project_number": "407580592235",
     "firebase_url": "https://coordinate-38133.firebaseio.com",
     "project_id": "coordinate-38133",
-    "storage_bucket": "coordinate-38133.appspot.com"
+    "storage_bucket": "coordinate-38133.firebasestorage.app"
   },
   "client": [
     {
@@ -13,12 +13,7 @@
           "package_name": "org.wheatgenetics.coordinate"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "407580592235-6u1qnaenn82fhf2i183639s32n3t3nq0.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyC1Bu2vdXNNMDZURJ3prSMV5VkGM8_gVZs"
@@ -26,12 +21,26 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "407580592235-6u1qnaenn82fhf2i183639s32n3t3nq0.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407580592235:android:9e9625ee187d1c2ca2c92e",
+        "android_client_info": {
+          "package_name": "org.wheatgenetics.coordinate.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1Bu2vdXNNMDZURJ3prSMV5VkGM8_gVZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
     }
