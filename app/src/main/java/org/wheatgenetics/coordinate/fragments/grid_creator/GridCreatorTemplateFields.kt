@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.preference.PreferenceManager
 import com.google.zxing.integration.android.IntentIntegrator
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
@@ -32,6 +33,7 @@ import org.wheatgenetics.coordinate.model.Cell
 import org.wheatgenetics.coordinate.model.JoinedGridModel
 import org.wheatgenetics.coordinate.model.TemplateModel
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+import org.wheatgenetics.coordinate.preference.GeneralKeys
 
 class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields),
     FieldsAdapterListener,
@@ -289,6 +291,19 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
                 fields.forEach { field ->
                     if (field.name != requiredName) {
                        field.hint = getString(R.string.optional_field_hint_text)
+                    }
+                }
+
+                // pre-fill person-like fields from profile preference
+                val savedPerson = PreferenceManager.getDefaultSharedPreferences(act)
+                    .getString(GeneralKeys.PERSON_NAME, "") ?: ""
+                if (savedPerson.isNotEmpty()) {
+                    fields.forEach { field ->
+                        val nameLower = field.name.lowercase()
+                        if (nameLower == "person" || nameLower == "name" ||
+                            nameLower == "operator" || nameLower == "username") {
+                            field.value = savedPerson
+                        }
                     }
                 }
 

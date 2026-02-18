@@ -29,6 +29,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class PreferenceActivity extends BackActivity implements SearchPreferenceResultListener {
 
+    public static final String EXTRA_OPEN_PROFILE = "open_profile";
+
     private PreferenceFragment prefsFragment;
 
     private static Intent INTENT_INSTANCE = null;
@@ -88,6 +90,14 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
 
         prefsFragment = new PreferenceFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.act_prefs_fragment, prefsFragment).commit();
+
+        if (getIntent().getBooleanExtra(EXTRA_OPEN_PROFILE, false)) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.act_prefs_fragment, new ProfilePreferencesFragment(null))
+                    .addToBackStack("ProfilePreferencesFragment")
+                    .commit();
+            setToolbarBackEnabled();
+        }
     }
 
     protected void setToolbarBackEnabled() {

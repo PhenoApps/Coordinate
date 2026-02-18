@@ -49,5 +49,10 @@ class GeneralKeys private constructor() {
         // Appearance Preferences
         const val TIPS = COORDINATE_PREFIX + "TIPS"
 
+        // Profile Preferences
+        const val PERSON_NAME = COORDINATE_PREFIX + "PERSON_NAME"
+        const val LAST_TIME_OPENED = COORDINATE_PREFIX + "LAST_TIME_OPENED"
+        const val VERIFICATION_INTERVAL = COORDINATE_PREFIX + "VERIFICATION_INTERVAL"
+
     }
 }

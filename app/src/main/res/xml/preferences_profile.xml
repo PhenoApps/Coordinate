@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        android:icon="@drawable/ic_pref_profile_person"
+        android:key="org.wheatgenetics.coordinate.PERSON_NAME"
+        android:title="@string/pref_profile_person_title"
+        android:summary="@string/pref_profile_person_summary"
+        android:dialogTitle="@string/pref_profile_person_dialog_title" />
+
+    <ListPreference
+        android:defaultValue="24"
+        android:entries="@array/pref_profile_verification_interval_entries"
+        android:entryValues="@array/pref_profile_verification_interval_entry_values"
+        android:icon="@drawable/ic_pref_profile_interval"
+        android:key="org.wheatgenetics.coordinate.VERIFICATION_INTERVAL"
+        android:title="@string/pref_profile_verification_interval_title"
+        android:summary="@string/pref_profile_verification_interval_summary"
+        app:useSimpleSummaryProvider="true" />
+
+</PreferenceScreen>
