@@ -39,6 +39,7 @@ import org.wheatgenetics.coordinate.model.TemplateModels;
 import org.wheatgenetics.coordinate.model.TemplateType;
 import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.utils.InsetHandler;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.sharedpreferences.SharedPreferences;
 
@@ -126,6 +127,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
     protected void onCreate(
             @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        InsetHandler.enableEdgeToEdge(this);
 
         // region Initialize Default Templates
         {

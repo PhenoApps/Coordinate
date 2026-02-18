@@ -8,6 +8,18 @@
 
     tools:context="org.wheatgenetics.coordinate.tc.exclude.ExcludeCellsActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/AppTheme.AppBarOverlay" />
+
     <fragment
         android:id="@+id/templateDisplayFragment"
         android:name="org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment"
@@ -15,7 +27,7 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
 
         tools:layout="@layout/fragment_display" />
 

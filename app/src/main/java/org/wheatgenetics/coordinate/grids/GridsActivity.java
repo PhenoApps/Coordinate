@@ -48,6 +48,7 @@ import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.InsetHandler;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
@@ -367,6 +368,10 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_grids);
 
+        androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        InsetHandler.applyToolbarInsets(toolbar);
+
         this.gridsViewModel = new ViewModelProvider(this).get(
                 ExportingViewModel.class);
 
@@ -393,6 +398,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         }
 
         setupBottomNavigationBar();
+        InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_grids_bnv));
 
         setupActionBar();
 
