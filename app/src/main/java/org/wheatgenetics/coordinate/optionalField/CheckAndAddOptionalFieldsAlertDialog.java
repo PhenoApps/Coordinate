@@ -102,7 +102,7 @@ public class CheckAndAddOptionalFieldsAlertDialog
     public void show(@Nullable final NonNullOptionalFields nonNullOptionalFields) {
         if (null != nonNullOptionalFields) {
             this.nonNullOptionalFields = nonNullOptionalFields;
-            this.show(this.nonNullOptionalFields.names(), this.nonNullOptionalFields.checks(),
+            this.show(this.nonNullOptionalFields.displayNames(), this.nonNullOptionalFields.checks(),
                     this.onMultiChoiceClickListener());
         }
     }
