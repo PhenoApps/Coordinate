@@ -263,6 +263,12 @@
 
 
 
+    <!-- Citation Dialog -->
+    <string name="citation_title">Cite Coordinate</string>
+    <string name="citation_message">If you use Coordinate in your research, please cite the following publication:</string>
+    <string name="citation_text">Rife et al., (2025). Coordinate: An Android application to organize samples into grids. Journal of Open Source Software, 10(113), 8263</string>
+    <string name="citation_url" translatable="false">https://joss.theoj.org/papers/10.21105/joss.08263</string>
+
     <!-- About -->
     <string name="preferences_about_title">About</string>
 

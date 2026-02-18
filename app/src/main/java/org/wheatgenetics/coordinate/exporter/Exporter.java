@@ -161,6 +161,12 @@ abstract class Exporter {
         // region Subclass Package Methods
         // region export() Subclass Package Methods
         @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+        @NonNull
+        Context getContext() {
+            return this.context;
+        }
+
+        @RestrictTo(RestrictTo.Scope.SUBCLASSES)
         @Nullable
         File getExportFile() {
             return this.exportFile;
