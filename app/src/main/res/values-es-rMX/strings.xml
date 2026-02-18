@@ -9,7 +9,7 @@
     <string name="TemplateNotCreatedToast">%s no creado</string>
     <string name="TemplateCreatedToast">%s creado</string>
     <!-- AppIntroActivity -->
-    <string name="app_intro_activity_label"></string>
+    <string name="app_intro_activity_label">Introducción de la App</string>
     <string name="app_intro_intro_title_slide1">¡Bienvenido a Coordinate!</string>
     <string name="app_intro_intro_summary_slide1">Coordinate es una aplicación de recolección de datos que organiza nombres de muestras en cuadrículas basadas en plantillas predefinidas. Las plantillas son altamente personalizables y pueden incluir campos personalizados para metadatos, nombres alfabéticos o numéricos de filas y columnas, y celdas excluidas específicas o aleatorias.</string>
     <string name="app_intro_intro_title_slide2">Características y Personalización</string>
@@ -18,28 +18,28 @@
     <string name="app_intro_required_setup_summary">Para empezar a usar Coordinate, otorga los permisos necesarios para la aplicación y luego define una carpeta donde tus datos serán almacenados.</string>
     <string name="app_intro_permissions_title">Permisos</string>
     <string name="app_intro_permissions_summary">Por favor, otorga los permisos necesarios</string>
-    <string name="app_intro_storage_title">Definir almacenamiento</string>
+    <string name="app_intro_storage_title">Definir Almacenamiento</string>
     <string name="app_intro_storage_summary">Defina una carpeta donde se almacenarán sus datos.</string>
     <string name="app_intro_permissions_warning">Permisos no otorgados</string>
     <string name="app_intro_storage_warning">Directorio de almacenamiento no establecido</string>
-    <string name="app_intro_optional_setup_title">Configuración opcional</string>
+    <string name="app_intro_optional_setup_title">Configuración Opcional</string>
     <string name="app_intro_optional_setup_summary">Configuración opcional personaliza cómo se configura Coordinate para la recolección de datos.</string>
-    <string name="app_intro_load_sample_data_title">Cargar datos de ejemplo</string>
-    <string name="app_intro_load_sample_data_summary">Importar una base de datos de ejemplo que incluye cuadrículas, plantillas, y proyectos de ejemplo.</string>
+    <string name="app_intro_load_sample_data_title">Cargar Datos de Ejemplo</string>
+    <string name="app_intro_load_sample_data_summary">Importar una base de datos de ejemplo que incluye grillas, plantillas, y proyectos de ejemplo.</string>
     <string name="app_intro_enable_tutorial_title">Tutorial</string>
     <string name="app_intro_enable_tutorial_summary">Add a help icon to the top toolbar that describes features throughout the app.</string>
     <!-- CollectorActivity -->
-    <string name="CollectorActivityLabel">Capturar datos</string>
+    <string name="CollectorActivityLabel">Capturar Datos</string>
     <!-- AboutActivity -->
     <string name="about_version_title">Versión</string>
     <string name="about_title_pheno_apps">PhenoApps</string>
-    <string name="about_project_lead_title">Líder del proyecto</string>
-    <string name="about_email_title">Correo electrónico</string>
+    <string name="about_project_lead_title">Líder del Proyecto</string>
+    <string name="about_email_title">Email</string>
     <string name="about_contributors_title">Colaboradores</string>
     <string name="about_contributors_developers_title">Desarrolladores</string>
     <string name="about_contributors_funding_title">Financiamiento</string>
     <string name="about_rate">Califica esta app</string>
-    <string name="about_technical_title">Detalles técnicos</string>
+    <string name="about_technical_title">Detalles Técnicos</string>
     <string name="about_github_title">GitHub</string>
     <string name="about_help_translate_title">Ayúdanos a traducir</string>
     <string name="changelog_title">Historial de cambios</string>
