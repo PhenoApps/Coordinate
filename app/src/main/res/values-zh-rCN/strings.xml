@@ -201,6 +201,7 @@
     <string name="pref_database_reload_title">Reload</string>
     <string name="database_reload_warning">All data will be deleted and sample data will be loaded. Are you sure you want to reload the database?</string>
     <string name="database_reload_message">Sample data has been loaded</string>
+    <!-- PROFILE PREFERENCES -->
     <!--  APPEARANCE PREFERENCES  -->
     <string name="pref_appearance_title">Appearance</string>
     <string name="preferences_appearance_system_category_title">Application</string>
