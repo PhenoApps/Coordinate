@@ -1,5 +1,15 @@
 <changelog>
     <release
+        date="2025-02-19"
+        versionCode="420"
+        versionName="v4.2.0">
+        <new>Removed static text from custom headers</new>
+        <new>Added a person preference that autofills in new grids</new>
+        <info>Added a citation dialog</info>
+        <info>Updated for SDK 35</info>
+    </release>
+
+    <release
         date="2025-08-13"
         versionCode="411"
         versionName="v4.1.1">
