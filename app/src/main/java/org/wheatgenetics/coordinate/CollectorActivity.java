@@ -32,7 +32,7 @@ import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.phenoapps.androidlibrary.ClearingEditorActionListener;
+import org.wheatgenetics.coordinate.ClearingEditorActionListener;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.collector.Collector;
 import org.wheatgenetics.coordinate.collector.DataEntryDialogFragment;

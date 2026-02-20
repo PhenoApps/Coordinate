@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.phenoapps.androidlibrary.MultiChoiceItemsAlertDialog;
+import org.wheatgenetics.coordinate.dialogs.MultiChoiceItemsAlertDialog;
 import org.wheatgenetics.coordinate.R;
 
 public class CheckAndAddOptionalFieldsAlertDialog

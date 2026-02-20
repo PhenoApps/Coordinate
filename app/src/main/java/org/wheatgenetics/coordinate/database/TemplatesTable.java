@@ -8,7 +8,7 @@ import android.database.SQLException;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.model.TemplateModel;

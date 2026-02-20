@@ -449,6 +449,9 @@
     <string name="EntireProjectProjectExporterFailedMessage">Unable to export project.</string>
     <string name="template_export_dialog_title">Export Template</string>
     <string name="project_export_dialog_title">Export Project</string>
+    <string name="getExportFileNameAlertDialogTitle">Export File Name</string>
+    <string name="getExportFileNameAlertDialogHint">File name</string>
+    <string name="getExportFileNameAlertDialogToast">File name cannot be empty</string>
 
 
     <!-- Display -->
