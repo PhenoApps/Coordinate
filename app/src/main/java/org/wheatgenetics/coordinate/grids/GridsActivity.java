@@ -692,6 +692,14 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_grids_bnv);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_grids);
 
+        if (gridsAdapter != null) {
+            final int saved = PreferenceManager.getDefaultSharedPreferences(this)
+                    .getInt(GeneralKeys.SORT_GRIDS, GridsAdapter.SORT_DEFAULT);
+            if (gridsAdapter.getSortOrder() != saved) {
+                gridsAdapter.setSortOrder(saved);
+            }
+        }
+
         if (!personReminderShownThisSession) {
             checkPersonReminder();
         }
@@ -808,6 +816,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_new_grid) {
             createGrid();
+        } else if (item.getItemId() == R.id.action_sort) {
+            showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)
                     .targets(gridActivityTapTargetView(R.id.action_new_grid, getString(R.string.tutorial_grid_create_title), getString(R.string.tutorial_grid_create_summary), 60)
@@ -832,6 +842,28 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     private TapTarget gridActivityTapTargetView(int id, String title, String desc, int targetRadius) {
         return TapTargetUtil.Companion.getTapTargetSettingsView(this, findViewById(id), title, desc, targetRadius);
+    }
+
+    private void showSortDialog() {
+        if (gridsAdapter == null) return;
+        final String[] options = {
+                getString(R.string.sort_by_name),
+                getString(R.string.sort_by_date)
+        };
+        final int current = gridsAdapter.getSortOrder();
+        final int checked = current == GridsAdapter.SORT_NAME ? 0
+                : current == GridsAdapter.SORT_DATE ? 1 : -1;
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.sort_title)
+                .setSingleChoiceItems(options, checked, (dialog, which) -> {
+                    final int order = which == 0 ? GridsAdapter.SORT_NAME : GridsAdapter.SORT_DATE;
+                    gridsAdapter.setSortOrder(order);
+                    PreferenceManager.getDefaultSharedPreferences(this)
+                            .edit().putInt(GeneralKeys.SORT_GRIDS, order).apply();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     @Override

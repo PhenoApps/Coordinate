@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.projects;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -315,6 +316,8 @@ public class ProjectsActivity extends BackActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_new_project) {
             projectCreator().createAndReturn();
+        } else if (item.getItemId() == R.id.action_sort) {
+            showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)
                     .targets(projectsActivityTapTargetView(R.id.action_new_project, getString(R.string.tutorial_project_create_title), getString(R.string.tutorial_project_create_summary), 60)
@@ -337,10 +340,44 @@ public class ProjectsActivity extends BackActivity {
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_projects_bnv);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_projects);
+
+        if (projectsAdapter != null) {
+            final int saved = PreferenceManager.getDefaultSharedPreferences(this)
+                    .getInt(GeneralKeys.SORT_PROJECTS, ProjectsAdapter.SORT_DEFAULT);
+            if (projectsAdapter.getSortOrder() != saved) {
+                projectsAdapter.setSortOrder(saved);
+            }
+        }
     }
 
     private TapTarget projectsActivityTapTargetView(int id, String title, String desc, int targetRadius) {
         return TapTargetUtil.Companion.getTapTargetSettingsView(this, findViewById(id), title, desc, targetRadius);
+    }
+
+    private void showSortDialog() {
+        if (projectsAdapter == null) return;
+        final String[] options = {
+                getString(R.string.sort_by_name),
+                getString(R.string.sort_by_date),
+                getString(R.string.sort_by_grid_count)
+        };
+        final int current = projectsAdapter.getSortOrder();
+        final int checked = current == ProjectsAdapter.SORT_NAME ? 0
+                : current == ProjectsAdapter.SORT_DATE ? 1
+                : current == ProjectsAdapter.SORT_GRID_COUNT ? 2 : -1;
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.sort_title)
+                .setSingleChoiceItems(options, checked, (dialog, which) -> {
+                    final int order = which == 0 ? ProjectsAdapter.SORT_NAME
+                            : which == 1 ? ProjectsAdapter.SORT_DATE
+                            : ProjectsAdapter.SORT_GRID_COUNT;
+                    projectsAdapter.setSortOrder(order);
+                    PreferenceManager.getDefaultSharedPreferences(this)
+                            .edit().putInt(GeneralKeys.SORT_PROJECTS, order).apply();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private void setupBottomNavigationBar() {

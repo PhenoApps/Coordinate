@@ -43,8 +43,10 @@ class TemplateGridsAdapter extends GridsAdapter {
     @Override
     @Nullable
     BaseJoinedGridModels baseJoinedGridModels() {
-        if (null == this.baseJoinedGridModelsInstance)
+        if (null == this.baseJoinedGridModelsInstance) {
             this.baseJoinedGridModelsInstance = this.gridsTable().loadByTemplateId(this.templateId);
+            applySort(this.baseJoinedGridModelsInstance);
+        }
         return this.baseJoinedGridModelsInstance;
     }
     // endregion

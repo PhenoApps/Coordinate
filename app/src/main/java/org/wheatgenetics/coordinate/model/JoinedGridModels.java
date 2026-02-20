@@ -106,5 +106,10 @@ public class JoinedGridModels extends BaseJoinedGridModels
             for (final JoinedGridModel joinedGridModel : this)
                 processor.process(joinedGridModel);
     }
+
+    public void sort(java.util.Comparator<JoinedGridModel> comparator) {
+        if (null != this.arrayListInstance && null != comparator)
+            java.util.Collections.sort(this.arrayListInstance, comparator);
+    }
     // endregion
 }

@@ -36,8 +36,10 @@ class AllGridsAdapter extends GridsAdapter {
     @Override
     @Nullable
     BaseJoinedGridModels baseJoinedGridModels() {
-        if (null == this.baseJoinedGridModelsInstance)
+        if (null == this.baseJoinedGridModelsInstance) {
             this.baseJoinedGridModelsInstance = this.gridsTable().load();
+            applySort(this.baseJoinedGridModelsInstance);
+        }
         return this.baseJoinedGridModelsInstance;
     }
     // endregion
