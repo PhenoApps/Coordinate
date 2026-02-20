@@ -34,6 +34,10 @@
 
         <!-- Disable activity transition animations -->
         <item name="android:windowAnimationStyle">@null</item>
+
+        <!-- Action mode overlays the toolbar instead of appearing above it -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeStyle">@style/AppTheme.ActionMode</item>
     </style>
 
     <style name="MaterialAppThemeNoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
@@ -42,6 +46,19 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:textAllCaps">false</item>
+
+        <!-- Action mode overlays the toolbar instead of appearing above it -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeStyle">@style/AppTheme.ActionMode</item>
+    </style>
+
+    <style name="AppTheme.ActionMode" parent="Widget.AppCompat.ActionMode">
+        <item name="background">@color/colorPrimary</item>
+        <item name="titleTextStyle">@style/AppTheme.ActionMode.TitleText</item>
+    </style>
+
+    <style name="AppTheme.ActionMode.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" tools:ignore="PrivateResource" />

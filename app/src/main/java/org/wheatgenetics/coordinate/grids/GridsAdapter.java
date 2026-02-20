@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.grids;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -18,12 +19,29 @@ import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 abstract class GridsAdapter extends Adapter {
     // region Fields
     @NonNull
     private final View.OnClickListener
             onCollectDataButtonClickListener;
     private GridsTable gridsTableInstance = null; // lazy load
+
+    // region Action mode / selection fields
+    private final HashSet<Long> selectedIds = new HashSet<>();
+    private boolean inActionMode = false;
+    @Nullable
+    private View.OnLongClickListener rowLongClickListener = null;
+    @Nullable
+    private OnSelectionChangedListener selectionChangedListener = null;
+
+    interface OnSelectionChangedListener {
+        void onSelectionChanged(int count);
+    }
+    // endregion
     // endregion
 
     GridsAdapter(
@@ -37,6 +55,37 @@ abstract class GridsAdapter extends Adapter {
         super(activity, onDeleteButtonClickListener, onExportButtonClickListener);
         this.onCollectDataButtonClickListener = onCollectDataButtonClickListener;
     }
+
+    // region Action mode methods
+    void enterActionMode(@IntRange(from = 1) final long firstId) {
+        inActionMode = true;
+        selectedIds.add(firstId);
+    }
+
+    void exitActionMode() {
+        inActionMode = false;
+        selectedIds.clear();
+    }
+
+    void toggleSelection(@IntRange(from = 1) final long id) {
+        if (!selectedIds.remove(id)) selectedIds.add(id);
+    }
+
+    boolean isInActionMode() { return inActionMode; }
+
+    @NonNull
+    Set<Long> getSelectedIds() { return Collections.unmodifiableSet(selectedIds); }
+
+    int getSelectedCount() { return selectedIds.size(); }
+
+    void setRowLongClickListener(@Nullable final View.OnLongClickListener listener) {
+        this.rowLongClickListener = listener;
+    }
+
+    void setSelectionChangedListener(@Nullable final OnSelectionChangedListener listener) {
+        this.selectionChangedListener = listener;
+    }
+    // endregion
 
     // region Package Methods
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
@@ -108,29 +157,49 @@ abstract class GridsAdapter extends Adapter {
                     if (null != textView) textView.setText(joinedGridModel.getFormattedTimestamp());
                 }
                 @IntRange(from = 1) final long gridId = joinedGridModel.getId();
-                {
-                    final ImageButton imageButton = view.findViewById(
-                            R.id.gridsListItemDeleteButton);
-                    if (null != imageButton) {
-                        imageButton.setTag(gridId);
-                        imageButton.setOnClickListener(this.onDeleteButtonClickListener());
+                if (inActionMode) {
+                    // Hide per-item buttons; show selection highlight
+                    final ImageButton deleteBtn = view.findViewById(R.id.gridsListItemDeleteButton);
+                    final ImageButton exportBtn = view.findViewById(R.id.gridsListItemExportButton);
+                    final ImageButton collectBtn = view.findViewById(R.id.gridsListItemCollectDataButton);
+                    if (deleteBtn != null) deleteBtn.setVisibility(View.GONE);
+                    if (exportBtn != null) exportBtn.setVisibility(View.GONE);
+                    if (collectBtn != null) collectBtn.setVisibility(View.GONE);
+                    view.setBackgroundColor(selectedIds.contains(gridId)
+                            ? Color.argb(60, 0, 120, 215)
+                            : Color.TRANSPARENT);
+                    view.setOnClickListener(v -> {
+                        toggleSelection(gridId);
+                        if (selectionChangedListener != null) {
+                            selectionChangedListener.onSelectionChanged(getSelectedCount());
+                        }
+                        notifyDataSetChanged();
+                    });
+                } else {
+                    // Normal mode: ensure buttons are visible
+                    final ImageButton deleteBtn = view.findViewById(R.id.gridsListItemDeleteButton);
+                    if (deleteBtn != null) {
+                        deleteBtn.setVisibility(View.VISIBLE);
+                        deleteBtn.setTag(gridId);
+                        deleteBtn.setOnClickListener(this.onDeleteButtonClickListener());
                     }
+                    final ImageButton exportBtn = view.findViewById(R.id.gridsListItemExportButton);
+                    if (exportBtn != null) {
+                        exportBtn.setVisibility(View.VISIBLE);
+                        exportBtn.setTag(gridId);
+                        exportBtn.setOnClickListener(this.onExportButtonClickListener());
+                    }
+                    final ImageButton collectBtn = view.findViewById(R.id.gridsListItemCollectDataButton);
+                    if (collectBtn != null) {
+                        collectBtn.setVisibility(View.VISIBLE);
+                        collectBtn.setTag(gridId);
+                        collectBtn.setOnClickListener(this.onCollectDataButtonClickListener);
+                    }
+                    view.setBackgroundColor(Color.TRANSPARENT);
                 }
-                {
-                    final ImageButton imageButton = view.findViewById(
-                            R.id.gridsListItemExportButton);
-                    if (null != imageButton) {
-                        imageButton.setTag(gridId);
-                        imageButton.setOnClickListener(this.onExportButtonClickListener());
-                    }
-                }
-                {
-                    final ImageButton imageButton = view.findViewById(
-                            R.id.gridsListItemCollectDataButton);
-                    if (null != imageButton) {
-                        imageButton.setTag(gridId);
-                        imageButton.setOnClickListener(this.onCollectDataButtonClickListener);
-                    }
+                view.setTag(gridId);
+                if (rowLongClickListener != null) {
+                    view.setOnLongClickListener(rowLongClickListener);
                 }
                 return view;
             }

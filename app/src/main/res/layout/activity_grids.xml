@@ -43,4 +43,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Status bar scrim: always keeps colorPrimary behind the transparent status bar.
+         Needed because the AppCompat action mode bar starts below the status bar area and
+         would otherwise expose the white window background through it. Height is set to
+         exactly statusBarHeight at runtime by InsetHandler.applyStatusBarScrim(). -->
+    <View
+        android:id="@+id/status_bar_scrim"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
