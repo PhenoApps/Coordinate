@@ -12,6 +12,8 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.utils.Keys;
 
+import java.util.List;
+
 public class GridDeleter extends BaseGridDeleter {
     @NonNull
     private final
@@ -79,6 +81,16 @@ public class GridDeleter extends BaseGridDeleter {
                                 gridId);
                     }
                 });
+    }
+
+    public void deleteMultiple(@NonNull final List<Long> gridIds) {
+        for (final long gridId : gridIds) {
+            this.entriesTable().deleteByGridId(gridId);
+            this.gridsTable().delete(gridId);
+            checkPreferenceLastGrid(gridId);
+        }
+        this.showLongToast(R.string.multi_delete_success);
+        this.handler.respondToDeletedGrid();
     }
 
     @SuppressWarnings({"UnnecessaryInterfaceModifier"})

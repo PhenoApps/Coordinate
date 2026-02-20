@@ -72,4 +72,25 @@ object InsetHandler {
         }
         ViewCompat.requestApplyInsets(rootView)
     }
+
+    /**
+     * Sizes a dedicated "scrim" view to exactly the status bar height, giving it a persistent
+     * colorPrimary background behind the transparent status bar. Because the AppCompat action mode
+     * bar is positioned below the status bar area (it starts at y=statusBarHeight), it does not
+     * cover this region, so this scrim keeps the status bar colored during action mode.
+     * Add a View with id status_bar_scrim at the top of the layout (height="0dp") and call this
+     * in onCreate after setContentView.
+     * Callable from Java via InsetHandler.applyStatusBarScrim(view).
+     */
+    @JvmStatic
+    fun applyStatusBarScrim(scrimView: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(scrimView) { v, insets ->
+            val bars = insets.getInsets(systemBarsAndCutout)
+            val lp = v.layoutParams
+            lp.height = bars.top
+            v.layoutParams = lp
+            insets
+        }
+        ViewCompat.requestApplyInsets(scrimView)
+    }
 }

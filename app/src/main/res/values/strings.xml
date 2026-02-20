@@ -464,6 +464,14 @@
     <string name="GridDeleterEntriesOfGridNotDeletedToast">Entries were not deleted</string>
     <string name="GridDeleterGridDeletedToast">Grid successfully deleted</string>
     <string name="GridDeleterGridNotDeletedToast">Grid could not be deleted</string>
+    <string name="multi_delete_confirmation">Delete %d grids? This cannot be undone.</string>
+    <string name="multi_delete_success">Grids deleted.</string>
+
+    <!-- Action mode (multi-select) -->
+    <string name="action_mode_selected">%d selected</string>
+    <string name="menu_grids_export_selected">Export</string>
+    <string name="menu_grids_delete_selected">Delete</string>
+    <string name="export_failed">Export failed.</string>
 
     <!-- TemplateDeleter -->
     <string name="TemplateDeleterConfirmationTitle">Delete template</string>

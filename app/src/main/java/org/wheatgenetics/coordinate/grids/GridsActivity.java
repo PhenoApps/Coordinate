@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +22,24 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.view.ActionMode;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
@@ -35,8 +52,10 @@ import org.wheatgenetics.coordinate.Types;
 import org.wheatgenetics.coordinate.activities.BaseMainActivity;
 import org.wheatgenetics.coordinate.activity.AppIntroActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
+import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.database.SampleData;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
+import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.gc.GridCreator;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
 import org.wheatgenetics.coordinate.ge.GridExportPreprocessor;
@@ -53,8 +72,6 @@ import org.wheatgenetics.coordinate.utils.InsetHandler;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
-
-import java.io.OutputStream;
 
 public class GridsActivity extends BaseMainActivity implements TemplateCreator.Handler {
     // region Constants
@@ -91,6 +108,59 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     private boolean isProjectFilter = false;
 
     private Menu systemMenu;
+
+    // region Action mode fields
+    private ActionMode actionMode = null;
+    private Set<Long> pendingExportIds = null;
+    private ListView gridsListView = null;
+
+    private final ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_grids_action_mode, menu);
+            mode.setTitle(getString(R.string.action_mode_selected, 1));
+            View scrim = findViewById(R.id.status_bar_scrim);
+            if (scrim != null) {
+                scrim.bringToFront();
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            if (item.getItemId() == R.id.action_export_selected) {
+                exportSelectedGrids();
+                return true;
+            } else if (item.getItemId() == R.id.action_delete_selected) {
+                deleteSelectedGrids();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+            if (gridsAdapter != null) {
+                gridsAdapter.exitActionMode();
+                gridsAdapter.notifyDataSetChanged();
+            }
+        }
+    };
+    // endregion
+
+    private final ActivityResultLauncher<String> exportZipLauncher =
+            registerForActivityResult(new ActivityResultContracts.CreateDocument("application/zip"), uri -> {
+                if (uri != null && pendingExportIds != null) {
+                    exportGridsAsZip(pendingExportIds, uri);
+                }
+                pendingExportIds = null;
+            });
 
     private final ActivityResultLauncher<String> exportGridsLauncher = registerForActivityResult(new ActivityResultContracts.CreateDocument(), (uri) -> {
 
@@ -319,6 +389,81 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     // endregion
     // endregion
 
+    // region Action mode export/delete methods
+    private void exportSelectedGrids() {
+        if (gridsAdapter == null) return;
+        final Set<Long> ids = gridsAdapter.getSelectedIds();
+        if (ids.isEmpty()) return;
+        if (ids.size() == 1) {
+            preprocessGridExport(ids.iterator().next());
+            if (actionMode != null) actionMode.finish();
+        } else {
+            pendingExportIds = new HashSet<>(ids);
+            final String ts = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+            exportZipLauncher.launch("coordinate_export_" + ts + ".zip");
+            if (actionMode != null) actionMode.finish();
+        }
+    }
+
+    private void exportGridsAsZip(@NonNull final Set<Long> gridIds, @NonNull final Uri outputUri) {
+        new Thread(() -> {
+            final File tempDir = new File(getCacheDir(),
+                    "multiexport_" + System.currentTimeMillis());
+            tempDir.mkdirs();
+            final List<File> temps = new ArrayList<>();
+            final GridsTable table = new GridsTable(GridsActivity.this);
+            try {
+                for (final long id : gridIds) {
+                    final JoinedGridModel m = table.get(id);
+                    if (m == null) continue;
+                    final String safe = m.getTitle()
+                            .replaceAll("[^a-zA-Z0-9_\\-]", "_")
+                            + "_" + m.getFormattedTimestamp();
+                    final File f = new File(tempDir, safe + ".csv");
+                    m.export(f, safe);
+                    temps.add(f);
+                }
+                try (OutputStream os = getContentResolver().openOutputStream(outputUri);
+                     ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(os))) {
+                    for (final File f : temps) {
+                        zos.putNextEntry(new ZipEntry(f.getName()));
+                        try (FileInputStream fis = new FileInputStream(f)) {
+                            final byte[] buf = new byte[8192];
+                            int len;
+                            while ((len = fis.read(buf)) > 0) zos.write(buf, 0, len);
+                        }
+                        zos.closeEntry();
+                    }
+                }
+                runOnUiThread(this::notifyDataSetChanged);
+            } catch (IOException e) {
+                runOnUiThread(() -> Utils.showLongToast(
+                        GridsActivity.this, getString(R.string.export_failed)));
+            } finally {
+                for (final File f : temps) f.delete();
+                tempDir.delete();
+            }
+        }).start();
+    }
+
+    private void deleteSelectedGrids() {
+        if (gridsAdapter == null) return;
+        final List<Long> ids = new ArrayList<>(gridsAdapter.getSelectedIds());
+        final int count = ids.size();
+        final String msg = count == 1
+                ? getString(R.string.GridDeleterConfirmation)
+                : getString(R.string.multi_delete_confirmation, count);
+        new AlertDialog.Builder(this)
+                .setMessage(msg)
+                .setPositiveButton(android.R.string.yes, (d, w) -> {
+                    gridDeleter().deleteMultiple(ids);
+                    if (actionMode != null) actionMode.finish();
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+    }
+    // endregion
+
     // region createGrid() Private Methods
     private void handleGridCreated(@IntRange(from = 1) final long gridId) {
         this.notifyDataSetChanged();
@@ -373,12 +518,13 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         InsetHandler.applyToolbarInsets(toolbar);
+        InsetHandler.applyStatusBarScrim(this.findViewById(R.id.status_bar_scrim));
 
         this.gridsViewModel = new ViewModelProvider(this).get(
                 ExportingViewModel.class);
 
-        final ListView gridsListView = this.findViewById(
-                R.id.gridsListView);
+        this.gridsListView = this.findViewById(R.id.gridsListView);
+        final ListView gridsListView = this.gridsListView;
 
 
         final String TEMPLATE_ID_KEY = GridsActivity.TEMPLATE_ID_KEY;
@@ -433,6 +579,26 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                 }
             }
             gridsListView.setAdapter(this.gridsAdapter);
+
+            this.gridsAdapter.setSelectionChangedListener(count -> {
+                if (count == 0) {
+                    if (actionMode != null) actionMode.finish();
+                } else {
+                    if (actionMode != null) actionMode.setTitle(getString(R.string.action_mode_selected, count));
+                }
+            });
+
+            this.gridsAdapter.setRowLongClickListener(view -> {
+                if (actionMode != null) return false;
+                final Object tag = view.getTag();
+                if (!(tag instanceof Long)) return false;
+                final long gridId = (Long) tag;
+                if (gridId < 1) return false;
+                gridsAdapter.enterActionMode(gridId);
+                gridsAdapter.notifyDataSetChanged();
+                actionMode = startSupportActionMode(actionModeCallback);
+                return true;
+            });
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             boolean firstLoadComplete = prefs.getBoolean(GeneralKeys.FIRST_LOAD_COMPLETE, false);
