@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.phenoapps.androidlibrary.AlertDialog;
-import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.dialogs.AlertDialog;
+import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.optionalField.BaseOptionalField;
 import org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields;

@@ -26,7 +26,7 @@ import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.Utils;
 import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;

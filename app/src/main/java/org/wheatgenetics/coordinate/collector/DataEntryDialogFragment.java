@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.phenoapps.androidlibrary.ClearingEditorActionListener;
 import org.wheatgenetics.coordinate.BuildConfig;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.optionalField.BaseOptionalField;

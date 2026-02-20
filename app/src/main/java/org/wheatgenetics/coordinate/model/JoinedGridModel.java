@@ -589,7 +589,7 @@ public class JoinedGridModel extends GridModel
             else {
                 // noinspection CStyleArrayDeclaration
                 final String values[] = optionalFields.values(/* names[] => */
-                        org.phenoapps.androidlibrary.Utils.stringArray(name));
+                        org.wheatgenetics.coordinate.Utils.stringArray(name));
                 result = null == values ? null : values[0];
             }
         }

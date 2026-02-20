@@ -52,7 +52,7 @@ public class TemplateImporter implements StringGetter {
 
     // region Private Methods
     private void showLongToast(final String text) {
-        org.phenoapps.androidlibrary.Utils.showLongToast(this.activity, text);
+        org.wheatgenetics.coordinate.Utils.showLongToast(this.activity, text);
     }
 
     @NonNull

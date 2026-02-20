@@ -7,7 +7,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
-import org.phenoapps.androidlibrary.AlertDialog;
+import org.wheatgenetics.coordinate.dialogs.AlertDialog;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
 import org.wheatgenetics.coordinate.model.TemplateModel;

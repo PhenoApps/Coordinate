@@ -6,7 +6,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
+import org.wheatgenetics.coordinate.dialogs.GetExportFileNameAlertDialog;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.database.ProjectsTable;
 import org.wheatgenetics.coordinate.model.ProjectModel;
