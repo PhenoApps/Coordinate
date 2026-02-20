@@ -18,8 +18,10 @@ import org.wheatgenetics.coordinate.adapter.Adapter;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
+import org.wheatgenetics.coordinate.model.JoinedGridModels;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,6 +43,13 @@ abstract class GridsAdapter extends Adapter {
     interface OnSelectionChangedListener {
         void onSelectionChanged(int count);
     }
+    // endregion
+
+    // region Sort constants and field
+    static final int SORT_DEFAULT = 0;
+    static final int SORT_NAME = 1;
+    static final int SORT_DATE = 2;
+    private int sortOrder = SORT_DEFAULT;
     // endregion
     // endregion
 
@@ -84,6 +93,39 @@ abstract class GridsAdapter extends Adapter {
 
     void setSelectionChangedListener(@Nullable final OnSelectionChangedListener listener) {
         this.selectionChangedListener = listener;
+    }
+    // endregion
+
+    // region Sort Methods
+    void setSortOrder(final int sortOrder) {
+        this.sortOrder = sortOrder;
+        notifyDataSetChanged();
+    }
+
+    int getSortOrder() {
+        return sortOrder;
+    }
+
+    void applySort(@Nullable final BaseJoinedGridModels models) {
+        if (!(models instanceof JoinedGridModels) || sortOrder == SORT_DEFAULT) return;
+        final JoinedGridModels jgm = (JoinedGridModels) models;
+        if (sortOrder == SORT_NAME) {
+            jgm.sort(new Comparator<JoinedGridModel>() {
+                @Override
+                public int compare(final JoinedGridModel a, final JoinedGridModel b) {
+                    final String titleA = a.getTitle() != null ? a.getTitle() : "";
+                    final String titleB = b.getTitle() != null ? b.getTitle() : "";
+                    return titleA.compareToIgnoreCase(titleB);
+                }
+            });
+        } else if (sortOrder == SORT_DATE) {
+            jgm.sort(new Comparator<JoinedGridModel>() {
+                @Override
+                public int compare(final JoinedGridModel a, final JoinedGridModel b) {
+                    return Long.compare(b.getTimestamp(), a.getTimestamp());
+                }
+            });
+        }
     }
     // endregion
 

@@ -460,6 +460,8 @@ public class TemplatesActivity extends BackActivity
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_new_template) {
             createTemplate();
+        } else if (item.getItemId() == R.id.action_sort) {
+            showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)
                     .targets(templateActivityTapTargetView(R.id.action_new_template, getString(R.string.tutorial_template_create_title), getString(R.string.tutorial_template_create_summary), 60),
@@ -484,10 +486,40 @@ public class TemplatesActivity extends BackActivity
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_templates_bnv);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_templates);
+
+        if (templatesAdapter != null) {
+            final int saved = PreferenceManager.getDefaultSharedPreferences(this)
+                    .getInt(GeneralKeys.SORT_TEMPLATES, TemplatesAdapter.SORT_DEFAULT);
+            if (templatesAdapter.getSortOrder() != saved) {
+                templatesAdapter.setSortOrder(saved);
+            }
+        }
     }
 
     private TapTarget templateActivityTapTargetView(int id, String title, String desc, int targetRadius) {
         return TapTargetUtil.Companion.getTapTargetSettingsView(this, findViewById(id), title, desc, targetRadius);
+    }
+
+    private void showSortDialog() {
+        if (templatesAdapter == null) return;
+        final String[] options = {
+                getString(R.string.sort_by_name),
+                getString(R.string.sort_by_date)
+        };
+        final int current = templatesAdapter.getSortOrder();
+        final int checked = current == TemplatesAdapter.SORT_NAME ? 0
+                : current == TemplatesAdapter.SORT_DATE ? 1 : -1;
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.sort_title)
+                .setSingleChoiceItems(options, checked, (dialog, which) -> {
+                    final int order = which == 0 ? TemplatesAdapter.SORT_NAME : TemplatesAdapter.SORT_DATE;
+                    templatesAdapter.setSortOrder(order);
+                    PreferenceManager.getDefaultSharedPreferences(this)
+                            .edit().putInt(GeneralKeys.SORT_TEMPLATES, order).apply();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private void setupBottomNavigationBar() {

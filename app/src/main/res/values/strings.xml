@@ -589,6 +589,11 @@
     <string name="menu_projects_new">New project</string>
     <string name="menu_templates_new">New template</string>
     <string name="menu_grids_new">New grid</string>
+    <string name="menu_sort">Sort</string>
+    <string name="sort_title">Sort by</string>
+    <string name="sort_by_name">Name</string>
+    <string name="sort_by_date">Date Created</string>
+    <string name="sort_by_grid_count">Number of Grids</string>
 
     <string name="back_button_twice_press">Press back again to close app.</string>
     <string name="database_export_success">Database export successful!</string>

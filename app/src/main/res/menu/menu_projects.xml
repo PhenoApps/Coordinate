@@ -9,6 +9,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/action_sort"
+        android:icon="@drawable/ic_sort_white"
+        android:title="@string/menu_sort"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/help"
         android:icon="@drawable/ic_help_white"
         android:title="@string/preferences_appearance_tutorial_title"

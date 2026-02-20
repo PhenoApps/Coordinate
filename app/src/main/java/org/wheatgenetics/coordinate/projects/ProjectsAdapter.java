@@ -19,6 +19,10 @@ import org.wheatgenetics.coordinate.database.ProjectsTable;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.ProjectModels;
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
 class ProjectsAdapter extends NonGridsAdapter {
     // region Fields
     // region Table Fields
@@ -28,6 +32,14 @@ class ProjectsAdapter extends NonGridsAdapter {
 
     private ProjectModels projectModelsInstance = null;  // lazy
     // endregion                                                                            //  load
+
+    // region Sort fields
+    static final int SORT_DEFAULT = 0;
+    static final int SORT_NAME = 1;
+    static final int SORT_DATE = 2;
+    static final int SORT_GRID_COUNT = 3;
+    private int sortOrder = SORT_DEFAULT;
+    // endregion
 
     ProjectsAdapter(
             @NonNull final Activity activity,
@@ -63,9 +75,56 @@ class ProjectsAdapter extends NonGridsAdapter {
 
     @Nullable
     private ProjectModels projectModels() {
-        if (null == this.projectModelsInstance)
+        if (null == this.projectModelsInstance) {
             this.projectModelsInstance = this.projectsTable().load();
+            if (null != this.projectModelsInstance && sortOrder != SORT_DEFAULT) {
+                if (sortOrder == SORT_NAME) {
+                    this.projectModelsInstance.sort(new Comparator<ProjectModel>() {
+                        @Override
+                        public int compare(final ProjectModel a, final ProjectModel b) {
+                            final String titleA = a.getTitle() != null ? a.getTitle() : "";
+                            final String titleB = b.getTitle() != null ? b.getTitle() : "";
+                            return titleA.compareToIgnoreCase(titleB);
+                        }
+                    });
+                } else if (sortOrder == SORT_DATE) {
+                    this.projectModelsInstance.sort(new Comparator<ProjectModel>() {
+                        @Override
+                        public int compare(final ProjectModel a, final ProjectModel b) {
+                            return Long.compare(b.getTimestamp(), a.getTimestamp());
+                        }
+                    });
+                } else if (sortOrder == SORT_GRID_COUNT) {
+                    final int size = this.projectModelsInstance.size();
+                    final Map<Long, Integer> gridCounts = new HashMap<>();
+                    for (int i = 0; i < size; i++) {
+                        final ProjectModel pm = this.projectModelsInstance.get(i);
+                        if (null != pm)
+                            gridCounts.put(pm.getId(), gridsTable().numberInProject(pm.getId()));
+                    }
+                    this.projectModelsInstance.sort(new Comparator<ProjectModel>() {
+                        @Override
+                        public int compare(final ProjectModel a, final ProjectModel b) {
+                            final Integer countA = gridCounts.get(a.getId());
+                            final Integer countB = gridCounts.get(b.getId());
+                            return Integer.compare(
+                                    null != countA ? countA : 0,
+                                    null != countB ? countB : 0);
+                        }
+                    });
+                }
+            }
+        }
         return this.projectModelsInstance;
+    }
+
+    void setSortOrder(final int sortOrder) {
+        this.sortOrder = sortOrder;
+        notifyDataSetChanged();
+    }
+
+    int getSortOrder() {
+        return sortOrder;
     }
 
     // region Overridden Methods

@@ -20,6 +20,8 @@ import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.model.TemplateModels;
 
+import java.util.Comparator;
+
 class TemplatesAdapter extends NonGridsAdapter {
     // region Fields
     // region Table Fields
@@ -28,6 +30,13 @@ class TemplatesAdapter extends NonGridsAdapter {
     // endregion
 
     private TemplateModels templateModelsInstance = null;   // ll
+    // endregion
+
+    // region Sort fields
+    static final int SORT_DEFAULT = 0;
+    static final int SORT_NAME = 1;
+    static final int SORT_DATE = 2;
+    private int sortOrder = SORT_DEFAULT;
     // endregion
 
     private View.OnClickListener editTemplateButtonListener = null;
@@ -69,9 +78,38 @@ class TemplatesAdapter extends NonGridsAdapter {
 
     @Nullable
     private TemplateModels templateModels() {
-        if (null == this.templateModelsInstance)
+        if (null == this.templateModelsInstance) {
             this.templateModelsInstance = this.templatesTable().load();
+            if (null != this.templateModelsInstance && sortOrder != SORT_DEFAULT) {
+                if (sortOrder == SORT_NAME) {
+                    this.templateModelsInstance.sort(new Comparator<TemplateModel>() {
+                        @Override
+                        public int compare(final TemplateModel a, final TemplateModel b) {
+                            final String titleA = a.getTitle() != null ? a.getTitle() : "";
+                            final String titleB = b.getTitle() != null ? b.getTitle() : "";
+                            return titleA.compareToIgnoreCase(titleB);
+                        }
+                    });
+                } else if (sortOrder == SORT_DATE) {
+                    this.templateModelsInstance.sort(new Comparator<TemplateModel>() {
+                        @Override
+                        public int compare(final TemplateModel a, final TemplateModel b) {
+                            return Long.compare(b.getTimestamp(), a.getTimestamp());
+                        }
+                    });
+                }
+            }
+        }
         return this.templateModelsInstance;
+    }
+
+    void setSortOrder(final int sortOrder) {
+        this.sortOrder = sortOrder;
+        notifyDataSetChanged();
+    }
+
+    int getSortOrder() {
+        return sortOrder;
     }
 
     // region Overridden Methods

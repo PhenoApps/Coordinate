@@ -54,5 +54,10 @@ class GeneralKeys private constructor() {
         const val LAST_TIME_OPENED = COORDINATE_PREFIX + "LAST_TIME_OPENED"
         const val VERIFICATION_INTERVAL = COORDINATE_PREFIX + "VERIFICATION_INTERVAL"
 
+        // Sort Preferences
+        const val SORT_GRIDS = COORDINATE_PREFIX + "SORT_GRIDS"
+        const val SORT_TEMPLATES = COORDINATE_PREFIX + "SORT_TEMPLATES"
+        const val SORT_PROJECTS = COORDINATE_PREFIX + "SORT_PROJECTS"
+
     }
 }
