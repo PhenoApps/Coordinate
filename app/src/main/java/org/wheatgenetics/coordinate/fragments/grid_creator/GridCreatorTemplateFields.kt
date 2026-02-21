@@ -10,10 +10,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -47,6 +45,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
     private var mEntriesTable: EntriesTable? = null
 
     private lateinit var fieldsAdapter: FieldsAdapter
+    private var templateFields: NonNullOptionalFields? = null
 
     private val mTemplate: TemplateModel? by lazy {
         mTemplatesTable?.load()?.find { it.title == args.title }
@@ -210,16 +209,8 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
         val fields = NonNullOptionalFields(this)
 
-//        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
-
-//        listView?.children?.forEach {
-//            val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
-//            val valueEditText = it.findViewById<EditText>(R.id.list_item_field_et)
-//            fields.add(nameTextView.text.toString(), valueEditText.text.toString(), null)
-//        }
-
-        fieldsAdapter.getAllFieldValues().forEach { (name, value) ->
-            fields.add(name, value, null)
+        templateFields?.forEach { field ->
+            fields.add(field.name, field.value, null)
         }
 
         return fields
@@ -230,13 +221,10 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
         val requiredName = getRequiredName()
 
-        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
-
-        listView?.children?.forEach {
-            val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
-            if (nameTextView.text == requiredName) {
-                val valueEditText = it.findViewById<EditText>(R.id.list_item_field_et)
-                valueEditText.setText(text)
+        templateFields?.forEachIndexed { index, field ->
+            if (field.name == requiredName) {
+                field.value = text
+                fieldsAdapter.notifyItemChanged(index)
             }
         }
     }
@@ -246,19 +234,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
         val requiredName = getRequiredName()
 
-        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
-
-        listView?.children?.forEach {
-            val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
-            if (nameTextView.text == requiredName) {
-                val valueEditText = it.findViewById<EditText>(R.id.list_item_field_et)
-                if (valueEditText.text.isNotBlank()) {
-                    return true
-                }
-            }
-        }
-
-        return false
+        return templateFields?.any { it.name == requiredName && it.value.isNotBlank() } ?: false
     }
 
     private fun getRequiredName(): String = when (args.title) {
@@ -307,7 +283,9 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
                     }
                 }
 
-                fieldsAdapter = FieldsAdapter(this, requiredName, fields)
+                templateFields = fields
+
+                fieldsAdapter = FieldsAdapter(this, requiredName)
 
                 val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
 
