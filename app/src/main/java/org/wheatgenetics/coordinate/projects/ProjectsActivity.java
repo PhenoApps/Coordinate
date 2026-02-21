@@ -24,6 +24,7 @@ import androidx.preference.PreferenceManager;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.BackActivity;
@@ -283,6 +284,9 @@ public class ProjectsActivity extends BackActivity {
         setupBottomNavigationBar();
         InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_projects_bnv));
 
+        FloatingActionButton fabNewProject = this.findViewById(R.id.fab_new_project);
+        if (fabNewProject != null) fabNewProject.setOnClickListener(v -> projectCreator().createAndReturn());
+
         if (null != projectsListView) projectsListView.setAdapter(this.projectsAdapter =
                 new ProjectsAdapter(this,
                         /* onCreateGridButtonClickListener => */ new View.OnClickListener() {
@@ -314,13 +318,11 @@ public class ProjectsActivity extends BackActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_new_project) {
-            projectCreator().createAndReturn();
-        } else if (item.getItemId() == R.id.action_sort) {
+        if (item.getItemId() == R.id.action_sort) {
             showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)
-                    .targets(projectsActivityTapTargetView(R.id.action_new_project, getString(R.string.tutorial_project_create_title), getString(R.string.tutorial_project_create_summary), 60)
+                    .targets(projectsActivityTapTargetView(R.id.fab_new_project, getString(R.string.tutorial_project_create_title), getString(R.string.tutorial_project_create_summary), 60)
                     );
             if (!projectsAdapter.isEmpty()) {
                 sequence.targets(

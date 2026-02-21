@@ -12,12 +12,6 @@
         tools:ignore="AlwaysShowAction" />
 
     <item
-        android:id="@+id/action_new_template"
-        android:icon="@drawable/ic_create_template_white"
-        android:title="@string/menu_templates_new"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort_white"
         android:title="@string/menu_sort"
