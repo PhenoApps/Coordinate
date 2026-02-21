@@ -52,6 +52,30 @@ object InsetHandler {
     }
 
     /**
+     * Applies system bar insets to both a toolbar (top) and a root view (bottom), and also
+     * handles IME (keyboard) insets on the root view so that bottom-anchored buttons are pushed
+     * above the soft keyboard when it appears.
+     * Use this for activities that contain text input fields (e.g. grid/template creator flows).
+     * Callable from Java via InsetHandler.setupStandardInsetsWithIme(rootView, toolbar).
+     */
+    @JvmStatic
+    fun setupStandardInsetsWithIme(rootView: View, toolbar: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->
+            val bars = insets.getInsets(systemBarsAndCutout)
+            v.updatePadding(top = bars.top)
+            insets
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
+            val bars = insets.getInsets(
+                systemBarsAndCutout or WindowInsetsCompat.Type.ime()
+            )
+            v.updatePadding(bottom = bars.bottom)
+            insets
+        }
+        ViewCompat.requestApplyInsets(rootView)
+    }
+
+    /**
      * Applies system bar insets to both a toolbar (top) and a root view (bottom).
      * Use this for activities that do NOT have a BottomNavigationView.
      * The toolbar receives paddingTop = status bar height (content appears below the status bar).
