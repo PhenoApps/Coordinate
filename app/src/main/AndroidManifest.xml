@@ -19,7 +19,7 @@
             android:theme="@style/MaterialAppThemeNoActionBar"/>
 
         <activity android:name=".activity.TemplateCreatorActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/MaterialAppThemeNoActionBar"/>
 
         <activity android:name=".activity.DefineStorageActivity"
