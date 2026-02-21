@@ -25,9 +25,6 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
     private val args: GridCreatorTemplateOptionsArgs by navArgs()
 
     private var mTemplatesTable: TemplatesTable? = null
-
-    private var mSelectedTemplateTitle: String? = null
-
     private val mTemplateActivityStarter = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
         result?.let {
@@ -78,14 +75,8 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         val okButton = view?.findViewById<Button>(R.id.frag_next_btn)
         val backButton = view?.findViewById<Button>(R.id.frag_back_btn)
 
-        setDisabledNext()
-
-        okButton?.setOnClickListener {
-            mSelectedTemplateTitle?.let { title ->
-                findNavController().navigate(GridCreatorTemplateOptionsDirections
-                    .actionTemplateOptionsToTemplateFields(title).setProject(args.project))
-            }
-        }
+        // Next button is not needed — selection navigates immediately
+        okButton?.visibility = View.GONE
 
         backButton?.setOnClickListener {
             navigateBack()
@@ -111,15 +102,6 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         }
     }
 
-    private fun setDisabledNext() {
-        val okButton = view?.findViewById<Button>(R.id.frag_next_btn)
-        okButton?.isEnabled = false
-    }
-
-    private fun setNextText() {
-        val okButton = view?.findViewById<Button>(R.id.frag_next_btn)
-        okButton?.isEnabled = true
-    }
 
     private fun setupAdapter() {
 
@@ -151,11 +133,8 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
     }
 
     override fun checked(title: String) {
-
-        mSelectedTemplateTitle = title
-
-        setNextText()
-
+        findNavController().navigate(GridCreatorTemplateOptionsDirections
+            .actionTemplateOptionsToTemplateFields(title).setProject(args.project))
     }
 
     override fun onAddNewItemClicked() {

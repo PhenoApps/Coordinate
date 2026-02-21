@@ -515,10 +515,11 @@
     <string name="frag_grid_creator_project_add_title">Add grid to a project</string>
     <string name="frag_grid_creator_add_project_summary">Optionally create a new project or select an existing project below.</string>
     <string name="frag_grid_creator_template_options_title">Select a Template</string>
-    <string name="frag_grid_creator_new_template_title">Template name and dimensions</string>
+    <string name="frag_grid_creator_new_template_title">New template</string>
     <string name="frag_grid_creator_template_rows_et_hint">Number of rows</string>
     <string name="frag_grid_creator_template_columns_et_hint">Number of columns</string>
     <string name="frag_grid_creator_template_name_et_hint">Template name</string>
+    <string name="frag_template_creator_new_template_title">Template name and dimensions</string>
     <string name="frag_template_creator_options_title">Optional fields</string>
     <string name="frag_template_creator_options_summary">Metadata fields can be added or removed from each template.</string>
     <string name="frag_template_creator_options_new">Create a new field.</string>
