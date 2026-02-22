@@ -10,7 +10,6 @@ import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.wheatgenetics.coordinate.R
@@ -21,8 +20,6 @@ import org.wheatgenetics.coordinate.interfaces.TitleSelectedListener
 
 class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_template_options),
     TitleSelectedListener {
-
-    private val args: GridCreatorTemplateOptionsArgs by navArgs()
 
     private var mTemplatesTable: TemplatesTable? = null
     private val mTemplateActivityStarter = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -58,6 +55,14 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         setupAdapter()
         setupButtons()
 
+        // if in project-edit mode, skip directly to project selection
+        val projectEdit = activity?.intent?.getBooleanExtra("projectEdit", false) ?: false
+        if (projectEdit) {
+            findNavController().navigate(GridCreatorTemplateOptionsDirections
+                .actionTemplateOptionsToProjectOptions())
+            return
+        }
+
         // check if this creator started from the templates activity
         // or if from grids activity via template filter
         // (skip this fragment)
@@ -65,7 +70,7 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         if (templateId != -1L) {
             mTemplatesTable?.load()?.find { it.id == templateId }?.title?.let { title ->
                 findNavController().navigate(GridCreatorTemplateOptionsDirections
-                    .actionTemplateOptionsToTemplateFields(title).setProject(args.project))
+                    .actionTemplateOptionsToTemplateFields(title))
             }
         }
     }
@@ -84,22 +89,8 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
     }
 
     private fun navigateBack() {
-        val projectId = activity?.intent?.getLongExtra("projectId", -1L)
-        with (findNavController()) {
-            when {
-                projectId != -1L -> {
-                    activity?.setResult(Activity.RESULT_CANCELED)
-                    activity?.finish()
-                }
-                (previousBackStackEntry?.destination?.id ?: -1) == R.id.project_options -> {
-                    popBackStack(R.id.project_options, false)
-                }
-                else -> {
-                    activity?.setResult(Activity.RESULT_CANCELED)
-                    activity?.finish()
-                }
-            }
-        }
+        activity?.setResult(Activity.RESULT_CANCELED)
+        activity?.finish()
     }
 
 
@@ -134,7 +125,7 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
 
     override fun checked(title: String) {
         findNavController().navigate(GridCreatorTemplateOptionsDirections
-            .actionTemplateOptionsToTemplateFields(title).setProject(args.project))
+            .actionTemplateOptionsToTemplateFields(title))
     }
 
     override fun onAddNewItemClicked() {

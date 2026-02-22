@@ -3,29 +3,37 @@ package org.wheatgenetics.coordinate.fragments.grid_creator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
 import org.wheatgenetics.coordinate.adapter.TitleChoiceAdapter
+import org.wheatgenetics.coordinate.database.EntriesTable
 import org.wheatgenetics.coordinate.database.GridsTable
 import org.wheatgenetics.coordinate.database.ProjectsTable
 import org.wheatgenetics.coordinate.interfaces.TitleSelectedListener
+import org.wheatgenetics.coordinate.model.Cell
+import org.wheatgenetics.coordinate.model.JoinedGridModel
 import org.wheatgenetics.coordinate.model.ProjectModel
+import org.wheatgenetics.coordinate.model.TemplateModel
 import org.wheatgenetics.coordinate.pc.CreateProjectDialogFragment
 
 class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_project_options),
     TitleSelectedListener, StringGetter {
 
-    private var mProjectsTable: ProjectsTable? = null
+    private val viewModel: GridCreatorViewModel by activityViewModels()
 
+    private var mProjectsTable: ProjectsTable? = null
     private var mGridsTable: GridsTable? = null
+    private var mEntriesTable: EntriesTable? = null
 
     private var mSelectedProjectTitle: String? = null
 
@@ -34,6 +42,7 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         activity?.let { act ->
             mProjectsTable = ProjectsTable(act)
             mGridsTable = GridsTable(act)
+            mEntriesTable = EntriesTable(act)
         }
     }
 
@@ -55,21 +64,14 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         setupAdapter()
         setupButtons()
 
-        // check if this creator started from the projects activity
-        // or if from grids activity via project filter
-        // (skip this fragment)
-        val projectId = activity?.intent?.getLongExtra("projectId", -1L)
+        // check if launched from projects activity with a pre-set project
+        // auto-complete grid creation with that project
+        val projectId = activity?.intent?.getLongExtra("projectId", -1L) ?: -1L
         if (projectId != -1L) {
-
-            val projects = mProjectsTable?.load()
-            val size = projects?.size() ?: 0
-            for (i in 0 until size) {
-                projects?.get(i)?.let { p ->
-                    if (p.id == projectId) {
-                        findNavController().navigate(GridCreatorProjectOptionsDirections
-                            .actionProjectOptionsToTemplateOptions().setProject(p.title))
-                    }
-                }
+            val id = writeToDatabase(projectId)
+            if (id != -1L) {
+                activity?.setResult(Activity.RESULT_OK, Intent().putExtra("gridId", id))
+                activity?.finish()
             }
         }
     }
@@ -93,7 +95,7 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
                     getProjectId(mSelectedProjectTitle)?.let { pid ->
                         mGridsTable?.get(gridId)?.let { grid ->
                             mGridsTable?.update(grid.apply {
-                                projectId = pid
+                                this.projectId = pid
                             })
                         }
                     }
@@ -103,8 +105,12 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
                 }
 
             } else {
-                findNavController().navigate(GridCreatorProjectOptionsDirections
-                    .actionProjectOptionsToTemplateOptions().setProject(mSelectedProjectTitle))
+                val resolvedProjectId = getProjectId(mSelectedProjectTitle) ?: 0L
+                val id = writeToDatabase(resolvedProjectId)
+                if (id != -1L) {
+                    activity?.setResult(Activity.RESULT_OK, Intent().putExtra("gridId", id))
+                    activity?.finish()
+                }
             }
         }
 
@@ -114,8 +120,55 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
     }
 
     private fun navigateBack() {
-        activity?.setResult(Activity.RESULT_CANCELED)
-        activity?.finish()
+        val projectEdit = activity?.intent?.getBooleanExtra("projectEdit", false) ?: false
+        if (projectEdit) {
+            activity?.setResult(Activity.RESULT_CANCELED)
+            activity?.finish()
+        } else {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun writeToDatabase(projectId: Long): Long {
+        val template = viewModel.template ?: return -1L
+        val fields = viewModel.optionalFields ?: return -1L
+        var retId = -1L
+
+        val jgm = JoinedGridModel(projectId, null, fields, this, template)
+        mGridsTable?.insert(jgm)?.let { id ->
+
+            retId = id
+
+            //have to manually set the id after inserting
+            jgm.id = id
+
+            //update the first available non excluded cell (first cell the collector activity starts with)
+            getActiveRowCol(template)?.let { active ->
+                jgm.setActiveRowAndActiveCol(active.first, active.second)
+            }
+
+            //update table with the active row/col and id
+            mGridsTable?.update(jgm)
+
+            //have to manually call this to populate the entries table
+            jgm.makeEntryModels()
+            mEntriesTable?.insert(jgm.entryModels)
+        }
+
+        return retId
+    }
+
+    private fun getActiveRowCol(template: TemplateModel): Pair<Int, Int>? {
+        val rows = template.rows
+        val cols = template.cols
+        for (j in 0 until cols) {
+            for (i in 0 until rows) {
+                if (!template.isExcludedCell(Cell(i+1, j+1, this))) {
+                    return Pair(i, j)
+                }
+            }
+        }
+        return null
     }
 
     private fun getProjectId(title: String?): Long? {
