@@ -572,6 +572,7 @@
     <string name="BaseCollectorFilledGridAlertMessage">Grid has been filled!</string>
     <string name="grid_export_text">Export Grid</string>
     <string name="menu_collector_meta_data_title">Summarize Data</string>
+    <string name="menu_fit_to_width">Fit to Width</string>
     <string name="project_edit_menu_item_click">Edit Project</string>
 
     <string name="bottom_nav_bar_settings">Settings</string>

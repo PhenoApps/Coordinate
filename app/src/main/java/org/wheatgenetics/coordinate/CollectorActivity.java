@@ -28,6 +28,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.wheatgenetics.coordinate.display.FitToWidthRecyclerView;
+
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -66,6 +68,7 @@ public class CollectorActivity extends BackActivity implements
     // endregion
 
     private Menu systemMenu;
+    private boolean mFitToWidth = false;
 
     @NonNull
     public static Intent intent(
@@ -182,6 +185,47 @@ public class CollectorActivity extends BackActivity implements
         }
     }
 
+    private void applyFitToWidth(boolean fit) {
+        FitToWidthRecyclerView recyclerView = findViewById(R.id.displayRecyclerView);
+        if (recyclerView == null) return;
+
+        // HorizontalScrollView always passes UNSPECIFIED to its children regardless of layoutParams,
+        // so the only way to enforce a fixed width is to intercept onMeasure in the RecyclerView itself.
+        HorizontalScrollView hsv = (HorizontalScrollView) recyclerView.getParent();
+
+        // Compute scale factor before applying fit (recyclerView.getWidth() is still natural width).
+        float scaleFactor = 1.0f;
+        int cellSize = ViewGroup.LayoutParams.WRAP_CONTENT;
+        if (fit) {
+            int naturalWidth = recyclerView.getWidth();
+            int targetWidth = hsv.getWidth();
+            if (naturalWidth > 0) {
+                scaleFactor = Math.min(1.0f, (float) targetWidth / naturalWidth);
+            }
+            // Divide available width evenly; subtract the 5dp margin (both sides) so the
+            // rendered view dimensions match — GridLayoutManager subtracts margins from the
+            // child's width (MATCH_PARENT), but uses lp.height as-is for exact heights.
+            DisplayModel displayModel = getDisplayModel();
+            if (displayModel != null && targetWidth > 0) {
+                int spanCount = 1 + displayModel.getCols();
+                int marginPx = (int) android.util.TypedValue.applyDimension(
+                        android.util.TypedValue.COMPLEX_UNIT_DIP, 5,
+                        getResources().getDisplayMetrics());
+                cellSize = targetWidth / spanCount - 2 * marginPx;
+            }
+        }
+
+        recyclerView.setFitToWidth(fit, hsv.getWidth());
+
+        GridDisplayFragment gridDisplayFragment =
+                (GridDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.gridDisplayFragment);
+        if (gridDisplayFragment != null) {
+            gridDisplayFragment.resetCellWidth();
+            gridDisplayFragment.setCompact(fit, scaleFactor, cellSize);
+            if (!fit) gridDisplayFragment.normalizeCellSizes();
+        }
+    }
+
     private void setupBarcodeButton() {
 
         try {
@@ -224,6 +268,16 @@ public class CollectorActivity extends BackActivity implements
     protected void onStart() {
         super.onStart();
         this.collector().populateFragments();
+        GridDisplayFragment gridDisplayFragment =
+                (GridDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.gridDisplayFragment);
+        if (gridDisplayFragment != null) {
+            if (mFitToWidth) {
+                // Re-apply fit-to-width so compact state is restored after background/resume.
+                applyFitToWidth(true);
+            } else {
+                gridDisplayFragment.normalizeCellSizes();
+            }
+        }
     }
 
     @Override
@@ -433,7 +487,16 @@ public class CollectorActivity extends BackActivity implements
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId() == R.id.action_summarize_data) {
+        if (item.getItemId() == R.id.action_fit_to_width) {
+            mFitToWidth = !mFitToWidth;
+            applyFitToWidth(mFitToWidth);
+            MenuItem fitItem = systemMenu.findItem(R.id.action_fit_to_width);
+            if (fitItem != null) {
+                fitItem.setIcon(mFitToWidth
+                        ? R.drawable.ic_fit_to_expand
+                        : R.drawable.ic_fit_to_width);
+            }
+        } else if (item.getItemId() == R.id.action_summarize_data) {
             new DataEntryDialogFragment().show(getSupportFragmentManager(), TAG);
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)
