@@ -57,6 +57,11 @@ abstract class TopOrLeftViewHolder extends ViewHolder {
         this.setTextViewText(this.textView(), text);
     }
 
+    /** Called from Adapter to display a custom label string directly (bypasses subclass restriction). */
+    void bindLabel(final String text, final boolean compact, final float scaleFactor) {
+        bind(text, compact, scaleFactor);
+    }
+
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     void bind(final String text, final boolean compact, final float scaleFactor) {
         TextView tv = this.textView();

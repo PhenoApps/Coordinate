@@ -46,10 +46,12 @@ import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.wheatgenetics.coordinate.ImportedCollectorActivity;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.gi.ImportedGridImporter;
 import org.wheatgenetics.coordinate.activities.BaseMainActivity;
 import org.wheatgenetics.coordinate.activity.AppIntroActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
@@ -188,6 +190,55 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         }
     });
 
+    private Uri pendingImportUri = null;
+    private String pendingImportFilename = null;
+    private final ActivityResultLauncher<String[]> importCsvLauncher =
+            registerForActivityResult(new ActivityResultContracts.OpenDocument(), uri -> {
+                if (uri != null) {
+                    // Resolve display name from URI
+                    String filename = resolveFilename(uri);
+                    // Strip .csv extension if present
+                    if (filename != null && filename.toLowerCase().endsWith(".csv")) {
+                        filename = filename.substring(0, filename.length() - 4);
+                    }
+                    if (filename == null || filename.isEmpty()) filename = "Imported";
+                    importedGridImporter().importFromUri(uri, filename);
+                }
+            });
+
+    @NonNull
+    private ImportedGridImporter importedGridImporter() {
+        return new ImportedGridImporter(this, new ImportedGridImporter.Handler() {
+            @Override
+            public void onImportSuccess(final long gridId) {
+                GridsActivity.this.notifyDataSetChanged();
+                GridsActivity.this.startCollectorActivity(gridId);
+            }
+            @Override
+            public void onImportError(final String message) {
+                new android.app.AlertDialog.Builder(GridsActivity.this)
+                        .setTitle(R.string.ImportedGridErrorTitle)
+                        .setMessage(message)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+            }
+        });
+    }
+
+    @Nullable
+    private String resolveFilename(@NonNull final Uri uri) {
+        try (android.database.Cursor c = getContentResolver().query(
+                uri, new String[]{android.provider.OpenableColumns.DISPLAY_NAME},
+                null, null, null)) {
+            if (c != null && c.moveToFirst()) {
+                return c.getString(0);
+            }
+        } catch (Exception ignored) { }
+        // Fallback: last path segment
+        final String path = uri.getLastPathSegment();
+        return path != null ? new java.io.File(path).getName() : null;
+    }
+
     // region intent Private Methods
     @NonNull
     private static Intent INTENT(
@@ -251,8 +302,12 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     // region Private Methods
     private void startCollectorActivity(@IntRange(from = 1) final long gridId) {
-        this.startActivity(
-                CollectorActivity.intent(this, gridId));
+        final JoinedGridModel model = new GridsTable(this).get(gridId);
+        if (model != null && model.isImported()) {
+            this.startActivity(ImportedCollectorActivity.intent(this, gridId));
+        } else {
+            this.startActivity(CollectorActivity.intent(this, gridId));
+        }
     }
     // endregion
 
@@ -456,11 +511,11 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                 : getString(R.string.multi_delete_confirmation, count);
         new AlertDialog.Builder(this)
                 .setMessage(msg)
-                .setPositiveButton(android.R.string.yes, (d, w) -> {
+                .setPositiveButton(R.string.delete_button, (d, w) -> {
                     gridDeleter().deleteMultiple(ids);
                     if (actionMode != null) actionMode.finish();
                 })
-                .setNegativeButton(android.R.string.no, null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
     // endregion
@@ -552,6 +607,10 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
         FloatingActionButton fabNewGrid = this.findViewById(R.id.fab_new_grid);
         if (fabNewGrid != null) fabNewGrid.setOnClickListener(v -> createGrid());
+
+        FloatingActionButton fabImportGrid = this.findViewById(R.id.fab_import_grid);
+        if (fabImportGrid != null) fabImportGrid.setOnClickListener(v ->
+                importCsvLauncher.launch(new String[]{"text/csv", "text/comma-separated-values", "text/*"}));
 
         setupActionBar();
 

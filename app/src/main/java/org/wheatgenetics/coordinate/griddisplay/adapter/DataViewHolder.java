@@ -18,6 +18,7 @@ import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel;
 import org.wheatgenetics.coordinate.model.EntryModel;
 import org.wheatgenetics.coordinate.model.ExcludedEntryModel;
+import org.wheatgenetics.coordinate.model.ImportedEntryModel;
 import org.wheatgenetics.coordinate.model.IncludedEntryModel;
 
 /**
@@ -60,6 +61,7 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
     @Nullable
     private final
     CheckedIncludedEntryModel.Checker checker;
+    private final boolean importedMode;
     private View.OnLongClickListener onLongClickListenerInstance = null;   // lazy load
     // endregion
 
@@ -72,8 +74,23 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
             DataViewHolder.GridHandler gridHandler,
             @Nullable final
             CheckedIncludedEntryModel.Checker checker) {
+        this(itemView, context, handler, gridHandler, checker, false);
+    }
+
+    DataViewHolder(
+            @NonNull final ImageView itemView,
+            @NonNull final Context context,
+            @NonNull final
+            DataViewHolder.Handler handler,
+            @NonNull final
+            DataViewHolder.GridHandler gridHandler,
+            @Nullable final
+            CheckedIncludedEntryModel.Checker checker,
+            final boolean importedMode) {
         super(itemView, handler);
-        this.itemView.setOnLongClickListener(this.onLongClickListener());
+        this.importedMode = importedMode;
+        // In imported mode, disable long-press cell exclusion
+        if (!importedMode) this.itemView.setOnLongClickListener(this.onLongClickListener());
         this.context = context;
         this.gridHandler = gridHandler;
         this.checker = checker;
@@ -91,7 +108,17 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
     }
 
     private void activate() {
-        this.setImage(R.drawable.active_entry);
+        if (importedMode) {
+            final EntryModel em = entryModel();
+            if (em instanceof ImportedEntryModel && ((ImportedEntryModel) em).isConfirmed()) {
+                // Already confirmed: show orange background with black checkmark
+                this.setImage(R.drawable.imported_active_confirmed_entry);
+            } else {
+                this.setImage(R.drawable.imported_active_entry);
+            }
+        } else {
+            this.setImage(R.drawable.active_entry);
+        }
         this.gridHandler.activate(this);
     }
 

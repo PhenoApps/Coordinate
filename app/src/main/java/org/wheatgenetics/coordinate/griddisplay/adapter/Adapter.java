@@ -22,6 +22,7 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
     @Nullable
     private final
     CheckedIncludedEntryModel.Checker checker;
+    private final boolean importedMode;
     // endregion
 
     private int activeRow, activeCol;
@@ -37,12 +38,27 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
             DataViewHolder.GridHandler gridHandler,
             @Nullable final
             CheckedIncludedEntryModel.Checker checker) {
+        this(displayModel, context, activeRow, activeCol, handler, gridHandler, checker, false);
+    }
+
+    public Adapter(
+            @NonNull final DisplayModel displayModel,
+            @NonNull final Context context,
+            final int activeRow, final int activeCol,
+            @NonNull final
+            DataViewHolder.Handler handler,
+            @NonNull final
+            DataViewHolder.GridHandler gridHandler,
+            @Nullable final
+            CheckedIncludedEntryModel.Checker checker,
+            final boolean importedMode) {
         super(context, displayModel, handler);
 
         this.activeRow = activeRow;
         this.activeCol = activeCol;
         this.gridHandler = gridHandler;
         this.checker = checker;
+        this.importedMode = importedMode;
     }
 
     private void activate(@NonNull final
@@ -69,7 +85,7 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
                         Adapter.this.activate(
                                 dataViewHolder);
                     }
-                }, this.checker);
+                }, this.checker, this.importedMode);
     }
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)

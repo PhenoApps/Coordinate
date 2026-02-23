@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Confirmed normal: solid blue fill + thin white checkmark, no outline -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#2196F3" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/ic_check_white_cell"
+        android:gravity="center" />
+</layer-list>
