@@ -2,7 +2,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/grid_creator_graph"
-    app:startDestination="@id/template_dimensions">
+    app:startDestination="@id/restore_builtins">
+
+    <fragment
+        android:id="@+id/restore_builtins"
+        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorRestoreBuiltins"
+        android:label="Restore Built-in Templates"
+        tools:layout="@layout/fragment_template_creator_restore_builtins">
+        <action
+            android:id="@+id/action_restore_builtins_to_dimensions"
+            app:destination="@id/template_dimensions" />
+    </fragment>
 
     <fragment
         android:id="@+id/template_dimensions"

@@ -194,7 +194,37 @@ public class TemplatesActivity extends BackActivity
     }
     // endregion
 
+    private void addToHiddenBuiltins(final long templateId) {
+        final TemplateModel tm = this.templatesTable().get(templateId);
+        if (tm == null) return;
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final String existing = prefs.getString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, "");
+        final String typeCode = String.valueOf(tm.getType().getCode());
+        final String updated;
+        if (existing == null || existing.isEmpty()) {
+            updated = typeCode;
+        } else {
+            // Avoid duplicates
+            final java.util.Set<String> codes = new java.util.HashSet<>(
+                    java.util.Arrays.asList(existing.split(",")));
+            codes.add(typeCode);
+            updated = android.text.TextUtils.join(",", codes);
+        }
+        prefs.edit().putString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, updated).apply();
+        this.notifyDataSetChanged();
+    }
+
     private void deleteTemplate(@IntRange(from = 1) final long templateId) {
+        final TemplateModel tm = this.templatesTable().get(templateId);
+        if (tm != null && tm.isDefaultTemplate()) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.dialog_act_templates_ask_hide_builtin)
+                    .setPositiveButton(android.R.string.ok, (dialog, which) ->
+                            addToHiddenBuiltins(templateId))
+                    .setNegativeButton(android.R.string.cancel, (dialog, which) -> { })
+                    .show();
+            return;
+        }
 
         AlertDialog.Builder askDelete = new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_act_templates_ask_delete)

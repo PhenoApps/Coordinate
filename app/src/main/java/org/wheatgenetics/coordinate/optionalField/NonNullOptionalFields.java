@@ -247,6 +247,17 @@ public class NonNullOptionalFields extends OptionalFields
     }
 
     @NonNull
+    public static NonNullOptionalFields makeHTGPDefault(
+            @NonNull final StringGetter stringGetter) {
+        @NonNull final NonNullOptionalFields result =
+                new NonNullOptionalFields(stringGetter);
+        result.add("Plate ID");
+        result.add("Username");
+        result.add("Date", null, "yyyy-mm-dd");
+        return result;
+    }
+
+    @NonNull
     private NonNullOptionalFields checkedAdd(
             @NonNull @Size(min = 1) final String name,
             final String value, final String hint) {

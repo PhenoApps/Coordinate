@@ -67,7 +67,7 @@ public class JoinedGridModel extends GridModel
 
             @IntRange(from = 1) final long templateId,
             final String title,
-            @IntRange(from = 0, to = 2) final int code,
+            @IntRange(from = 0, to = 3) final int code,
             @IntRange(from = 1) final int rows,
             @IntRange(from = 1) final int cols,
             @IntRange(from = 0) final int generatedExcludedCellsAmount,
@@ -787,6 +787,8 @@ public class JoinedGridModel extends GridModel
                 name = stringGetter.get(R.string.NonNullOptionalFieldsTrayIDFieldName);
             else if (TemplateType.DNA == templateType)
                 name = stringGetter.get(R.string.NonNullOptionalFieldsPlateIDFieldName);
+            else if (TemplateType.HTPG == templateType)
+                name = stringGetter.get(R.string.NonNullOptionalFieldsHTPG);
             else
                 name = BaseOptionalField.identificationFieldName(stringGetter);
         }

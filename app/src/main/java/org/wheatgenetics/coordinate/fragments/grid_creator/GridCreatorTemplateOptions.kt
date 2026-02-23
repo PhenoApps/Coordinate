@@ -10,6 +10,7 @@ import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.wheatgenetics.coordinate.R
@@ -17,6 +18,7 @@ import org.wheatgenetics.coordinate.activity.TemplateCreatorActivity
 import org.wheatgenetics.coordinate.adapter.TitleChoiceAdapter
 import org.wheatgenetics.coordinate.database.TemplatesTable
 import org.wheatgenetics.coordinate.interfaces.TitleSelectedListener
+import org.wheatgenetics.coordinate.preference.GeneralKeys
 
 class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_template_options),
     TitleSelectedListener {
@@ -101,24 +103,34 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
             //query db for optional fields
             mTemplatesTable?.load()?.let { templates ->
 
-                templates.titles()?.let { titles ->
-
-                    val adapter = TitleChoiceAdapter(this, TitleChoiceAdapter.AdapterType.TEMPLATE)
-
-                    val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_add_template_lv)
-
-                    val size = titles.size
-
-                    listView?.setItemViewCacheSize(size)
-
-                    listView?.layoutManager = LinearLayoutManager(act)
-
-                    listView?.adapter = adapter
-
-                    (listView?.adapter as TitleChoiceAdapter).submitList(titles.map { it })
-
-                    listView?.adapter?.notifyItemRangeChanged(0, size)
+                // Filter out hidden built-in templates
+                val hiddenRaw = PreferenceManager.getDefaultSharedPreferences(act)
+                    .getString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, "") ?: ""
+                val hiddenCodes = if (hiddenRaw.isEmpty()) emptySet<String>()
+                    else hiddenRaw.split(",").toSet()
+                val filteredTitles = mutableListOf<String>()
+                for (template in templates) {
+                    val typeCode = template.type.code.toString()
+                    if (!template.isDefaultTemplate || !hiddenCodes.contains(typeCode)) {
+                        template.title?.let { filteredTitles.add(it) }
+                    }
                 }
+
+                val adapter = TitleChoiceAdapter(this, TitleChoiceAdapter.AdapterType.TEMPLATE)
+
+                val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_add_template_lv)
+
+                val size = filteredTitles.size
+
+                listView?.setItemViewCacheSize(size)
+
+                listView?.layoutManager = LinearLayoutManager(act)
+
+                listView?.adapter = adapter
+
+                (listView?.adapter as TitleChoiceAdapter).submitList(filteredTitles)
+
+                listView?.adapter?.notifyItemRangeChanged(0, size)
             }
         }
     }

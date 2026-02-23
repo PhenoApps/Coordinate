@@ -90,7 +90,7 @@ public class DisplayTemplateModel extends BaseTemplateModel {
     DisplayTemplateModel(
             @IntRange(from = 1) final long id,
             final String title,
-            @IntRange(from = 0, to = 2) final int code,
+            @IntRange(from = 0, to = 3) final int code,
             @IntRange(from = 1) final int rows,
             @IntRange(from = 1) final int cols,
             @IntRange(from = 0) final int generatedExcludedCellsAmount,

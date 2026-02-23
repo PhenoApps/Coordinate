@@ -31,6 +31,13 @@
     <string name="app_intro_load_sample_data_summary">Import a sample database that includes example grids, templates, and projects.</string>
     <string name="app_intro_enable_tutorial_title">Tutorial</string>
     <string name="app_intro_enable_tutorial_summary">Add a help icon to the top toolbar that describes features throughout the app.</string>
+    <string name="app_intro_default_templates_header">Default Templates</string>
+    <string name="app_intro_seed_tray_template_title">Seed Tray</string>
+    <string name="app_intro_seed_tray_template_summary">A 6×20 seed tray template with optional fields for tray ID, person, and date.</string>
+    <string name="app_intro_dna_plate_template_title">DNA Plate</string>
+    <string name="app_intro_dna_plate_template_summary">An 8×12 DNA plate template with optional fields for plate ID, plate name, and date.</string>
+    <string name="app_intro_htpg_plate_template_title">HTPG Plate</string>
+    <string name="app_intro_htpg_plate_template_summary">An 8×12 HTPG plate template with optional fields for plate ID, username, and date.</string>
 
     <!-- CollectorActivity -->
     <string name="CollectorActivityLabel">Collect Data</string>
@@ -365,6 +372,8 @@
     <string name="SeedDefaultTemplateTitle">Seed Tray</string>
     <string name="DNADefaultTemplateTitle">DNA Plate</string>
     <string name="HTPGTemplateTitle">HTPG</string>
+    <string name="HTPGDefaultTemplateTitle">HTPG Plate</string>
+    <string name="HTPGDefaultTemplateEntryLabel">Sample UUID</string>
 
     <!-- NonNullOptionalFields HTPG template -->
     <string name="NonNullOptionalFieldsHTPG">Plate ID</string>
@@ -534,6 +543,10 @@
     <string name="back">Back</string>
     <string name="finish">Finish</string>
 
+    <!-- TemplateCreatorRestoreBuiltins -->
+    <string name="frag_template_creator_restore_builtins_title">Restore Built-in Templates</string>
+    <string name="frag_template_creator_restore_builtins_summary">Select built-in templates to restore to the templates list.</string>
+
     <!-- TemplateCreator -->
     <string name="frag_template_creator_exclude_random_et_hint">Number of random cells to exclude.</string>
     <string name="skip">Skip</string>
@@ -583,6 +596,7 @@
     <string name="act_grids_title">Grids</string>
 
     <string name="dialog_act_templates_ask_delete">This will delete the selected template.</string>
+    <string name="dialog_act_templates_ask_hide_builtin">Remove this built-in template from the list? It will no longer appear in the templates list but its data will be preserved.</string>
     <string name="templates_with_grids_cant_be_edited">Cannot edit templates that have already been used to create grids.</string>
     <string name="menu_projects_new">New project</string>
     <string name="menu_templates_new">New template</string>
