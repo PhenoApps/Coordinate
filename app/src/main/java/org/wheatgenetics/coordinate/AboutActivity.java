@@ -24,6 +24,7 @@ public class AboutActivity extends AppCompatActivity {
 
         setupBottomNavigationBar();
         InsetHandler.applyBottomNavInsets(findViewById(R.id.act_about_bnv));
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
     }
 
     @Override

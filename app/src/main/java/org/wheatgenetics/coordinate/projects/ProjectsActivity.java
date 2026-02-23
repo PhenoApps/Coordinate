@@ -275,6 +275,7 @@ public class ProjectsActivity extends BackActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setTitle(null);
         InsetHandler.applyToolbarInsets(toolbar);
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
         this.projectsViewModel = new ViewModelProvider(this).get(
                 ProjectsViewModel.class);

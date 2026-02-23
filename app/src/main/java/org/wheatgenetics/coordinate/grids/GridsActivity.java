@@ -520,6 +520,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         setSupportActionBar(toolbar);
         InsetHandler.applyToolbarInsets(toolbar);
         InsetHandler.applyStatusBarScrim(this.findViewById(R.id.status_bar_scrim));
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
         this.gridsViewModel = new ViewModelProvider(this).get(
                 ExportingViewModel.class);

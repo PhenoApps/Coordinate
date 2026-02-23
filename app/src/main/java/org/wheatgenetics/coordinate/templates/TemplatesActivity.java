@@ -410,6 +410,7 @@ public class TemplatesActivity extends BackActivity
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setTitle(null);
         InsetHandler.applyToolbarInsets(toolbar);
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
         this.templatesViewModel = new ViewModelProvider(this).get(
                 TemplatesViewModel.class);

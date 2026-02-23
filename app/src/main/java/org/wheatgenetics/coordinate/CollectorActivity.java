@@ -100,6 +100,7 @@ public class CollectorActivity extends BackActivity implements
         androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         InsetHandler.applyToolbarInsets(toolbar);
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
         @Nullable final Intent intent = this.getIntent();
         if (null != intent) {
