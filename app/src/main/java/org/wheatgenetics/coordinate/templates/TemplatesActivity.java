@@ -520,6 +520,7 @@ public class TemplatesActivity extends BackActivity
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_templates_bnv);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_templates);
+        applyBnvVisibility(bottomNavigationView);
 
         if (templatesAdapter != null) {
             final int saved = PreferenceManager.getDefaultSharedPreferences(this)
@@ -556,10 +557,19 @@ public class TemplatesActivity extends BackActivity
                 .show();
     }
 
+    private void applyBnvVisibility(@NonNull final BottomNavigationView bnv) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        bnv.getMenu().findItem(R.id.action_nav_templates)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_TEMPLATES, false));
+        bnv.getMenu().findItem(R.id.action_nav_projects)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_PROJECTS, false));
+    }
+
     private void setupBottomNavigationBar() {
 
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_templates_bnv);
         bottomNavigationView.inflateMenu(R.menu.menu_bottom_nav_bar);
+        applyBnvVisibility(bottomNavigationView);
 
         bottomNavigationView.setOnItemSelectedListener((item -> {
 

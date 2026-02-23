@@ -329,12 +329,22 @@ public class CollectorActivity extends BackActivity implements
         bottomNavigationView.getMenu().getItem(0).setEnabled(false);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_grids);
         bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+        applyBnvVisibility(bottomNavigationView);
+    }
+
+    private void applyBnvVisibility(@NonNull final BottomNavigationView bnv) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        bnv.getMenu().findItem(R.id.action_nav_templates)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_TEMPLATES, false));
+        bnv.getMenu().findItem(R.id.action_nav_projects)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_PROJECTS, false));
     }
 
     private void setupBottomNavigationBar() {
 
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_collector_bnv);
         bottomNavigationView.inflateMenu(R.menu.menu_bottom_nav_bar);
+        applyBnvVisibility(bottomNavigationView);
 
         bottomNavigationView.setOnItemSelectedListener((item -> {
 

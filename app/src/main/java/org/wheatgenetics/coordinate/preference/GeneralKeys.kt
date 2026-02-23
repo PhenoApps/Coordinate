@@ -48,6 +48,8 @@ class GeneralKeys private constructor() {
 
         // Appearance Preferences
         const val TIPS = COORDINATE_PREFIX + "TIPS"
+        const val HIDE_TEMPLATES = COORDINATE_PREFIX + "HIDE_TEMPLATES"
+        const val HIDE_PROJECTS = COORDINATE_PREFIX + "HIDE_PROJECTS"
 
         // Profile Preferences
         const val PERSON_NAME = COORDINATE_PREFIX + "PERSON_NAME"

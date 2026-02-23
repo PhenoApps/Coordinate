@@ -14,6 +14,7 @@
         <new>Grid size can be adjusted during collection</new>
         <new>New dialog in collect for grid information</new>
         <new>Grids, templates, and projects can be sorted by name and date</new>
+        <new>Add options to hide Templates and Projects lists</new>
         <info>Grid creator reorganized to add project last</info>
         <info>Minor updates to Template creator</info>
         <info>New grid, template, and project buttons moved to floating buttons</info>

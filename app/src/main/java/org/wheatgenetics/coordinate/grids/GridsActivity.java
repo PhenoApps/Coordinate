@@ -696,6 +696,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_grids_bnv);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_grids);
+        applyBnvVisibility(bottomNavigationView);
 
         if (gridsAdapter != null) {
             final int saved = PreferenceManager.getDefaultSharedPreferences(this)
@@ -763,10 +764,19 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                 .show();
     }
 
+    private void applyBnvVisibility(@NonNull final BottomNavigationView bnv) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        bnv.getMenu().findItem(R.id.action_nav_templates)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_TEMPLATES, false));
+        bnv.getMenu().findItem(R.id.action_nav_projects)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_PROJECTS, false));
+    }
+
     private void setupBottomNavigationBar() {
 
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_grids_bnv);
         bottomNavigationView.inflateMenu(R.menu.menu_bottom_nav_bar);
+        applyBnvVisibility(bottomNavigationView);
 
         bottomNavigationView.setOnItemSelectedListener((item -> {
 
