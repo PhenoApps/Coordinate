@@ -385,6 +385,7 @@
     <string name="frag_exclude_reset_button">Reset</string>
     <string name="back">Back</string>
     <string name="finish">Finish</string>
+    <!-- TemplateCreatorRestoreBuiltins -->
     <!-- TemplateCreator -->
     <string name="frag_template_creator_exclude_random_et_hint">Number of random cells to exclude.</string>
     <string name="skip">Skip</string>
