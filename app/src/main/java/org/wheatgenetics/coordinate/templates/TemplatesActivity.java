@@ -408,6 +408,7 @@ public class TemplatesActivity extends BackActivity
 
         androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle(null);
         InsetHandler.applyToolbarInsets(toolbar);
 
         this.templatesViewModel = new ViewModelProvider(this).get(

@@ -273,6 +273,7 @@ public class ProjectsActivity extends BackActivity {
 
         androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle(null);
         InsetHandler.applyToolbarInsets(toolbar);
 
         this.projectsViewModel = new ViewModelProvider(this).get(
