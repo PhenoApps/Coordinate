@@ -126,12 +126,11 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
     private fun navigateBack() {
         val templateId = activity?.intent?.getLongExtra("templateId", -1L)
-        if (templateId != -1L) {
-            // templateId fast-path skipped template_options; close instead of looping back
+        if (templateId != -1L || !findNavController().popBackStack()) {
+            // Either templateId fast-path skipped template_options, or template_options was
+            // auto-popped (e.g. hide-templates single-template path) — finish the activity.
             activity?.setResult(Activity.RESULT_CANCELED)
             activity?.finish()
-        } else {
-            findNavController().popBackStack()
         }
     }
 

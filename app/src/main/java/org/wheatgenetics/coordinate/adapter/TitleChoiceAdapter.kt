@@ -14,7 +14,8 @@ import org.wheatgenetics.coordinate.interfaces.TitleSelectedListener
 
 class TitleChoiceAdapter(
     private val listener: TitleSelectedListener,
-    private val adapterType: AdapterType
+    private val adapterType: AdapterType,
+    private val showAddNew: Boolean = true
 ) : ListAdapter<String, RecyclerView.ViewHolder>(DiffCallback()) {
 
     private var mSelected: String? = null
@@ -31,7 +32,7 @@ class TitleChoiceAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        if (position == itemCount - 1) { // for the last position, bind the addNewItem tile (New Project/New Template)
+        if (showAddNew && position == itemCount - 1) { // for the last position, bind the addNewItem tile (New Project/New Template)
             val newItemText = when (adapterType) {
                 AdapterType.PROJECT -> holder.itemView.context.getString(R.string.frag_grid_creator_project_add_new_text)
                 AdapterType.TEMPLATE -> holder.itemView.context.getString(R.string.frag_grid_creator_new_template_title)
@@ -56,7 +57,7 @@ class TitleChoiceAdapter(
     }
 
     override fun getItemCount(): Int {
-        return super.getItemCount() + 1 // +1 for the addNewItemTile at the end
+        return if (showAddNew) super.getItemCount() + 1 else super.getItemCount()
     }
 
     inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {

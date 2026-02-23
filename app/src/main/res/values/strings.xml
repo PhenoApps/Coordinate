@@ -293,6 +293,10 @@
     <string name="preferences_appearance_system_category_title">Application</string>
     <string name="preferences_appearance_tutorial_title">Tutorial</string>
     <string name="preferences_appearance_tutorial_description">Adds a tutorial icon to the collect, settings, fields, and traits screens</string>
+    <string name="preferences_appearance_hide_templates_title">Hide Templates</string>
+    <string name="preferences_appearance_hide_templates_description">Remove the Templates tab from the bottom navigation bar</string>
+    <string name="preferences_appearance_hide_projects_title">Hide Projects</string>
+    <string name="preferences_appearance_hide_projects_description">Remove the Projects tab from the bottom navigation bar</string>
 
     <!-- Citation Dialog -->
     <string name="citation_title">Cite Coordinate</string>

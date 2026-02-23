@@ -19,12 +19,14 @@ import org.wheatgenetics.coordinate.adapter.TitleChoiceAdapter
 import org.wheatgenetics.coordinate.database.EntriesTable
 import org.wheatgenetics.coordinate.database.GridsTable
 import org.wheatgenetics.coordinate.database.ProjectsTable
+import androidx.preference.PreferenceManager
 import org.wheatgenetics.coordinate.interfaces.TitleSelectedListener
 import org.wheatgenetics.coordinate.model.Cell
 import org.wheatgenetics.coordinate.model.JoinedGridModel
 import org.wheatgenetics.coordinate.model.ProjectModel
 import org.wheatgenetics.coordinate.model.TemplateModel
 import org.wheatgenetics.coordinate.pc.CreateProjectDialogFragment
+import org.wheatgenetics.coordinate.preference.GeneralKeys
 
 class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_project_options),
     TitleSelectedListener, StringGetter {
@@ -61,7 +63,10 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         // set toolbar back button
         setHasOptionsMenu(true)
 
-        setupAdapter()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val hideProjects = prefs.getBoolean(GeneralKeys.HIDE_PROJECTS, false)
+
+        setupAdapter(!hideProjects)
         setupButtons()
 
         // check if launched from projects activity with a pre-set project
@@ -69,6 +74,16 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         val projectId = activity?.intent?.getLongExtra("projectId", -1L) ?: -1L
         if (projectId != -1L) {
             val id = writeToDatabase(projectId)
+            if (id != -1L) {
+                activity?.setResult(Activity.RESULT_OK, Intent().putExtra("gridId", id))
+                activity?.finish()
+            }
+            return
+        }
+
+        // If projects section is hidden, skip project assignment (create with no project)
+        if (hideProjects) {
+            val id = writeToDatabase(0L)
             if (id != -1L) {
                 activity?.setResult(Activity.RESULT_OK, Intent().putExtra("gridId", id))
                 activity?.finish()
@@ -195,7 +210,7 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         okButton?.text = getString(R.string.frag_grid_creator_one_next_btn)
     }
 
-    private fun setupAdapter() {
+    private fun setupAdapter(showAddNew: Boolean = true) {
 
         activity?.let { act ->
 
@@ -204,7 +219,7 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
 
                 projects.titles()?.let { titles ->
 
-                    val adapter = TitleChoiceAdapter(this, TitleChoiceAdapter.AdapterType.PROJECT)
+                    val adapter = TitleChoiceAdapter(this, TitleChoiceAdapter.AdapterType.PROJECT, showAddNew)
 
                     val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_add_project_lv)
 
