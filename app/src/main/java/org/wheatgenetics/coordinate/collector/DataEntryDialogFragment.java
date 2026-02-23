@@ -1,23 +1,21 @@
 package org.wheatgenetics.coordinate.collector;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.RecyclerView;
 
-import org.wheatgenetics.coordinate.BuildConfig;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.optionalField.BaseOptionalField;
 import org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields;
@@ -26,59 +24,39 @@ import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 public class DataEntryDialogFragment extends DialogFragment {
     // region Fields
     private DataEntryDialogFragment.Handler handler;
-    private TextView projectTitleTextView, templateTitleTextView;
-    private LinearLayout optionalFieldsLayout;
+    private LinearLayout fieldsContainer;
+    private Context themedContext;
+
     public DataEntryDialogFragment() { /* Required empty public constructor. */ }
     // endregion
 
-    private static void setText(
-            @Nullable final TextView textView,
-            @Nullable final String text) {
-        if (null != textView) textView.setText(text);
-    }
-
     // region Overridden Methods
     @Override
-    public void onAttach(
-            @NonNull final Context context) {
+    public void onAttach(@NonNull final Context context) {
         super.onAttach(context);
-
         if (context instanceof DataEntryDialogFragment.Handler)
-            this.handler =
-                    (DataEntryDialogFragment.Handler) context;
+            this.handler = (DataEntryDialogFragment.Handler) context;
         else
             throw new RuntimeException(context.toString() + " must implement Handler");
     }
 
+    @NonNull
     @Override
-    @Nullable
-    public View onCreateView(
-            @NonNull final LayoutInflater inflater,
-            @Nullable final ViewGroup container,
-            @Nullable final Bundle savedInstanceState) {
-        // Inflate the layout for this fragment:
-        return inflater.inflate(R.layout.fragment_data_entry,
-                container, false);
-    }
+    public Dialog onCreateDialog(@Nullable final Bundle savedInstanceState) {
+        final Activity activity = requireActivity();
+        this.themedContext = new ContextThemeWrapper(activity, R.style.MaterialAppTheme);
+        final LayoutInflater inflater = LayoutInflater.from(this.themedContext);
+        final View view = inflater.inflate(R.layout.fragment_data_entry, null, false);
 
-    @Override
-    public void onActivityCreated(
-            @Nullable final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        this.fieldsContainer = view.findViewById(R.id.fieldsContainer);
 
-        final Activity activity = this.getActivity();
-        if (null != activity) {
+        populate();
 
-            View fragView = getView();
-            if (fragView != null) {
-
-                this.projectTitleTextView = fragView.findViewById(R.id.projectTitleTextView);
-                this.templateTitleTextView = fragView.findViewById(R.id.templateTitleTextView);
-                this.optionalFieldsLayout = fragView.findViewById(R.id.optionalFieldsLayout);
-            }
-        }
-
-        this.populate();
+        return new MaterialAlertDialogBuilder(themedContext)
+                .setTitle(R.string.fragment_data_entryGridInformationHeaderText)
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, null)
+                .create();
     }
 
     @Override
@@ -89,54 +67,46 @@ public class DataEntryDialogFragment extends DialogFragment {
 
     // region Package Methods
     void populate() {
-        if (null != this.handler) {
+        if (null == this.handler || null == this.fieldsContainer) return;
 
-            DataEntryDialogFragment.setText(
-                    this.projectTitleTextView, this.handler.getProjectTitle());
-            DataEntryDialogFragment.setText(
-                    this.templateTitleTextView, this.handler.getTemplateTitle());
+        final Context ctx = themedContext != null ? themedContext : requireContext();
+        final LayoutInflater inflater = LayoutInflater.from(ctx);
 
-            if (null != this.optionalFieldsLayout) {
-                this.optionalFieldsLayout.removeAllViews();
-                final NonNullOptionalFields
-                        nonNullOptionalFields = this.handler.getOptionalFields();
-                if (null != nonNullOptionalFields) if (!nonNullOptionalFields.isEmpty()) {
-                    final CheckedOptionalFields
-                            checkedOptionalFields =
-                            new CheckedOptionalFields(
-                                    nonNullOptionalFields);
+        this.fieldsContainer.removeAllViews();
 
-                    final Activity activity = this.getActivity();
-                    final LayoutInflater layoutInflater =
-                            null == activity ? null : activity.getLayoutInflater();
+        addInfoRow(inflater, ctx,
+                ctx.getString(R.string.fragment_data_entryProjectLabelText),
+                this.handler.getProjectTitle());
 
-                    if (null != layoutInflater)
-                        for (final BaseOptionalField
-                                baseOptionalField : checkedOptionalFields) {
-                            final View view = layoutInflater.inflate(
-                                    R.layout.optional_field_show,
-                                    new LinearLayout(activity), false);
-                            if (null != view) {
-                                {
-                                    final TextView nameTextView = view.findViewById(
-                                            R.id.nameTextView);
-                                    DataEntryDialogFragment
-                                            .setText(nameTextView, baseOptionalField.getName());
-                                }
-                                {
-                                    final TextView valueTextView = view.findViewById(
-                                            R.id.valueTextView);
-                                    DataEntryDialogFragment
-                                            .setText(valueTextView, baseOptionalField.getValue());
-                                }
-                            }
-                            this.optionalFieldsLayout.addView(view);
-                        }
-                }
+        addInfoRow(inflater, ctx,
+                ctx.getString(R.string.fragment_data_entryTemplateLabelText),
+                this.handler.getTemplateTitle());
+
+        final NonNullOptionalFields optionalFields = this.handler.getOptionalFields();
+        if (null != optionalFields && !optionalFields.isEmpty()) {
+            final CheckedOptionalFields checked = new CheckedOptionalFields(optionalFields);
+            for (final BaseOptionalField field : checked) {
+                addInfoRow(inflater, ctx, field.getName(), field.getValue());
             }
         }
     }
-    // endregion
+
+    /** Inflates a label/value row and adds it to fieldsContainer. Skips rows with blank values. */
+    private void addInfoRow(
+            @NonNull final LayoutInflater inflater,
+            @NonNull final Context ctx,
+            @Nullable final String label,
+            @Nullable final String value) {
+        if (value == null || value.trim().isEmpty()) return;
+        final View row = inflater.inflate(
+                R.layout.optional_field_show, new LinearLayout(ctx), false);
+        if (null == row) return;
+        final TextView nameView = row.findViewById(R.id.nameTextView);
+        if (nameView != null) nameView.setText(label);
+        final TextView valueView = row.findViewById(R.id.valueTextView);
+        if (valueView != null) valueView.setText(value);
+        this.fieldsContainer.addView(row);
+    }
     // endregion
 
     @SuppressWarnings({"UnnecessaryInterfaceModifier"})
@@ -147,12 +117,10 @@ public class DataEntryDialogFragment extends DialogFragment {
 
         public abstract String getTemplateTitle();
 
-        public abstract NonNullOptionalFields
-        getOptionalFields();
+        public abstract NonNullOptionalFields getOptionalFields();
 
         public abstract void saveEntry(String entryValue);
 
         public abstract void clearEntry();
     }
-    // endregion
 }

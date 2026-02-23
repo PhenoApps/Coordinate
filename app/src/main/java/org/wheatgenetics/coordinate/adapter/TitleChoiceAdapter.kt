@@ -44,8 +44,10 @@ class TitleChoiceAdapter(
                 with(holder as ViewHolder) {
                     itemView.tag = holder
                     bind(title, false) {
-                        mSelected = title
-                        this@TitleChoiceAdapter.notifyItemRangeChanged(0, itemCount)
+                        if (adapterType == AdapterType.PROJECT) {
+                            mSelected = title
+                            this@TitleChoiceAdapter.notifyItemRangeChanged(0, itemCount)
+                        }
                         listener.checked(title)
                     }
                 }
@@ -62,15 +64,28 @@ class TitleChoiceAdapter(
             with(view as CheckedTextView) {
                 setOnClickListener(onClick)
                 text = value
-                if (isAddNewItemTile) { // hide the check mark for the add item tile
+                if (isAddNewItemTile || adapterType == AdapterType.TEMPLATE) {
+                    // hide the check mark for the add item tile and for template items
+                    // (template selection navigates immediately, no checkbox needed)
                     checkMarkDrawable = null
                 } else {
+                    // PROJECT type: restore checkmark drawable in case this ViewHolder was
+                    // previously used for the add-new-item tile (checkMarkDrawable = null)
+                    if (checkMarkDrawable == null) {
+                        val a = context.obtainStyledAttributes(
+                            intArrayOf(android.R.attr.listChoiceIndicatorMultiple)
+                        )
+                        checkMarkDrawable = a.getDrawable(0)
+                        a.recycle()
+                    }
                     isChecked = text.toString() == mSelected
 
-                    // Set the color of the check mark for selected item
+                    // Set or reset the tint based on selected state
                     if (isChecked) {
                         val color = ContextCompat.getColor(context, R.color.colorAccent)
                         checkMarkTintList = ColorStateList.valueOf(color)
+                    } else {
+                        checkMarkTintList = null
                     }
                 }
             }

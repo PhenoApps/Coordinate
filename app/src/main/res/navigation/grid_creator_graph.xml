@@ -2,19 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/grid_creator_graph"
-    app:startDestination="@id/project_options">
+    app:startDestination="@id/template_options">
 
     <!--    <include app:graph="@navigation/template_creator_graph"/>-->
-
-    <fragment
-        android:id="@+id/project_options"
-        android:name="org.wheatgenetics.coordinate.fragments.grid_creator.GridCreatorProjectOptions"
-        android:label="Project Options"
-        tools:layout="@layout/fragment_grid_creator_project_options">
-        <action
-            android:id="@+id/action_project_options_to_template_options"
-            app:destination="@id/template_options" />
-    </fragment>
 
     <fragment
         android:id="@+id/template_options"
@@ -24,11 +14,9 @@
         <action
             android:id="@+id/action_template_options_to_template_fields"
             app:destination="@id/template_fields" />
-        <argument
-            android:name="project"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
+        <action
+            android:id="@+id/action_template_options_to_project_options"
+            app:destination="@id/project_options" />
     </fragment>
 
     <fragment
@@ -39,11 +27,16 @@
         <argument
             android:name="title"
             app:argType="string" />
-        <argument
-            android:name="project"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
+        <action
+            android:id="@+id/action_template_fields_to_project_options"
+            app:destination="@id/project_options" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/project_options"
+        android:name="org.wheatgenetics.coordinate.fragments.grid_creator.GridCreatorProjectOptions"
+        android:label="Project Options"
+        tools:layout="@layout/fragment_grid_creator_project_options">
     </fragment>
 
 </navigation>

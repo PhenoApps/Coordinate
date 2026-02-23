@@ -26,6 +26,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/action_fit_to_width"
+        android:icon="@drawable/ic_fit_to_width"
+        android:title="@string/menu_fit_to_width"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/help"
         android:icon="@drawable/ic_help_white"
         android:title="@string/preferences_appearance_tutorial_title"

@@ -25,6 +25,7 @@ import androidx.preference.PreferenceManager;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.wheatgenetics.coordinate.Utils;
 import org.phenoapps.utils.BaseDocumentTreeUtil;
@@ -407,7 +408,9 @@ public class TemplatesActivity extends BackActivity
 
         androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle(null);
         InsetHandler.applyToolbarInsets(toolbar);
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
         this.templatesViewModel = new ViewModelProvider(this).get(
                 TemplatesViewModel.class);
@@ -417,6 +420,9 @@ public class TemplatesActivity extends BackActivity
 
         setupBottomNavigationBar();
         InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_templates_bnv));
+
+        FloatingActionButton fabNewTemplate = this.findViewById(R.id.fab_new_template);
+        if (fabNewTemplate != null) fabNewTemplate.setOnClickListener(v -> createTemplate());
 
         if (null != templatesListView) templatesListView.setAdapter(this.templatesAdapter =
 
@@ -458,13 +464,11 @@ public class TemplatesActivity extends BackActivity
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_new_template) {
-            createTemplate();
-        } else if (item.getItemId() == R.id.action_sort) {
+        if (item.getItemId() == R.id.action_sort) {
             showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)
-                    .targets(templateActivityTapTargetView(R.id.action_new_template, getString(R.string.tutorial_template_create_title), getString(R.string.tutorial_template_create_summary), 60),
+                    .targets(templateActivityTapTargetView(R.id.fab_new_template, getString(R.string.tutorial_template_create_title), getString(R.string.tutorial_template_create_summary), 60),
                             templateActivityTapTargetView(R.id.import_template_menu_item, getString(R.string.tutorial_template_import_title), getString(R.string.tutorial_template_import_summary), 60)
                     );
             if (!templatesAdapter.isEmpty()) {
