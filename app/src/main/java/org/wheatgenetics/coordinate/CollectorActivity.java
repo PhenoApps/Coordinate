@@ -262,6 +262,12 @@ public class CollectorActivity extends BackActivity implements
 
         systemMenu.findItem(R.id.help).setVisible(preferences.getBoolean(GeneralKeys.TIPS, false));
 
+        // Hide the "add grid to project" edit icon if the grid already belongs to a project
+        MenuItem editGridItem = systemMenu.findItem(R.id.action_edit_grid);
+        if (editGridItem != null) {
+            editGridItem.setVisible(!this.collector().hasProject());
+        }
+
         return true;
     }
 
@@ -269,6 +275,7 @@ public class CollectorActivity extends BackActivity implements
     protected void onStart() {
         super.onStart();
         this.collector().populateFragments();
+        invalidateOptionsMenu();
         GridDisplayFragment gridDisplayFragment =
                 (GridDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.gridDisplayFragment);
         if (gridDisplayFragment != null) {
@@ -299,6 +306,7 @@ public class CollectorActivity extends BackActivity implements
                     long gridId = intent.getLongExtra(GRID_ID_KEY, -1);
 
                     collectorInstance.loadJoinedGridModelThenPopulate(gridId);
+                    invalidateOptionsMenu();
 
                 }
             }
