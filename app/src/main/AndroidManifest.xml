@@ -31,6 +31,11 @@
             android:theme="@style/AppThemeNoActionBar"/>
 
         <activity
+            android:name=".ImportedCollectorActivity"
+            android:theme="@style/MaterialAppThemeNoActionBar"
+            android:exported="false" />
+
+        <activity
             android:name=".grids.GridsActivity"
             android:label="@string/Coordinate"
             android:theme="@style/AppThemeNoActionBar"

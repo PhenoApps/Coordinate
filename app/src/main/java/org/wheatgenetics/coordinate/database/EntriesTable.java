@@ -12,6 +12,7 @@ import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.model.EntryModel;
 import org.wheatgenetics.coordinate.model.EntryModels;
 import org.wheatgenetics.coordinate.model.ExcludedEntryModel;
+import org.wheatgenetics.coordinate.model.ImportedEntryModel;
 import org.wheatgenetics.coordinate.model.IncludedEntryModel;
 import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.Utils;
@@ -24,6 +25,8 @@ public class EntriesTable extends Table
     static final String GRID_FIELD_NAME = "grid", EDATA_FIELD_NAME = "edata";
     private static final String ROW_FIELD_NAME = "row", COL_FIELD_NAME = "col",
             STAMP_FIELD_NAME = "stamp";
+    static final String CONFIRMED_TIMESTAMP_FIELD_NAME = "confirmed_timestamp";
+    static final String ORIGINAL_VALUE_FIELD_NAME = "original_value";
     // endregion
 
     // region Constructors
@@ -132,6 +135,18 @@ public class EntriesTable extends Table
                             EntriesTable.STAMP_FIELD_NAME));
                 }
 
+                private String originalValue() {
+                    final int idx = this.getColumnIndex(
+                            EntriesTable.ORIGINAL_VALUE_FIELD_NAME);
+                    return idx >= 0 ? this.getString(idx) : null;
+                }
+
+                private long confirmedTimestamp() {
+                    final int idx = this.getColumnIndex(
+                            EntriesTable.CONFIRMED_TIMESTAMP_FIELD_NAME);
+                    return idx >= 0 ? this.getLong(idx) : 0L;
+                }
+
                 private EntryModel make() {
                     if (this.excluded())
                         return new ExcludedEntryModel(
@@ -141,6 +156,18 @@ public class EntriesTable extends Table
                                 /* col          => */ this.col(),
                                 /* timestamp    => */ this.timestamp(),
                                 /* stringGetter => */ this.stringGetter);
+                    final String origVal = this.originalValue();
+                    if (origVal != null)
+                        return new ImportedEntryModel(
+                                /* id                 => */ this.id(),
+                                /* gridId             => */ this.gridId(),
+                                /* row                => */ this.row(),
+                                /* col                => */ this.col(),
+                                /* value              => */ this.value(),
+                                /* originalValue      => */ origVal,
+                                /* confirmedTimestamp => */ this.confirmedTimestamp(),
+                                /* timestamp          => */ this.timestamp(),
+                                /* stringGetter       => */ this.stringGetter);
                     else return EntriesTable.this.makeIncludedEntryModel(
                             /* id        => */ this.id(),
                             /* gridId    => */ this.gridId(),
@@ -173,6 +200,13 @@ public class EntriesTable extends Table
                     entryModel.getDatabaseValue() /* polymorphism */);
             result.put(EntriesTable.STAMP_FIELD_NAME,
                     entryModel.getTimestamp());
+
+            if (entryModel instanceof ImportedEntryModel) {
+                final ImportedEntryModel iem = (ImportedEntryModel) entryModel;
+                result.put(EntriesTable.ORIGINAL_VALUE_FIELD_NAME, iem.getOriginalValue());
+                result.put(EntriesTable.CONFIRMED_TIMESTAMP_FIELD_NAME,
+                        iem.getConfirmedTimestamp());
+            }
         }
         return result;
     }
@@ -239,6 +273,24 @@ public class EntriesTable extends Table
             if (exists) this.update(entryModel);
             else this.insert(entryModel);
         }
+    }
+
+    public void updateConfirmedTimestamp(final long entryId, final long confirmedTimestamp) {
+        final ContentValues cv = new ContentValues();
+        cv.put(EntriesTable.CONFIRMED_TIMESTAMP_FIELD_NAME, confirmedTimestamp);
+        this.db().update(EntriesTable.TABLE_NAME, cv,
+                EntriesTable.ID_FIELD_NAME + " = ?",
+                new String[]{String.valueOf(entryId)});
+    }
+
+    public void updateImportedEntryValue(final long entryId,
+            final String newValue, final long stamp) {
+        final ContentValues cv = new ContentValues();
+        cv.put(EntriesTable.EDATA_FIELD_NAME, newValue);
+        cv.put(EntriesTable.STAMP_FIELD_NAME, stamp);
+        this.db().update(EntriesTable.TABLE_NAME, cv,
+                EntriesTable.ID_FIELD_NAME + " = ?",
+                new String[]{String.valueOf(entryId)});
     }
 
     public boolean deleteByGridId(final long gridId) {

@@ -5,6 +5,7 @@
     <!-- Utils -->
     <string name="UtilsNegativeButtonText">No</string>
     <string name="UtilsPositiveButtonText">OK</string>
+    <string name="delete_button">Delete</string>
     <string name="UtilsInvalidValue">value must be >= %d</string>
 
     <!-- MainActivity, NavigationItemSelectedListener, TemplatesActivity -->
@@ -500,6 +501,31 @@
     <string name="ProjectDeleterProjectSuccessToast">Project successfully deleted</string>
     <string name="ProjectDeleterProjectFailToast">Project could not be deleted</string>
 
+    <!-- Imported Grid Feature -->
+    <string name="ImportedGridLabel">Imported</string>
+    <string name="ImportedGridNameFieldName">Grid Name</string>
+    <string name="ImportedGridFabDescription">Import grid from CSV</string>
+    <string name="ImportedEditDialogTitle">Edit cell value</string>
+    <string name="ImportedEditReplace">Replace</string>
+    <string name="ImportedEditMarkMissing">Mark Missing</string>
+    <string name="ImportedEditValueHint">Enter replacement value</string>
+    <string name="ImportedEditScan">Scan</string>
+    <string name="ImportedEditButton">Edit</string>
+    <string name="ImportedMissingButton">Missing</string>
+    <string name="ImportedBarcodeButton">Barcode</string>
+    <string name="ImportedApproveButton">Approve</string>
+    <string name="ImportedCancelConfirmButton">Cancel Confirmation</string>
+    <string name="ImportedBarcodeScanPrompt">Scan barcode to confirm cell value</string>
+    <string name="ImportedGridErrorTitle">Import Error</string>
+    <string name="ImportedGridErrorOpenFile">Could not open the selected file.</string>
+    <string name="ImportedGridErrorParse">Failed to parse the CSV file.</string>
+    <string name="ImportedGridErrorNoData">The CSV file contains no data rows.</string>
+    <string name="ImportedGridErrorMissingHeaders">CSV must have columns: value, row, column.</string>
+    <string name="ImportedGridErrorInsertTemplate">Failed to create template for imported grid.</string>
+    <string name="ImportedGridErrorInsertGrid">Failed to create imported grid.</string>
+    <string name="ImportedGridCompleteTitle">Grid Complete</string>
+    <string name="ImportedGridCompleteMessage">All cells have been confirmed. Would you like to export the grid?</string>
+
     <!-- optional_field_show.xml -->
     <string name="optional_field_showNameText">Plate ID</string>
     <string name="optional_field_showValueText">...</string>
@@ -599,8 +625,7 @@
     <string name="Coordinate">Coordinate</string>
     <string name="act_grids_title">Grids</string>
 
-    <string name="dialog_act_templates_ask_delete">This will delete the selected template.</string>
-    <string name="dialog_act_templates_ask_hide_builtin">Remove this built-in template from the list? It will no longer appear in the templates list but its data will be preserved.</string>
+    <string name="dialog_act_templates_ask_delete">Delete this template?</string>
     <string name="templates_with_grids_cant_be_edited">Cannot edit templates that have already been used to create grids.</string>
     <string name="menu_projects_new">New project</string>
     <string name="menu_templates_new">New template</string>

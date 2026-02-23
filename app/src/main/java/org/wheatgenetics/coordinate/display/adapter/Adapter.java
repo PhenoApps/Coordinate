@@ -177,9 +177,16 @@ public abstract class Adapter extends RecyclerView.Adapter<
                         this.getItemViewType(position));
         switch (itemViewType) {
             case TOP:
-                ((TopViewHolder) viewHolder).bind(
-                        position, this.displayModel.getColNumbering(), this.mCompact, this.mScaleFactor);
                 {
+                    final String customColLabel = position > 0
+                            ? this.displayModel.getColLabel(position) : null;
+                    if (customColLabel != null) {
+                        ((TopOrLeftViewHolder) viewHolder).bindLabel(
+                                customColLabel, this.mCompact, this.mScaleFactor);
+                    } else {
+                        ((TopViewHolder) viewHolder).bind(
+                                position, this.displayModel.getColNumbering(), this.mCompact, this.mScaleFactor);
+                    }
                     ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
                     if (lp != null) {
                         lp.width = mCellSize;
@@ -195,9 +202,15 @@ public abstract class Adapter extends RecyclerView.Adapter<
                         this.adapterRow(position);
                 switch (itemViewType) {
                     case LEFT:
-                        ((LeftViewHolder)
-                                viewHolder).bind(adapterRow, this.displayModel.getRowNumbering(), this.mCompact, this.mScaleFactor);
                         {
+                            final String customRowLabel = this.displayModel.getRowLabel(adapterRow);
+                            if (customRowLabel != null) {
+                                ((TopOrLeftViewHolder) viewHolder).bindLabel(
+                                        customRowLabel, this.mCompact, this.mScaleFactor);
+                            } else {
+                                ((LeftViewHolder) viewHolder).bind(
+                                        adapterRow, this.displayModel.getRowNumbering(), this.mCompact, this.mScaleFactor);
+                            }
                             ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
                             if (lp != null) {
                                 lp.width = mCellSize;

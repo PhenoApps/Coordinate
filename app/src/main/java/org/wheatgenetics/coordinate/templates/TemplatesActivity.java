@@ -218,8 +218,8 @@ public class TemplatesActivity extends BackActivity
         final TemplateModel tm = this.templatesTable().get(templateId);
         if (tm != null && tm.isDefaultTemplate()) {
             new AlertDialog.Builder(this)
-                    .setTitle(R.string.dialog_act_templates_ask_hide_builtin)
-                    .setPositiveButton(android.R.string.ok, (dialog, which) ->
+                    .setTitle(R.string.dialog_act_templates_ask_delete)
+                    .setPositiveButton(R.string.delete_button, (dialog, which) ->
                             addToHiddenBuiltins(templateId))
                     .setNegativeButton(android.R.string.cancel, (dialog, which) -> { })
                     .show();
@@ -228,7 +228,7 @@ public class TemplatesActivity extends BackActivity
 
         AlertDialog.Builder askDelete = new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_act_templates_ask_delete)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                .setPositiveButton(R.string.delete_button, (dialog, which) -> {
 
                     this.templateDeleter().delete(templateId);
 

@@ -22,7 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 @SuppressWarnings({"ClassExplicitlyExtendsObject"})
-class Database extends Object {
+public class Database extends Object {
     private static SQLiteDatabase dbInstance = null; // singleton, lazy load
 
     @SuppressWarnings({"DefaultAnnotationParam"})
@@ -46,7 +46,7 @@ class Database extends Object {
                             /* context => */ context,
                             /* name    => */ fileName,
                             /* factory => */null,
-                            /* version => */3);
+                            /* version => */4);
                     this.context = context;
                 }
 
@@ -145,6 +145,31 @@ class Database extends Object {
                         db.execSQL("DROP TABLE templates");
                         db.execSQL("ALTER TABLE templates_v3 RENAME TO templates");
                     }
+                    if (oldVersion < 4) {
+                        // v3 → v4: add confirmed_timestamp and original_value to entries;
+                        //          recreate templates table to expand type constraint to 0-4
+                        db.execSQL("ALTER TABLE entries ADD COLUMN confirmed_timestamp INTEGER");
+                        db.execSQL("ALTER TABLE entries ADD COLUMN original_value TEXT");
+                        db.execSQL("CREATE TABLE templates_v4 ("
+                                + "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                                + "title TEXT NOT NULL UNIQUE,"
+                                + "type INTEGER NOT NULL CHECK(type BETWEEN 0 AND 4),"
+                                + "rows INTEGER NOT NULL CHECK(rows >= 0),"
+                                + "cols INTEGER NOT NULL CHECK(cols >= 0),"
+                                + "erand INTEGER CHECK(erand >= 0),"
+                                + "ecells TEXT,"
+                                + "erows TEXT,"
+                                + "ecols TEXT,"
+                                + "cnumb INTEGER NOT NULL CHECK(cnumb BETWEEN 0 AND 1),"
+                                + "rnumb INTEGER NOT NULL CHECK(rnumb BETWEEN 0 AND 1),"
+                                + "entryLabel TEXT,"
+                                + "options TEXT,"
+                                + "stamp INTEGER"
+                                + ")");
+                        db.execSQL("INSERT INTO templates_v4 SELECT * FROM templates");
+                        db.execSQL("DROP TABLE templates");
+                        db.execSQL("ALTER TABLE templates_v4 RENAME TO templates");
+                    }
                 }
 
                 @Override
@@ -171,7 +196,7 @@ class Database extends Object {
     }
 
     @NonNull
-    static SQLiteDatabase db(
+    public static SQLiteDatabase db(
             final Context context) {
         return Database.db(context, "seedtray1.db");
     }

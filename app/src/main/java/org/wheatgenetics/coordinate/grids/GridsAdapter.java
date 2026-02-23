@@ -191,7 +191,9 @@ abstract class GridsAdapter extends Adapter {
                 {
                     final TextView textView = view.findViewById(
                             R.id.gridsListItemTemplateTitle);
-                    if (null != textView) textView.setText(joinedGridModel.getTemplateTitle());
+                    if (null != textView) textView.setText(joinedGridModel.isImported()
+                            ? view.getContext().getString(R.string.ImportedGridLabel)
+                            : joinedGridModel.getTemplateTitle());
                 }
                 {
                     final TextView textView = view.findViewById(

@@ -67,7 +67,7 @@ public class JoinedGridModel extends GridModel
 
             @IntRange(from = 1) final long templateId,
             final String title,
-            @IntRange(from = 0, to = 3) final int code,
+            @IntRange(from = 0, to = 4) final int code,
             @IntRange(from = 1) final int rows,
             @IntRange(from = 1) final int cols,
             @IntRange(from = 0) final int generatedExcludedCellsAmount,
@@ -515,7 +515,7 @@ public class JoinedGridModel extends GridModel
                 this.optionalFields();
         if (includeHeader) {
             write(output, this.templateModel.entryLabelIsNotNull() ? this.templateModel.getEntryLabel() : "Value", ",");
-            write(output, "Column, Row", ",");
+            write(output, "Column,Row", ",");
 
             if (null != optionalFields) {
                 // noinspection CStyleArrayDeclaration
@@ -724,6 +724,47 @@ public class JoinedGridModel extends GridModel
         return this.getEntryModel(row, col);
     }
 
+    // region Label support for imported grids
+    @Nullable private String[] mRowLabels = null;
+    @Nullable private String[] mColLabels = null;
+    private boolean mLabelsParsed = false;
+
+    private void ensureLabels() {
+        if (mLabelsParsed) return;
+        mLabelsParsed = true;
+        if (!isImported()) return;
+        final String entryLabel = this.templateModel.getEntryLabel();
+        if (entryLabel == null || entryLabel.isEmpty()) return;
+        try {
+            final org.json.JSONObject obj = new org.json.JSONObject(entryLabel);
+            final org.json.JSONArray rArr = obj.getJSONArray("r");
+            mRowLabels = new String[rArr.length()];
+            for (int i = 0; i < rArr.length(); i++) mRowLabels[i] = rArr.getString(i);
+            final org.json.JSONArray cArr = obj.getJSONArray("c");
+            mColLabels = new String[cArr.length()];
+            for (int i = 0; i < cArr.length(); i++) mColLabels[i] = cArr.getString(i);
+        } catch (final org.json.JSONException ignored) {
+            // Not the expected format; labels remain null
+        }
+    }
+
+    @Override
+    @Nullable
+    public String getColLabel(@IntRange(from = 1) final int col) {
+        ensureLabels();
+        if (mColLabels == null || col < 1 || col > mColLabels.length) return null;
+        return mColLabels[col - 1];
+    }
+
+    @Override
+    @Nullable
+    public String getRowLabel(@IntRange(from = 1) final int row) {
+        ensureLabels();
+        if (mRowLabels == null || row < 1 || row > mRowLabels.length) return null;
+        return mRowLabels[row - 1];
+    }
+    // endregion
+
     // region Package Methods
     @NonNull
     String name() {
@@ -744,6 +785,55 @@ public class JoinedGridModel extends GridModel
         return result;
     }
 
+    private void exportImported(
+            @NonNull final CsvWriter csvWriter) throws IOException {
+        csvWriter.write("value");
+        csvWriter.write("row");
+        csvWriter.write("column");
+        csvWriter.write("timestamp");
+        csvWriter.write("person");
+        csvWriter.write("details");
+        csvWriter.endRecord();
+
+        ensureLabels();
+        final boolean
+                colNumbering = this.templateModel.getColNumbering(),
+                rowNumbering = this.templateModel.getRowNumbering();
+        final String person = org.wheatgenetics.coordinate.Utils.makeEmptyIfNull(this.getPerson());
+        final java.text.SimpleDateFormat tsFormat =
+                new java.text.SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", java.util.Locale.US);
+        @IntRange(from = 1) final int cols = this.getCols(), rows = this.getRows();
+        for (@IntRange(from = 1) int col = 1; col <= cols; col++) {
+            for (@IntRange(from = 1) int row = 1; row <= rows; row++) {
+                final EntryModel entryModel = this.getEntryModel(row, col);
+                if (entryModel instanceof ImportedEntryModel) {
+                    final ImportedEntryModel iem = (ImportedEntryModel) entryModel;
+                    csvWriter.write(iem.isMissing() ? ImportedEntryModel.MISSING_VALUE
+                            : org.wheatgenetics.coordinate.Utils.makeEmptyIfNull(iem.getValue()));
+                    final String rowLabel = getRowLabel(row);
+                    csvWriter.write(rowLabel != null ? rowLabel :
+                            (rowNumbering ? String.valueOf(row)
+                                    : org.wheatgenetics.coordinate.Utils.convert(row - 1)));
+                    final String colLabel = getColLabel(col);
+                    csvWriter.write(colLabel != null ? colLabel :
+                            (colNumbering ? String.valueOf(col)
+                                    : org.wheatgenetics.coordinate.Utils.convert(col - 1)));
+                    csvWriter.write(iem.isConfirmed()
+                            ? tsFormat.format(new java.util.Date(iem.getConfirmedTimestamp())) : "");
+                    csvWriter.write(person);
+                    if (iem.isReplaced() || iem.isMissing()) {
+                        final String orig = iem.getOriginalValue();
+                        csvWriter.write(orig != null ? "Original: " + orig : "");
+                    } else {
+                        csvWriter.write("");
+                    }
+                    csvWriter.endRecord();
+                }
+            }
+        }
+        csvWriter.close();
+    }
+
     void exportDocumentFile(final OutputStream stream,
                             final String exportFileName,
                             @Nullable final JoinedGridModel.Helper helper,
@@ -752,11 +842,13 @@ public class JoinedGridModel extends GridModel
                 this.templateModel.getType();
         if (TemplateType.SEED == templateType)
             this.exportSeed(stream, exportFileName, helper, includeHeader);
+        else if (TemplateType.DNA == templateType)
+            this.exportDNA(stream, helper, includeHeader);
+        else if (TemplateType.IMPORTED == templateType)
+            this.exportImported(new CsvWriter(
+                    new java.io.OutputStreamWriter(stream, StandardCharsets.UTF_8)));
         else
-            if (TemplateType.DNA == templateType)
-                this.exportDNA(stream, helper, includeHeader);
-            else
-                this.exportUserDefined(stream, helper, includeHeader);
+            this.exportUserDefined(stream, helper, includeHeader);
     }
 
     void export(final Writer writer, final String exportFileName,
@@ -767,14 +859,19 @@ public class JoinedGridModel extends GridModel
                 new CsvWriter(writer);
         if (TemplateType.SEED == templateType)
             this.exportSeed(csvWriter, exportFileName, includeHeader);    // throws java.io-
+        else if (TemplateType.DNA == templateType)                                //  .IOException
+            this.exportDNA(csvWriter, includeHeader);                     // throws java.io-
+        else if (TemplateType.IMPORTED == templateType)                          //  .IOException
+            this.exportImported(csvWriter);
         else                                                                      //  .IOException
-            if (TemplateType.DNA == templateType)
-                this.exportDNA(csvWriter, includeHeader);                 // throws java.io-
-            else                                                                  //  .IOException
-                this.exportUserDefined(csvWriter, includeHeader);         // throws java.io-
+            this.exportUserDefined(csvWriter, includeHeader);             // throws java.io-
     }                                                                             //  .IOException
 
     // region Public Methods
+    public boolean isImported() {
+        return TemplateType.IMPORTED == this.templateModel.getType();
+    }
+
     @Nullable
     public String getTitle() {
         @Nullable final String name;
@@ -789,6 +886,8 @@ public class JoinedGridModel extends GridModel
                 name = stringGetter.get(R.string.NonNullOptionalFieldsPlateIDFieldName);
             else if (TemplateType.HTPG == templateType)
                 name = stringGetter.get(R.string.NonNullOptionalFieldsHTPG);
+            else if (TemplateType.IMPORTED == templateType)
+                name = stringGetter.get(R.string.ImportedGridNameFieldName);
             else
                 name = BaseOptionalField.identificationFieldName(stringGetter);
         }

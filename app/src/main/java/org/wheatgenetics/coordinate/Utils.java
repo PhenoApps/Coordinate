@@ -155,6 +155,46 @@ public class Utils {
     }
     // endregion
     // endregion
+
+    // region confirmDelete() AlertDialog Methods
+    private static void confirmDelete(
+            @NonNull final Context context,
+            @StringRes final int title, final String message,
+            final Runnable yesRunnable,
+            @Nullable final Runnable noRunnable) {
+        Utils.alert(context, context.getString(title), message,
+                context.getString(R.string.delete_button),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        if (null != dialog) dialog.cancel();
+                        if (null != yesRunnable) yesRunnable.run();
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        if (null != dialog) dialog.cancel();
+                        if (null != noRunnable) noRunnable.run();
+                    }
+                });
+    }
+
+    public static void confirmDelete(
+            @NonNull final Context context,
+            @StringRes final int title,
+            @StringRes final int message, final Runnable yesRunnable) {
+        Utils.confirmDelete(context, title,
+                context.getString(message), yesRunnable, null);
+    }
+
+    public static void confirmDelete(
+            @NonNull final Context context,
+            @StringRes final int message, final Runnable yesRunnable) {
+        Utils.confirmDelete(context,
+                R.string.app_name, message, yesRunnable);
+    }
+    // endregion
+    // endregion
     // endregion
 
     public static int valid(final int value, final int minValue,

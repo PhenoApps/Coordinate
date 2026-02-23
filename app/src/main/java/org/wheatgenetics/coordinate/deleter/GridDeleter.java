@@ -10,6 +10,8 @@ import androidx.preference.PreferenceManager;
 
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Utils;
+import org.wheatgenetics.coordinate.database.TemplatesTable;
+import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.utils.Keys;
 
 import java.util.List;
@@ -42,6 +44,11 @@ public class GridDeleter extends BaseGridDeleter {
 
     // region Public Methods
     public void deleteWithoutConfirm(@IntRange(from = 1) final long gridId) {
+        // Load grid model before deletion to check if it's an imported grid
+        final JoinedGridModel gridModel = this.gridsTable().get(gridId);
+        final boolean isImported = gridModel != null && gridModel.isImported();
+        final long sentinelTemplateId = isImported ? gridModel.getTemplateId() : -1L;
+
         {
             @StringRes final int text =
                     this.entriesTable().deleteByGridId(gridId) ?
@@ -60,6 +67,10 @@ public class GridDeleter extends BaseGridDeleter {
             this.showLongToast(text);
         }
         if (success) {
+            // Delete sentinel template for imported grids
+            if (isImported && sentinelTemplateId > 0) {
+                new TemplatesTable(this.context()).delete(sentinelTemplateId);
+            }
 
             checkPreferenceLastGrid(gridId);
 
@@ -68,7 +79,7 @@ public class GridDeleter extends BaseGridDeleter {
     }
 
     public void deleteWithConfirm(@IntRange(from = 1) final long gridId) {
-        Utils.confirm(
+        Utils.confirmDelete(
                 /* context     => */ this.context(),
                 /* message     => */ R.string.GridDeleterConfirmation,
                 /* yesRunnable => */ new Runnable() {
@@ -84,9 +95,17 @@ public class GridDeleter extends BaseGridDeleter {
     }
 
     public void deleteMultiple(@NonNull final List<Long> gridIds) {
+        final TemplatesTable templatesTable = new TemplatesTable(this.context());
         for (final long gridId : gridIds) {
+            final JoinedGridModel gridModel = this.gridsTable().get(gridId);
+            final boolean isImported = gridModel != null && gridModel.isImported();
+            final long sentinelTemplateId = isImported ? gridModel.getTemplateId() : -1L;
+
             this.entriesTable().deleteByGridId(gridId);
             this.gridsTable().delete(gridId);
+            if (isImported && sentinelTemplateId > 0) {
+                templatesTable.delete(sentinelTemplateId);
+            }
             checkPreferenceLastGrid(gridId);
         }
         this.showLongToast(R.string.multi_delete_success);
