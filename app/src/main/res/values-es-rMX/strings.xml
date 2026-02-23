@@ -352,6 +352,7 @@
     <string name="ProjectDeleterConfirmationMessage">Are you sure you want to delete this project and all its grids?</string>
     <string name="ProjectDeleterProjectSuccessToast">Project successfully deleted</string>
     <string name="ProjectDeleterProjectFailToast">Project could not be deleted</string>
+    <!-- Imported Grid Feature -->
     <!-- optional_field_show.xml -->
     <string name="optional_field_showValueText">...</string>
     <!-- fragment_data_entry.xml -->
@@ -433,7 +434,6 @@
     <string name="bottom_nav_bar_grids">Grids</string>
     <string name="Coordinate">Coordinate</string>
     <string name="act_grids_title">Grids</string>
-    <string name="dialog_act_templates_ask_delete">This will delete the selected template.</string>
     <string name="templates_with_grids_cant_be_edited">Cannot edit templates that have already been used to create grids.</string>
     <string name="menu_projects_new">New project</string>
     <string name="menu_templates_new">New template</string>
