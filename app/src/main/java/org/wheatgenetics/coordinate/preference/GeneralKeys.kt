@@ -59,5 +59,8 @@ class GeneralKeys private constructor() {
         const val SORT_TEMPLATES = COORDINATE_PREFIX + "SORT_TEMPLATES"
         const val SORT_PROJECTS = COORDINATE_PREFIX + "SORT_PROJECTS"
 
+        // Hidden Built-in Templates (comma-separated TemplateType codes)
+        const val HIDDEN_BUILTIN_TEMPLATES = COORDINATE_PREFIX + "HIDDEN_BUILTIN_TEMPLATES"
+
     }
 }

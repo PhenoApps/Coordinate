@@ -159,7 +159,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
     private fun getRequiredName(): String = when (args.title) {
         getString(R.string.DNADefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsPlateIDFieldName)
         getString(R.string.SeedDefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsTrayIDFieldName)
-        getString(R.string.HTPGTemplateTitle) -> getString(R.string.NonNullOptionalFieldsHTPG)
+        getString(R.string.HTPGDefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsHTPG)
         else -> getString(R.string.BaseOptionalFieldIdentificationFieldName)
     }
 
@@ -182,9 +182,9 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
             //query db for optional fields
             mTemplatesTable?.getOptionalFieldsForTemplate(args.title, this)?.let { fields ->
 
-                // set hint text for optional fields
+                // set hint text for optional fields (preserve existing hint if set by template)
                 fields.forEach { field ->
-                    if (field.name != requiredName) {
+                    if (field.name != requiredName && field.hint.isEmpty()) {
                        field.hint = getString(R.string.optional_field_hint_text)
                     }
                 }
@@ -198,6 +198,17 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
                         if (nameLower == "person" || nameLower == "name" ||
                             nameLower == "operator" || nameLower == "username") {
                             field.value = savedPerson
+                        }
+                    }
+                }
+
+                // pre-fill Date field with today's date for HTPG template
+                if (args.title == getString(R.string.HTPGDefaultTemplateTitle)) {
+                    val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                        .format(java.util.Date())
+                    fields.forEach { field ->
+                        if (field.name.equals("date", ignoreCase = true)) {
+                            field.value = today
                         }
                     }
                 }

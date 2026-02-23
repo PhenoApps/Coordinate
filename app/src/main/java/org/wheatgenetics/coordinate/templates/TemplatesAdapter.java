@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.templates;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -12,6 +13,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.preference.PreferenceManager;
 
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.adapter.NonGridsAdapter;
@@ -19,8 +21,12 @@ import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.model.TemplateModels;
+import org.wheatgenetics.coordinate.preference.GeneralKeys;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 class TemplatesAdapter extends NonGridsAdapter {
     // region Fields
@@ -77,9 +83,28 @@ class TemplatesAdapter extends NonGridsAdapter {
     // endregion
 
     @Nullable
+    private Set<String> hiddenBuiltinTypes() {
+        final SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this.activity());
+        final String raw = prefs.getString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, "");
+        if (raw == null || raw.isEmpty()) return new HashSet<>();
+        return new HashSet<>(Arrays.asList(raw.split(",")));
+    }
+
+    @Nullable
     private TemplateModels templateModels() {
         if (null == this.templateModelsInstance) {
-            this.templateModelsInstance = this.templatesTable().load();
+            final TemplateModels all = this.templatesTable().load();
+            if (all != null) {
+                final Set<String> hidden = hiddenBuiltinTypes();
+                this.templateModelsInstance = new TemplateModels();
+                for (final TemplateModel tm : all) {
+                    final String typeCode = String.valueOf(tm.getType().getCode());
+                    if (!tm.isDefaultTemplate() || !hidden.contains(typeCode)) {
+                        this.templateModelsInstance.add(tm);
+                    }
+                }
+            }
             if (null != this.templateModelsInstance && sortOrder != SORT_DEFAULT) {
                 if (sortOrder == SORT_NAME) {
                     this.templateModelsInstance.sort(new Comparator<TemplateModel>() {
@@ -215,11 +240,10 @@ class TemplatesAdapter extends NonGridsAdapter {
                 {
                     final ImageButton imageButton = view.findViewById(
                             R.id.templatesListItemDeleteButton);
-                    if (null != imageButton)
-                        if (isUserDefined) {
-                            imageButton.setTag(templateId);
-                            imageButton.setOnClickListener(this.onDeleteButtonClickListener());
-                        } else imageButton.setEnabled(false);
+                    if (null != imageButton) {
+                        imageButton.setTag(templateId);
+                        imageButton.setOnClickListener(this.onDeleteButtonClickListener());
+                    }
                 }
                 {
                     final ImageButton imageButton = view.findViewById(

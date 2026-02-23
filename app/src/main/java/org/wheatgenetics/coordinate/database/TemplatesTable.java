@@ -284,7 +284,8 @@ public class TemplatesTable extends Table {
     public boolean deleteUserDefined() {
         boolean failed = false;
         try {
-            this.deleteUsingWhereClause("_id > 2");
+            this.deleteUsingWhereClause(
+                    TemplatesTable.TYPE_FIELD_NAME + " = " + TemplateType.USERDEFINED.getCode());
         } catch (SQLException e) {
             e.printStackTrace();
             failed = true;
