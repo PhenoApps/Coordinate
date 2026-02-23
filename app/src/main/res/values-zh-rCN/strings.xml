@@ -337,6 +337,7 @@
     <string name="GridDeleterEntriesOfGridNotDeletedToast">Entries were not deleted</string>
     <string name="GridDeleterGridDeletedToast">Grid successfully deleted</string>
     <string name="GridDeleterGridNotDeletedToast">Grid could not be deleted</string>
+    <!-- Action mode (multi-select) -->
     <!-- TemplateDeleter -->
     <string name="TemplateDeleterConfirmationTitle">Delete template</string>
     <string name="TemplateDeleterConfirmationMessage">Are you sure you want to delete this template and all its grids?</string>
@@ -348,15 +349,12 @@
     <string name="ProjectDeleterProjectSuccessToast">Project successfully deleted</string>
     <string name="ProjectDeleterProjectFailToast">Project could not be deleted</string>
     <!-- optional_field_show.xml -->
-    <string name="optional_field_showNameText">Plate ID:</string>
     <string name="optional_field_showValueText">...</string>
     <!-- fragment_data_entry.xml -->
     <string name="fragment_data_entryEntryHint">Cell ID</string>
     <string name="fragment_data_entryEntryActionLabel">Save</string>
     <string name="fragment_data_entryGridInformationHeaderText">Grid Information</string>
-    <string name="fragment_data_entryProjectLabelText">Project:</string>
     <string name="fragment_data_entryProjectTitleText">...</string>
-    <string name="fragment_data_entryTemplateLabelText">Template:</string>
     <string name="fragment_data_entryTemplateTitleText">...</string>
     <!-- UniqueAlertDialog -->
     <string name="UniqueAlertDialogTitle">Duplicate Sample Entered</string>
@@ -370,14 +368,10 @@
     <string name="frag_grid_creator_project_add_new_text">New Project</string>
     <string name="frag_grid_creator_project_add_title">Add grid to a project</string>
     <string name="frag_grid_creator_add_project_summary">Optionally create a new project or select an existing project below.</string>
-    <string name="frag_grid_creator_template_options_title">Template options</string>
-    <string name="frag_grid_creator_template_options_summary">Create a new template or select an existing template below.</string>
     <string name="frag_grid_creator_new_template_title">New template</string>
-    <string name="frag_grid_creator_new_template_summary">Please enter a template name and its grid dimensions.</string>
     <string name="frag_grid_creator_template_rows_et_hint">Number of rows</string>
     <string name="frag_grid_creator_template_columns_et_hint">Number of columns</string>
     <string name="frag_grid_creator_template_name_et_hint">Template name</string>
-    <string name="frag_template_creator_fields_summary">Fill in the optional fields below.</string>
     <string name="frag_template_creator_options_title">Optional fields</string>
     <string name="frag_template_creator_options_summary">Metadata fields can be added or removed from each template.</string>
     <string name="frag_template_creator_options_new">Create a new field.</string>
