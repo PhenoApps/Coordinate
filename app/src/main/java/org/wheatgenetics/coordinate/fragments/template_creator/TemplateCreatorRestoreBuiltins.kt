@@ -76,19 +76,39 @@ class TemplateCreatorRestoreBuiltins :
 
     private fun setupList(hiddenTypes: List<TemplateType>) {
         val listView = view?.findViewById<ListView>(R.id.frag_restore_builtins_lv) ?: return
-        val titles = hiddenTypes.map { templateDisplayTitle(it) }
+        val titles = hiddenTypes.map { templateDisplayTitle(it) }.toMutableList()
+        titles.add(getString(R.string.new_template_title))
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_multiple_choice, titles)
         listView.adapter = adapter
-        // Check all by default (user most likely wants to restore all)
-        for (i in titles.indices) listView.setItemChecked(i, true)
+        // Items are unselected by default
+        listView.setOnItemClickListener { _, _, _, _ ->
+            updateNextButtonText(listView, hiddenTypes.size)
+        }
+    }
+
+    private fun updateNextButtonText(listView: ListView, createNewIndex: Int) {
+        val nextBtn = view?.findViewById<Button>(R.id.frag_next_btn) ?: return
+        val createNewChecked = listView.isItemChecked(createNewIndex)
+        val anyBuiltinChecked = (0 until createNewIndex).any { listView.isItemChecked(it) }
+        nextBtn.text = when {
+            createNewChecked -> getString(R.string.frag_grid_creator_one_next_btn)
+            anyBuiltinChecked -> getString(R.string.TemplatesActivityImportMenuItemTitle)
+            else -> getString(R.string.frag_grid_creator_one_next_btn)
+        }
     }
 
     private fun setupButtons(hiddenTypes: List<TemplateType>) {
         view?.findViewById<Button>(R.id.frag_back_btn)?.setOnClickListener { navigateBack() }
 
+        val createNewIndex = hiddenTypes.size
+
         view?.findViewById<Button>(R.id.frag_next_btn)?.setOnClickListener {
             val listView = view?.findViewById<ListView>(R.id.frag_restore_builtins_lv)
-            if (listView != null) {
+            val createNewChecked = listView?.isItemChecked(createNewIndex) == true
+            val anyBuiltinChecked = listView != null && (0 until hiddenTypes.size).any { listView.isItemChecked(it) }
+
+            if (anyBuiltinChecked && listView != null) {
+                // Restore any selected built-in templates
                 val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
                 val raw = prefs.getString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, "") ?: ""
                 val codes = if (raw.isEmpty()) mutableSetOf() else raw.split(",").toMutableSet()
@@ -99,9 +119,17 @@ class TemplateCreatorRestoreBuiltins :
                 }
                 prefs.edit().putString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, codes.joinToString(",")).apply()
             }
-            findNavController().navigate(
-                TemplateCreatorRestoreBuiltinsDirections.actionRestoreBuiltinsToDimensions()
-            )
+
+            if (createNewChecked || !anyBuiltinChecked) {
+                // "Create new template" is checked, or nothing is selected: navigate to dimensions
+                findNavController().navigate(
+                    TemplateCreatorRestoreBuiltinsDirections.actionRestoreBuiltinsToDimensions()
+                )
+            } else {
+                // Only built-in templates were restored; close the activity
+                activity?.setResult(Activity.RESULT_OK)
+                activity?.finish()
+            }
         }
     }
 
