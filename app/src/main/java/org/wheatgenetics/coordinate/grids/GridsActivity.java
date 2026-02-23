@@ -44,6 +44,7 @@ import java.util.zip.ZipOutputStream;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.CollectorActivity;
@@ -519,6 +520,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         setSupportActionBar(toolbar);
         InsetHandler.applyToolbarInsets(toolbar);
         InsetHandler.applyStatusBarScrim(this.findViewById(R.id.status_bar_scrim));
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
         this.gridsViewModel = new ViewModelProvider(this).get(
                 ExportingViewModel.class);
@@ -547,6 +549,9 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
         setupBottomNavigationBar();
         InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_grids_bnv));
+
+        FloatingActionButton fabNewGrid = this.findViewById(R.id.fab_new_grid);
+        if (fabNewGrid != null) fabNewGrid.setOnClickListener(v -> createGrid());
 
         setupActionBar();
 
@@ -814,13 +819,11 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_new_grid) {
-            createGrid();
-        } else if (item.getItemId() == R.id.action_sort) {
+        if (item.getItemId() == R.id.action_sort) {
             showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)
-                    .targets(gridActivityTapTargetView(R.id.action_new_grid, getString(R.string.tutorial_grid_create_title), getString(R.string.tutorial_grid_create_summary), 60)
+                    .targets(gridActivityTapTargetView(R.id.fab_new_grid, getString(R.string.tutorial_grid_create_title), getString(R.string.tutorial_grid_create_summary), 60)
                     );
             if (!gridsAdapter.isEmpty()) {
                 sequence.targets(

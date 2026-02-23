@@ -10,7 +10,7 @@ import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.wheatgenetics.coordinate.R
@@ -18,16 +18,12 @@ import org.wheatgenetics.coordinate.activity.TemplateCreatorActivity
 import org.wheatgenetics.coordinate.adapter.TitleChoiceAdapter
 import org.wheatgenetics.coordinate.database.TemplatesTable
 import org.wheatgenetics.coordinate.interfaces.TitleSelectedListener
+import org.wheatgenetics.coordinate.preference.GeneralKeys
 
 class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_template_options),
     TitleSelectedListener {
 
-    private val args: GridCreatorTemplateOptionsArgs by navArgs()
-
     private var mTemplatesTable: TemplatesTable? = null
-
-    private var mSelectedTemplateTitle: String? = null
-
     private val mTemplateActivityStarter = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
         result?.let {
@@ -61,6 +57,14 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         setupAdapter()
         setupButtons()
 
+        // if in project-edit mode, skip directly to project selection
+        val projectEdit = activity?.intent?.getBooleanExtra("projectEdit", false) ?: false
+        if (projectEdit) {
+            findNavController().navigate(GridCreatorTemplateOptionsDirections
+                .actionTemplateOptionsToProjectOptions())
+            return
+        }
+
         // check if this creator started from the templates activity
         // or if from grids activity via template filter
         // (skip this fragment)
@@ -68,7 +72,7 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         if (templateId != -1L) {
             mTemplatesTable?.load()?.find { it.id == templateId }?.title?.let { title ->
                 findNavController().navigate(GridCreatorTemplateOptionsDirections
-                    .actionTemplateOptionsToTemplateFields(title).setProject(args.project))
+                    .actionTemplateOptionsToTemplateFields(title))
             }
         }
     }
@@ -78,14 +82,8 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         val okButton = view?.findViewById<Button>(R.id.frag_next_btn)
         val backButton = view?.findViewById<Button>(R.id.frag_back_btn)
 
-        setDisabledNext()
-
-        okButton?.setOnClickListener {
-            mSelectedTemplateTitle?.let { title ->
-                findNavController().navigate(GridCreatorTemplateOptionsDirections
-                    .actionTemplateOptionsToTemplateFields(title).setProject(args.project))
-            }
-        }
+        // Next button is not needed — selection navigates immediately
+        okButton?.visibility = View.GONE
 
         backButton?.setOnClickListener {
             navigateBack()
@@ -93,33 +91,10 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
     }
 
     private fun navigateBack() {
-        val projectId = activity?.intent?.getLongExtra("projectId", -1L)
-        with (findNavController()) {
-            when {
-                projectId != -1L -> {
-                    activity?.setResult(Activity.RESULT_CANCELED)
-                    activity?.finish()
-                }
-                (previousBackStackEntry?.destination?.id ?: -1) == R.id.project_options -> {
-                    popBackStack(R.id.project_options, false)
-                }
-                else -> {
-                    activity?.setResult(Activity.RESULT_CANCELED)
-                    activity?.finish()
-                }
-            }
-        }
+        activity?.setResult(Activity.RESULT_CANCELED)
+        activity?.finish()
     }
 
-    private fun setDisabledNext() {
-        val okButton = view?.findViewById<Button>(R.id.frag_next_btn)
-        okButton?.isEnabled = false
-    }
-
-    private fun setNextText() {
-        val okButton = view?.findViewById<Button>(R.id.frag_next_btn)
-        okButton?.isEnabled = true
-    }
 
     private fun setupAdapter() {
 
@@ -128,34 +103,41 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
             //query db for optional fields
             mTemplatesTable?.load()?.let { templates ->
 
-                templates.titles()?.let { titles ->
-
-                    val adapter = TitleChoiceAdapter(this, TitleChoiceAdapter.AdapterType.TEMPLATE)
-
-                    val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_add_template_lv)
-
-                    val size = titles.size
-
-                    listView?.setItemViewCacheSize(size)
-
-                    listView?.layoutManager = LinearLayoutManager(act)
-
-                    listView?.adapter = adapter
-
-                    (listView?.adapter as TitleChoiceAdapter).submitList(titles.map { it })
-
-                    listView?.adapter?.notifyItemRangeChanged(0, size)
+                // Filter out hidden built-in templates
+                val hiddenRaw = PreferenceManager.getDefaultSharedPreferences(act)
+                    .getString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, "") ?: ""
+                val hiddenCodes = if (hiddenRaw.isEmpty()) emptySet<String>()
+                    else hiddenRaw.split(",").toSet()
+                val filteredTitles = mutableListOf<String>()
+                for (template in templates) {
+                    val typeCode = template.type.code.toString()
+                    if (!template.isDefaultTemplate || !hiddenCodes.contains(typeCode)) {
+                        template.title?.let { filteredTitles.add(it) }
+                    }
                 }
+
+                val adapter = TitleChoiceAdapter(this, TitleChoiceAdapter.AdapterType.TEMPLATE)
+
+                val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_add_template_lv)
+
+                val size = filteredTitles.size
+
+                listView?.setItemViewCacheSize(size)
+
+                listView?.layoutManager = LinearLayoutManager(act)
+
+                listView?.adapter = adapter
+
+                (listView?.adapter as TitleChoiceAdapter).submitList(filteredTitles)
+
+                listView?.adapter?.notifyItemRangeChanged(0, size)
             }
         }
     }
 
     override fun checked(title: String) {
-
-        mSelectedTemplateTitle = title
-
-        setNextText()
-
+        findNavController().navigate(GridCreatorTemplateOptionsDirections
+            .actionTemplateOptionsToTemplateFields(title))
     }
 
     override fun onAddNewItemClicked() {

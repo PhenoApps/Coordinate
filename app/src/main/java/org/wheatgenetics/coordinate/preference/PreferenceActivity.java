@@ -66,6 +66,7 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
         androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         InsetHandler.applyToolbarInsets(toolbar);
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
         InsetHandler.applyBottomNavInsets(getBottomNavigationBarView());
         getBottomNavigationBarView().setSelectedItemId(R.id.action_nav_settings);

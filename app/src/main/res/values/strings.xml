@@ -31,6 +31,13 @@
     <string name="app_intro_load_sample_data_summary">Import a sample database that includes example grids, templates, and projects.</string>
     <string name="app_intro_enable_tutorial_title">Tutorial</string>
     <string name="app_intro_enable_tutorial_summary">Add a help icon to the top toolbar that describes features throughout the app.</string>
+    <string name="app_intro_default_templates_header">Default Templates</string>
+    <string name="app_intro_seed_tray_template_title">Seed Tray</string>
+    <string name="app_intro_seed_tray_template_summary">A 6×20 seed tray template with optional fields for tray ID, person, and date.</string>
+    <string name="app_intro_dna_plate_template_title">DNA Plate</string>
+    <string name="app_intro_dna_plate_template_summary">An 8×12 DNA plate template with optional fields for plate ID, plate name, and date.</string>
+    <string name="app_intro_htpg_plate_template_title">HTPG Plate</string>
+    <string name="app_intro_htpg_plate_template_summary">An 8×12 HTPG plate template with optional fields for plate ID, username, and date.</string>
 
     <!-- CollectorActivity -->
     <string name="CollectorActivityLabel">Collect Data</string>
@@ -365,6 +372,8 @@
     <string name="SeedDefaultTemplateTitle">Seed Tray</string>
     <string name="DNADefaultTemplateTitle">DNA Plate</string>
     <string name="HTPGTemplateTitle">HTPG</string>
+    <string name="HTPGDefaultTemplateTitle">HTPG Plate</string>
+    <string name="HTPGDefaultTemplateEntryLabel">Sample UUID</string>
 
     <!-- NonNullOptionalFields HTPG template -->
     <string name="NonNullOptionalFieldsHTPG">Plate ID</string>
@@ -453,7 +462,6 @@
     <string name="getExportFileNameAlertDialogHint">File name</string>
     <string name="getExportFileNameAlertDialogToast">File name cannot be empty</string>
 
-
     <!-- Display -->
     <string name="display_cellContentDescription">cell</string>
 
@@ -489,16 +497,16 @@
     <string name="ProjectDeleterProjectFailToast">Project could not be deleted</string>
 
     <!-- optional_field_show.xml -->
-    <string name="optional_field_showNameText">Plate ID:</string>
+    <string name="optional_field_showNameText">Plate ID</string>
     <string name="optional_field_showValueText">...</string>
 
     <!-- fragment_data_entry.xml -->
     <string name="fragment_data_entryEntryHint">Cell ID</string>
     <string name="fragment_data_entryEntryActionLabel">Save</string>
     <string name="fragment_data_entryGridInformationHeaderText">Grid Information</string>
-    <string name="fragment_data_entryProjectLabelText">Project:</string>
+    <string name="fragment_data_entryProjectLabelText">Project</string>
     <string name="fragment_data_entryProjectTitleText">...</string>
-    <string name="fragment_data_entryTemplateLabelText">Template:</string>
+    <string name="fragment_data_entryTemplateLabelText">Template</string>
     <string name="fragment_data_entryTemplateTitleText">...</string>
 
     <!-- UniqueAlertDialog -->
@@ -515,14 +523,12 @@
     <string name="frag_grid_creator_project_add_new_text">New Project</string>
     <string name="frag_grid_creator_project_add_title">Add grid to a project</string>
     <string name="frag_grid_creator_add_project_summary">Optionally create a new project or select an existing project below.</string>
-    <string name="frag_grid_creator_template_options_title">Template options</string>
-    <string name="frag_grid_creator_template_options_summary">Create a new template or select an existing template below.</string>
+    <string name="frag_grid_creator_template_options_title">Select a Template</string>
     <string name="frag_grid_creator_new_template_title">New template</string>
-    <string name="frag_grid_creator_new_template_summary">Please enter a template name and its grid dimensions.</string>
     <string name="frag_grid_creator_template_rows_et_hint">Number of rows</string>
     <string name="frag_grid_creator_template_columns_et_hint">Number of columns</string>
     <string name="frag_grid_creator_template_name_et_hint">Template name</string>
-    <string name="frag_template_creator_fields_summary">Fill in the optional fields below.</string>
+    <string name="frag_template_creator_new_template_title">Template name and dimensions</string>
     <string name="frag_template_creator_options_title">Optional fields</string>
     <string name="frag_template_creator_options_summary">Metadata fields can be added or removed from each template.</string>
     <string name="frag_template_creator_options_new">Create a new field.</string>
@@ -536,6 +542,10 @@
     <string name="frag_exclude_reset_button">Reset</string>
     <string name="back">Back</string>
     <string name="finish">Finish</string>
+
+    <!-- TemplateCreatorRestoreBuiltins -->
+    <string name="frag_template_creator_restore_builtins_title">Restore Built-in Templates</string>
+    <string name="frag_template_creator_restore_builtins_summary">Select built-in templates to restore to the templates list.</string>
 
     <!-- TemplateCreator -->
     <string name="frag_template_creator_exclude_random_et_hint">Number of random cells to exclude.</string>
@@ -575,6 +585,7 @@
     <string name="BaseCollectorFilledGridAlertMessage">Grid has been filled!</string>
     <string name="grid_export_text">Export Grid</string>
     <string name="menu_collector_meta_data_title">Summarize Data</string>
+    <string name="menu_fit_to_width">Fit to Width</string>
     <string name="project_edit_menu_item_click">Edit Project</string>
 
     <string name="bottom_nav_bar_settings">Settings</string>
@@ -585,6 +596,7 @@
     <string name="act_grids_title">Grids</string>
 
     <string name="dialog_act_templates_ask_delete">This will delete the selected template.</string>
+    <string name="dialog_act_templates_ask_hide_builtin">Remove this built-in template from the list? It will no longer appear in the templates list but its data will be preserved.</string>
     <string name="templates_with_grids_cant_be_edited">Cannot edit templates that have already been used to create grids.</string>
     <string name="menu_projects_new">New project</string>
     <string name="menu_templates_new">New template</string>

@@ -404,6 +404,14 @@ abstract class BaseCollector extends Object implements
         return null != this.joinedGridModel;
     }
 
+    public boolean hasProject() {
+        if (this.joinedGridModelIsLoaded()) {
+            @IntRange(from = 0) final long projectId = this.joinedGridModel.getProjectId();
+            return !Model.illegal(projectId);
+        }
+        return false;
+    }
+
     public void populateFragments() {
         if (null != this.gridDisplayFragment) {
             this.gridDisplayFragment.populate();

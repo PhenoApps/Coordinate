@@ -5,6 +5,8 @@ import android.util.TypedValue;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.view.ViewCompat;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,7 @@ abstract class TopOrLeftViewHolder extends ViewHolder {
 
     @Nullable
     private TextView textViewInstance = null;     // ll
+    private float mBaseTextSizePx = -1f;
     // endregion
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
@@ -38,9 +41,8 @@ abstract class TopOrLeftViewHolder extends ViewHolder {
     private TextView textView() {
         if (null == this.textViewInstance) {
             this.textViewInstance = this.itemView.findViewById(this.textViewId);
-            this.textViewInstance.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    this.textViewInstance.getTextSize() *
-                            Utils.getScaling(this.context));
+            mBaseTextSizePx = this.textViewInstance.getTextSize() * Utils.getScaling(this.context);
+            this.textViewInstance.setTextSize(TypedValue.COMPLEX_UNIT_PX, mBaseTextSizePx);
         }
         return this.textViewInstance;
     }
@@ -53,5 +55,22 @@ abstract class TopOrLeftViewHolder extends ViewHolder {
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     void bind(final String text) {
         this.setTextViewText(this.textView(), text);
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    void bind(final String text, final boolean compact, final float scaleFactor) {
+        TextView tv = this.textView();
+        if (null != tv) {
+            int hPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    compact ? 2 : 10, this.context.getResources().getDisplayMetrics());
+            int vPx = compact ? 0 : (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    10, this.context.getResources().getDisplayMetrics());
+            ViewCompat.setPaddingRelative(tv, hPx, vPx, hPx, vPx);
+            if (mBaseTextSizePx > 0) {
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        compact ? mBaseTextSizePx * scaleFactor : mBaseTextSizePx);
+            }
+            tv.setText(text);
+        }
     }
 }

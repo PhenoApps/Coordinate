@@ -10,11 +10,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,13 +23,8 @@ import com.google.zxing.integration.android.IntentIntegrator
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
 import org.wheatgenetics.coordinate.adapter.FieldsAdapter
-import org.wheatgenetics.coordinate.database.EntriesTable
-import org.wheatgenetics.coordinate.database.GridsTable
-import org.wheatgenetics.coordinate.database.ProjectsTable
 import org.wheatgenetics.coordinate.database.TemplatesTable
 import org.wheatgenetics.coordinate.interfaces.FieldsAdapterListener
-import org.wheatgenetics.coordinate.model.Cell
-import org.wheatgenetics.coordinate.model.JoinedGridModel
 import org.wheatgenetics.coordinate.model.TemplateModel
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
 import org.wheatgenetics.coordinate.preference.GeneralKeys
@@ -40,13 +34,12 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
     StringGetter {
 
     private val args: GridCreatorTemplateFieldsArgs by navArgs()
+    private val viewModel: GridCreatorViewModel by activityViewModels()
 
     private var mTemplatesTable: TemplatesTable? = null
-    private var mGridsTable: GridsTable? = null
-    private var mProjectsTable: ProjectsTable? = null
-    private var mEntriesTable: EntriesTable? = null
 
     private lateinit var fieldsAdapter: FieldsAdapter
+    private var templateFields: NonNullOptionalFields? = null
 
     private val mTemplate: TemplateModel? by lazy {
         mTemplatesTable?.load()?.find { it.title == args.title }
@@ -60,9 +53,6 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         super.onAttach(context)
         activity?.let { act ->
             mTemplatesTable = TemplatesTable(act)
-            mGridsTable = GridsTable(act)
-            mProjectsTable = ProjectsTable(act)
-            mEntriesTable = EntriesTable(act)
         }
     }
 
@@ -123,11 +113,10 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         setDisabledNext()
 
         okButton?.setOnClickListener {
-            val id = writeToDatabase()
-            if (id != -1L) {
-                activity?.setResult(Activity.RESULT_OK, Intent().putExtra("gridId", id))
-                activity?.finish()
-            }
+            viewModel.template = mTemplate
+            viewModel.optionalFields = getOptionalFields()
+            findNavController().navigate(GridCreatorTemplateFieldsDirections
+                .actionTemplateFieldsToProjectOptions())
         }
 
         backButton?.setOnClickListener {
@@ -138,91 +127,12 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
     private fun navigateBack() {
         val templateId = activity?.intent?.getLongExtra("templateId", -1L)
         if (templateId != -1L) {
-            findNavController().popBackStack(R.id.project_options, false)
-        } else findNavController().popBackStack()
-    }
-
-    private fun writeToDatabase(): Long {
-
-        val projectId = getProjectId()
-        val fields = getOptionalFields()
-        var retId = -1L
-
-        mTemplate?.let { template ->
-
-            val jgm = JoinedGridModel(projectId, null, fields, this, template)
-            mGridsTable?.insert(jgm)?.let { id ->
-
-                retId = id
-
-                //have to manually set the id after inserting
-                jgm.id = id
-
-                //update the first available non excluded cell (first cell the collector activity starts with)
-                getActiveRowCol(template)?.let { active ->
-                    jgm.setActiveRowAndActiveCol(active.first, active.second)
-                }
-
-                //update table with the active row/col and id
-                mGridsTable?.update(jgm)
-
-                //have to manually call this to populate the entries table
-                jgm.makeEntryModels()
-                mEntriesTable?.insert(jgm.entryModels)
-            }
+            // templateId fast-path skipped template_options; close instead of looping back
+            activity?.setResult(Activity.RESULT_CANCELED)
+            activity?.finish()
+        } else {
+            findNavController().popBackStack()
         }
-
-        return retId
-    }
-
-    private fun getActiveRowCol(template: TemplateModel): Pair<Int, Int>? {
-        val rows = template.rows
-        val cols = template.cols
-        for (j in 0 until cols) {
-            for (i in 0 until rows) {
-                if (!template.isExcludedCell(Cell(i+1, j+1, this))) {
-                    //this is confusing the active cell is not 1-based like the grid is
-                    return Pair(i, j)
-                }
-            }
-        }
-        return null
-    }
-
-    private fun getProjectId(): Long {
-
-        //iterate over projects to find id
-        args.project?.let { projectTitle ->
-            val projects = mProjectsTable?.load()
-            val size = projects?.size() ?: 0
-            for (i in 0 until size) {
-                val p = projects?.get(i)
-                if (p != null && p.title == projectTitle) {
-                    return p.id
-                }
-            }
-        }
-
-        return 0
-    }
-
-    private fun getOptionalFields(): NonNullOptionalFields {
-
-        val fields = NonNullOptionalFields(this)
-
-//        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
-
-//        listView?.children?.forEach {
-//            val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
-//            val valueEditText = it.findViewById<EditText>(R.id.list_item_field_et)
-//            fields.add(nameTextView.text.toString(), valueEditText.text.toString(), null)
-//        }
-
-        fieldsAdapter.getAllFieldValues().forEach { (name, value) ->
-            fields.add(name, value, null)
-        }
-
-        return fields
     }
 
     //check that the base optional field "identification" value is entered
@@ -230,13 +140,10 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
         val requiredName = getRequiredName()
 
-        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
-
-        listView?.children?.forEach {
-            val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
-            if (nameTextView.text == requiredName) {
-                val valueEditText = it.findViewById<EditText>(R.id.list_item_field_et)
-                valueEditText.setText(text)
+        templateFields?.forEachIndexed { index, field ->
+            if (field.name == requiredName) {
+                field.value = text
+                fieldsAdapter.notifyItemChanged(index)
             }
         }
     }
@@ -246,25 +153,13 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
         val requiredName = getRequiredName()
 
-        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
-
-        listView?.children?.forEach {
-            val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
-            if (nameTextView.text == requiredName) {
-                val valueEditText = it.findViewById<EditText>(R.id.list_item_field_et)
-                if (valueEditText.text.isNotBlank()) {
-                    return true
-                }
-            }
-        }
-
-        return false
+        return templateFields?.any { it.name == requiredName && it.value.isNotBlank() } ?: false
     }
 
     private fun getRequiredName(): String = when (args.title) {
         getString(R.string.DNADefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsPlateIDFieldName)
         getString(R.string.SeedDefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsTrayIDFieldName)
-        getString(R.string.HTPGTemplateTitle) -> getString(R.string.NonNullOptionalFieldsHTPG)
+        getString(R.string.HTPGDefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsHTPG)
         else -> getString(R.string.BaseOptionalFieldIdentificationFieldName)
     }
 
@@ -287,9 +182,9 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
             //query db for optional fields
             mTemplatesTable?.getOptionalFieldsForTemplate(args.title, this)?.let { fields ->
 
-                // set hint text for optional fields
+                // set hint text for optional fields (preserve existing hint if set by template)
                 fields.forEach { field ->
-                    if (field.name != requiredName) {
+                    if (field.name != requiredName && field.hint.isEmpty()) {
                        field.hint = getString(R.string.optional_field_hint_text)
                     }
                 }
@@ -307,7 +202,20 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
                     }
                 }
 
-                fieldsAdapter = FieldsAdapter(this, requiredName, fields)
+                // pre-fill Date field with today's date for HTPG template
+                if (args.title == getString(R.string.HTPGDefaultTemplateTitle)) {
+                    val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                        .format(java.util.Date())
+                    fields.forEach { field ->
+                        if (field.name.equals("date", ignoreCase = true)) {
+                            field.value = today
+                        }
+                    }
+                }
+
+                templateFields = fields
+
+                fieldsAdapter = FieldsAdapter(this, requiredName)
 
                 val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
 
@@ -324,6 +232,17 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
                 listView?.adapter?.notifyItemRangeChanged(0, size)
             }
         }
+    }
+
+    private fun getOptionalFields(): NonNullOptionalFields {
+
+        val fields = NonNullOptionalFields(this)
+
+        templateFields?.forEach { field ->
+            fields.add(field.name, field.value, null)
+        }
+
+        return fields
     }
 
     override fun get(resId: Int): String? = activity?.getString(resId)

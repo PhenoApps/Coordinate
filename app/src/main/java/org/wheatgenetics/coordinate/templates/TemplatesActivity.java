@@ -25,6 +25,7 @@ import androidx.preference.PreferenceManager;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.wheatgenetics.coordinate.Utils;
 import org.phenoapps.utils.BaseDocumentTreeUtil;
@@ -193,7 +194,37 @@ public class TemplatesActivity extends BackActivity
     }
     // endregion
 
+    private void addToHiddenBuiltins(final long templateId) {
+        final TemplateModel tm = this.templatesTable().get(templateId);
+        if (tm == null) return;
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final String existing = prefs.getString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, "");
+        final String typeCode = String.valueOf(tm.getType().getCode());
+        final String updated;
+        if (existing == null || existing.isEmpty()) {
+            updated = typeCode;
+        } else {
+            // Avoid duplicates
+            final java.util.Set<String> codes = new java.util.HashSet<>(
+                    java.util.Arrays.asList(existing.split(",")));
+            codes.add(typeCode);
+            updated = android.text.TextUtils.join(",", codes);
+        }
+        prefs.edit().putString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, updated).apply();
+        this.notifyDataSetChanged();
+    }
+
     private void deleteTemplate(@IntRange(from = 1) final long templateId) {
+        final TemplateModel tm = this.templatesTable().get(templateId);
+        if (tm != null && tm.isDefaultTemplate()) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.dialog_act_templates_ask_hide_builtin)
+                    .setPositiveButton(android.R.string.ok, (dialog, which) ->
+                            addToHiddenBuiltins(templateId))
+                    .setNegativeButton(android.R.string.cancel, (dialog, which) -> { })
+                    .show();
+            return;
+        }
 
         AlertDialog.Builder askDelete = new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_act_templates_ask_delete)
@@ -407,7 +438,9 @@ public class TemplatesActivity extends BackActivity
 
         androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle(null);
         InsetHandler.applyToolbarInsets(toolbar);
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
         this.templatesViewModel = new ViewModelProvider(this).get(
                 TemplatesViewModel.class);
@@ -417,6 +450,9 @@ public class TemplatesActivity extends BackActivity
 
         setupBottomNavigationBar();
         InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_templates_bnv));
+
+        FloatingActionButton fabNewTemplate = this.findViewById(R.id.fab_new_template);
+        if (fabNewTemplate != null) fabNewTemplate.setOnClickListener(v -> createTemplate());
 
         if (null != templatesListView) templatesListView.setAdapter(this.templatesAdapter =
 
@@ -458,13 +494,11 @@ public class TemplatesActivity extends BackActivity
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_new_template) {
-            createTemplate();
-        } else if (item.getItemId() == R.id.action_sort) {
+        if (item.getItemId() == R.id.action_sort) {
             showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)
-                    .targets(templateActivityTapTargetView(R.id.action_new_template, getString(R.string.tutorial_template_create_title), getString(R.string.tutorial_template_create_summary), 60),
+                    .targets(templateActivityTapTargetView(R.id.fab_new_template, getString(R.string.tutorial_template_create_title), getString(R.string.tutorial_template_create_summary), 60),
                             templateActivityTapTargetView(R.id.import_template_menu_item, getString(R.string.tutorial_template_import_title), getString(R.string.tutorial_template_import_summary), 60)
                     );
             if (!templatesAdapter.isEmpty()) {

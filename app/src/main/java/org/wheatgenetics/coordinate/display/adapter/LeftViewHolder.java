@@ -32,4 +32,9 @@ class LeftViewHolder extends TopOrLeftViewHolder {
         this.bind(numbering ? Integer.toString(rowOrCol) :
                 Utils.convert(rowOrCol - 1));
     }
+
+    void bind(@IntRange(from = 1) final int rowOrCol, final boolean numbering, final boolean compact, final float scaleFactor) {
+        this.bind(numbering ? Integer.toString(rowOrCol) :
+                Utils.convert(rowOrCol - 1), compact, scaleFactor);
+    }
 }

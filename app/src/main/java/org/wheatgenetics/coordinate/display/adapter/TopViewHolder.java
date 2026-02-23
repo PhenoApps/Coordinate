@@ -22,4 +22,10 @@ class TopViewHolder extends LeftViewHolder {
         if (0 == column) this.bind("");
         else super.bind(column, numbering);
     }
+
+    @SuppressLint({"Range"})
+    void bind(@IntRange(from = 0) final int column, final boolean numbering, final boolean compact, final float scaleFactor) {
+        if (0 == column) this.bind("", compact, scaleFactor);
+        else super.bind(column, numbering, compact, scaleFactor);
+    }
 }

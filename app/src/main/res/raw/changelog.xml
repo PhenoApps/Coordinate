@@ -1,6 +1,27 @@
 <changelog>
+
+    <!--
+        <new></new>
+        <info></info>
+        <bugfix></bugfix>
+    -->
+
     <release
-        date="2025-02-19"
+        date="2026-02-19"
+        versionCode="430"
+        versionName="v4.3">
+        <new>Select multiple grids for export via long-press</new>
+        <new>Grid size can be adjusted during collection</new>
+        <new>New dialog in collect for grid information</new>
+        <new>Grids, templates, and projects can be sorted by name and date</new>
+        <info>Grid creator reorganized to add project last</info>
+        <info>Minor updates to Template creator</info>
+        <info>New grid, template, and project buttons moved to floating buttons</info>
+        <bugfix>Fixed layout issues with landscape orientation</bugfix>
+    </release>
+
+    <release
+        date="2026-02-19"
         versionCode="420"
         versionName="v4.2.0">
         <new>Removed static text from custom headers</new>
