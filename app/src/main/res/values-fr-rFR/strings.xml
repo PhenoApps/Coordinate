@@ -361,7 +361,6 @@
     <string name="fragment_data_entryGridInformationHeaderText">Grid Information</string>
     <string name="fragment_data_entryProjectTitleText">...</string>
     <string name="fragment_data_entryProjectLabelText">Project</string>
-    <string name="fragment_data_entryProjectTitleText">...</string>
     <string name="fragment_data_entryTemplateLabelText">Template</string>
     <string name="fragment_data_entryTemplateTitleText">...</string>
     <!-- UniqueAlertDialog -->
@@ -378,9 +377,7 @@
     <string name="frag_grid_creator_add_project_summary">Optionally create a new project or select an existing project below.</string>
     <string name="frag_grid_creator_new_template_title">New template</string>
     <string name="frag_grid_creator_template_options_title">Template options</string>
-    <string name="frag_grid_creator_template_options_summary">Create a new template or select an existing template below.</string>
     <string name="frag_template_creator_new_template_title">New template</string>
-    <string name="frag_template_creator_new_template_summary">Please enter a template name and its grid dimensions.</string>
     <string name="frag_grid_creator_template_rows_et_hint">Number of rows</string>
     <string name="frag_grid_creator_template_columns_et_hint">Number of columns</string>
     <string name="frag_grid_creator_template_name_et_hint">Template name</string>
