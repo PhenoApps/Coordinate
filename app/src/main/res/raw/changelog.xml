@@ -11,6 +11,7 @@
         versionCode="500"
         versionName="v5.0">
         <new>Select multiple grids for export via long-press</new>
+        <new>Verification mode for imported grids</new>
         <new>Grid size can be adjusted during collection</new>
         <new>New dialog in collect for grid information</new>
         <new>Grids, templates, and projects can be sorted by name and date</new>
