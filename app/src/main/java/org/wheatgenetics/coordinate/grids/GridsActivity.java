@@ -51,6 +51,9 @@ import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.brapi.BrapiExporter;
+import org.wheatgenetics.coordinate.brapi.BrapiImportActivity;
+import org.wheatgenetics.coordinate.brapi.BrapiPlateListActivity;
 import org.wheatgenetics.coordinate.gi.ImportedGridImporter;
 import org.wheatgenetics.coordinate.activities.BaseMainActivity;
 import org.wheatgenetics.coordinate.activity.AppIntroActivity;
@@ -65,6 +68,8 @@ import org.wheatgenetics.coordinate.ge.GridExportPreprocessor;
 import org.wheatgenetics.coordinate.ge.GridExporter;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.model.TemplateType;
+import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
 import org.wheatgenetics.coordinate.preference.GeneralKeys;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
@@ -192,6 +197,25 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     private Uri pendingImportUri = null;
     private String pendingImportFilename = null;
+
+    private final ActivityResultLauncher<Intent> brapiImportLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    notifyDataSetChanged();
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> brapiPlateListLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Intent importIntent = new Intent(this, BrapiImportActivity.class);
+                    importIntent.putStringArrayListExtra(
+                            BrapiImportActivity.EXTRA_PLATE_DB_IDS,
+                            result.getData().getStringArrayListExtra(BrapiPlateListActivity.EXTRA_PLATE_DB_IDS));
+                    brapiImportLauncher.launch(importIntent);
+                }
+            });
+
     private final ActivityResultLauncher<String[]> importCsvLauncher =
             registerForActivityResult(new ActivityResultContracts.OpenDocument(), uri -> {
                 if (uri != null) {
@@ -339,17 +363,41 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     // region exportGrid() Private Methods
     @NonNull
     private GridExporter gridExporter() {
-        if (null == this.gridExporterInstance) this.gridExporterInstance =
-                new GridExporter(this,
-                        GridsActivity.EXPORT_GRID_REQUEST_CODE,
-                        new GridDeleter.Handler() {
-                            @Override
-                            public void respondToDeletedGrid() {
-                                GridsActivity.this.notifyDataSetChanged();
-                            }
-                        },
-                        true);
+        if (null == this.gridExporterInstance) {
+            this.gridExporterInstance = new GridExporter(this,
+                    GridsActivity.EXPORT_GRID_REQUEST_CODE,
+                    new GridDeleter.Handler() {
+                        @Override
+                        public void respondToDeletedGrid() {
+                            GridsActivity.this.notifyDataSetChanged();
+                        }
+                    },
+                    true);
+            this.gridExporterInstance.setExportSuccessCallback(
+                    GridsActivity.this::triggerBrapiExportIfApplicable);
+        }
         return this.gridExporterInstance;
+    }
+
+    private void triggerBrapiExportIfApplicable() {
+        final JoinedGridModel grid = this.gridExporterInstance == null
+                ? null : this.gridExporterInstance.getJoinedGridModel();
+        if (grid == null) return;
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!prefs.getBoolean(GeneralKeys.BRAPI_ENABLED, false)) return;
+        final TemplateModel templateModel = new TemplatesTable(this).get(grid.getTemplateId());
+        if (templateModel == null || templateModel.getType() != TemplateType.BRAPI) return;
+        final long gridId = grid.getId();
+        new Thread(() -> {
+            try {
+                new BrapiExporter(getApplicationContext()).exportGridSync(gridId);
+                runOnUiThread(() -> Utils.showLongToast(GridsActivity.this,
+                        getString(R.string.brapi_export_success)));
+            } catch (Exception e) {
+                runOnUiThread(() -> Utils.showLongToast(GridsActivity.this,
+                        getString(R.string.brapi_export_error)));
+            }
+        }).start();
     }
 
     private void exportGrid(OutputStream output) {
@@ -888,7 +936,22 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_sort) {
+        if (item.getItemId() == R.id.action_brapi_import) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            if (!prefs.getBoolean(GeneralKeys.BRAPI_ENABLED, false)) {
+                new AlertDialog.Builder(this)
+                        .setMessage(R.string.brapi_not_enabled)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+            } else if (prefs.getString(GeneralKeys.BRAPI_BASE_URL, "").isEmpty()) {
+                new AlertDialog.Builder(this)
+                        .setMessage(R.string.brapi_not_configured)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+            } else {
+                brapiPlateListLauncher.launch(new Intent(this, BrapiPlateListActivity.class));
+            }
+        } else if (item.getItemId() == R.id.action_sort) {
             showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)

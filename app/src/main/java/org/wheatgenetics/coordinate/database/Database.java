@@ -46,7 +46,7 @@ public class Database extends Object {
                             /* context => */ context,
                             /* name    => */ fileName,
                             /* factory => */null,
-                            /* version => */4);
+                            /* version => */5);
                     this.context = context;
                 }
 
@@ -169,6 +169,28 @@ public class Database extends Object {
                         db.execSQL("INSERT INTO templates_v4 SELECT * FROM templates");
                         db.execSQL("DROP TABLE templates");
                         db.execSQL("ALTER TABLE templates_v4 RENAME TO templates");
+                    }
+                    if (oldVersion < 5) {
+                        // v4 → v5: recreate templates table to expand type constraint to 0-5
+                        db.execSQL("CREATE TABLE templates_v5 ("
+                                + "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                                + "title TEXT NOT NULL UNIQUE,"
+                                + "type INTEGER NOT NULL CHECK(type BETWEEN 0 AND 5),"
+                                + "rows INTEGER NOT NULL CHECK(rows >= 0),"
+                                + "cols INTEGER NOT NULL CHECK(cols >= 0),"
+                                + "erand INTEGER CHECK(erand >= 0),"
+                                + "ecells TEXT,"
+                                + "erows TEXT,"
+                                + "ecols TEXT,"
+                                + "cnumb INTEGER NOT NULL CHECK(cnumb BETWEEN 0 AND 1),"
+                                + "rnumb INTEGER NOT NULL CHECK(rnumb BETWEEN 0 AND 1),"
+                                + "entryLabel TEXT,"
+                                + "options TEXT,"
+                                + "stamp INTEGER"
+                                + ")");
+                        db.execSQL("INSERT INTO templates_v5 SELECT * FROM templates");
+                        db.execSQL("DROP TABLE templates");
+                        db.execSQL("ALTER TABLE templates_v5 RENAME TO templates");
                     }
                 }
 

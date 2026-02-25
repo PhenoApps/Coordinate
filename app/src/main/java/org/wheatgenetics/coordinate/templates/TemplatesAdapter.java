@@ -87,8 +87,14 @@ class TemplatesAdapter extends NonGridsAdapter {
         final SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(this.activity());
         final String raw = prefs.getString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, "");
-        if (raw == null || raw.isEmpty()) return new HashSet<>();
-        return new HashSet<>(Arrays.asList(raw.split(",")));
+        final Set<String> hidden = (raw == null || raw.isEmpty())
+                ? new HashSet<>()
+                : new HashSet<>(Arrays.asList(raw.split(",")));
+        // Always hide the BrAPI template when BrAPI is not enabled
+        if (!prefs.getBoolean(GeneralKeys.BRAPI_ENABLED, false)) {
+            hidden.add("5");
+        }
+        return hidden;
     }
 
     @Nullable

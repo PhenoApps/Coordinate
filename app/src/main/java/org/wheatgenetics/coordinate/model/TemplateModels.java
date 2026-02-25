@@ -137,6 +137,7 @@ public class TemplateModels extends Object
         result.add(TemplateModel.makeSeedDefault(stringGetter));
         result.add(TemplateModel.makeDNADefault(stringGetter));
         result.add(TemplateModel.makeHTGPDefault(stringGetter));
+        result.add(TemplateModel.makeBrAPIDefault(stringGetter));
 
         return result;
     }

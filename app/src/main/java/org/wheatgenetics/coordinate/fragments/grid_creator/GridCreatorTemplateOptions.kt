@@ -96,8 +96,10 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         if (hideTemplates) {
             mTemplatesTable?.load()?.let { templates ->
                 val hiddenRaw = prefs.getString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, "") ?: ""
-                val hiddenCodes = if (hiddenRaw.isEmpty()) emptySet<String>()
-                    else hiddenRaw.split(",").toSet()
+                val brapiEnabled = prefs.getBoolean(GeneralKeys.BRAPI_ENABLED, false)
+                val hiddenCodes = (if (hiddenRaw.isEmpty()) emptySet<String>()
+                    else hiddenRaw.split(",").toSet())
+                    .let { if (!brapiEnabled) it + "5" else it }
                 val filteredTitles = templates.filter { t ->
                     !t.isDefaultTemplate || !hiddenCodes.contains(t.type.code.toString())
                 }.mapNotNull { it.title }
@@ -138,10 +140,12 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
             mTemplatesTable?.load()?.let { templates ->
 
                 // Filter out hidden built-in templates
-                val hiddenRaw = PreferenceManager.getDefaultSharedPreferences(act)
-                    .getString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, "") ?: ""
-                val hiddenCodes = if (hiddenRaw.isEmpty()) emptySet<String>()
-                    else hiddenRaw.split(",").toSet()
+                val actPrefs = PreferenceManager.getDefaultSharedPreferences(act)
+                val hiddenRaw = actPrefs.getString(GeneralKeys.HIDDEN_BUILTIN_TEMPLATES, "") ?: ""
+                val brapiEnabled = actPrefs.getBoolean(GeneralKeys.BRAPI_ENABLED, false)
+                val hiddenCodes = (if (hiddenRaw.isEmpty()) emptySet<String>()
+                    else hiddenRaw.split(",").toSet())
+                    .let { if (!brapiEnabled) it + "5" else it }
                 val filteredTitles = mutableListOf<String>()
                 for (template in templates) {
                     val typeCode = template.type.code.toString()

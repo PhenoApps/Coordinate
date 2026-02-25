@@ -258,6 +258,24 @@ public class NonNullOptionalFields extends OptionalFields
     }
 
     @NonNull
+    public static NonNullOptionalFields makeBrAPIDefault(
+            @NonNull final StringGetter stringGetter) {
+        @NonNull final NonNullOptionalFields result =
+                new NonNullOptionalFields(stringGetter);
+        result.add("plateDbId", null, "Plate DB ID");
+        result.add("plateName", null, "Plate Name");
+        result.add("programDbId", null, "Program DB ID");
+        result.add("programName", null, "Program Name");
+        result.add("trialDbId", null, "Trial DB ID");
+        result.add("trialName", null, "Trial Name");
+        result.add("studyDbId", null, "Study DB ID");
+        result.add("studyName", null, "Study Name");
+        result.add("commonCropName", null, "Common Crop Name");
+        result.add("takenBy", null, "Person who collected samples");
+        return result;
+    }
+
+    @NonNull
     private NonNullOptionalFields checkedAdd(
             @NonNull @Size(min = 1) final String name,
             final String value, final String hint) {

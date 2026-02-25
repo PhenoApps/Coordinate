@@ -379,6 +379,7 @@
     <string name="HTPGTemplateTitle">HTPG</string>
     <string name="HTPGDefaultTemplateTitle">HTPG Plate</string>
     <string name="HTPGDefaultTemplateEntryLabel">Sample UUID</string>
+    <string name="BrAPIDefaultTemplateTitle">BrAPI Plate</string>
 
     <!-- NonNullOptionalFields HTPG template -->
     <string name="NonNullOptionalFieldsHTPG">Plate ID</string>
@@ -684,5 +685,50 @@
     <string name="tutorial_collector_collect_data_summary">Enter the sample ID for the cell in the grid</string>
     <string name="tutorial_collector_barcode_title">Scan barcode</string>
     <string name="tutorial_collector_barcode_summary">Enter sample ID by scanning a barcode</string>
+
+    <!-- BrAPI -->
+    <string name="pref_brapi_title">BrAPI</string>
+    <string name="pref_brapi_summary">Connect to a BrAPI server to import and export plate data</string>
+    <string name="pref_brapi_enabled_title">Enable BrAPI</string>
+    <string name="pref_brapi_enabled_summary">Show BrAPI features and the BrAPI Plate template</string>
+    <string name="pref_brapi_server_category">Server</string>
+    <string name="pref_brapi_authorization_category">Authorization</string>
+    <string name="pref_brapi_advanced_category">Advanced</string>
+    <string name="pref_brapi_base_url_title">Server URL</string>
+    <string name="pref_brapi_base_url_hint">https://example.org/brapi/v2</string>
+    <string name="pref_brapi_display_name_title">Display Name</string>
+    <string name="pref_brapi_oidc_url_title">OIDC Discovery URL</string>
+    <string name="pref_brapi_oidc_client_id_title">Client ID</string>
+    <string name="pref_brapi_oidc_scope_title">Scope</string>
+    <string name="pref_brapi_oidc_flow_title">Auth Flow</string>
+    <string name="pref_brapi_oidc_flow_implicit">Implicit</string>
+    <string name="pref_brapi_oidc_flow_code">Authorization Code</string>
+    <string name="pref_brapi_timeout_title">Timeout (seconds)</string>
+    <string name="pref_brapi_page_size_title">Page Size</string>
+    <string name="pref_brapi_authorize_title">Authorize</string>
+    <string name="pref_brapi_authorize_summary">Log in to the BrAPI server</string>
+    <string name="pref_brapi_revoke_title">Revoke Token</string>
+    <string name="pref_brapi_revoke_summary">Log out of the BrAPI server</string>
+    <string name="pref_brapi_token_revoked">Logged out of BrAPI server</string>
+    <string name="brapi_plate_list_title">BrAPI Plates</string>
+    <string name="brapi_import_title">Import Plate</string>
+    <string name="brapi_import_mode_empty">Collect new samples</string>
+    <string name="brapi_import_mode_with_samples">Confirm existing samples</string>
+    <string name="brapi_import_button">Import</string>
+    <string name="brapi_export_success">Plate synced to BrAPI server</string>
+    <string name="brapi_export_error">BrAPI sync failed</string>
+    <string name="brapi_not_configured">Configure BrAPI server in Settings first</string>
+    <string name="brapi_not_enabled">Enable BrAPI in Settings first</string>
+    <string name="brapi_import_from_brapi">Import from BrAPI</string>
+    <string name="brapi_loading">Loading plates…</string>
+    <string name="brapi_no_plates">No plates found</string>
+    <string name="brapi_import_selected">Import Selected</string>
+    <string name="brapi_study_filter_hint">Filter by study name</string>
+    <string name="brapi_import_empty_toast">Plate imported. Open the grid to collect samples.</string>
+    <string name="brapi_import_samples_toast">Plate imported. Open the grid to confirm samples.</string>
+    <string name="brapi_auth_title">BrAPI Authorization</string>
+    <string name="brapi_auth_success">Authorization successful</string>
+    <string name="brapi_auth_failed">Authorization failed</string>
+    <string name="brapi_plate_sample_count">%1$d of %2$d samples loaded</string>
 
 </resources>

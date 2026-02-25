@@ -3,19 +3,19 @@ package org.wheatgenetics.coordinate.model;
 import androidx.annotation.IntRange;
 
 public enum TemplateType {
-    SEED(0), DNA(1), USERDEFINED(2), HTPG(3), IMPORTED(4);
+    SEED(0), DNA(1), USERDEFINED(2), HTPG(3), IMPORTED(4), BRAPI(5);
 
-    @IntRange(from = 0, to = 4)
+    @IntRange(from = 0, to = 5)
     private final int code;
 
     @SuppressWarnings({"UnnecessaryEnumModifier"})
     private TemplateType(
-            @IntRange(from = 0, to = 4) final int code) {
+            @IntRange(from = 0, to = 5) final int code) {
         this.code = code;
     }
 
     static TemplateType get(
-            @IntRange(from = 0, to = 4) final int code) {
+            @IntRange(from = 0, to = 5) final int code) {
         if (TemplateType.SEED.getCode() == code)
             return TemplateType.SEED;
         else if (TemplateType.DNA.getCode() == code)
@@ -26,21 +26,24 @@ public enum TemplateType {
             return TemplateType.HTPG;
         else if (TemplateType.IMPORTED.getCode() == code)
             return TemplateType.IMPORTED;
+        else if (TemplateType.BRAPI.getCode() == code)
+            return TemplateType.BRAPI;
         else
             throw new IllegalArgumentException();
     }
 
     // region Public Methods
-    @IntRange(from = 0, to = 4)
+    @IntRange(from = 0, to = 5)
     public int getCode() {
         return this.code;
     }
 
     public boolean isDefaultTemplate() {
-        @IntRange(from = 0, to = 4) final int code = this.getCode();
+        @IntRange(from = 0, to = 5) final int code = this.getCode();
         return code == TemplateType.SEED.getCode()
                 || code == TemplateType.DNA.getCode()
-                || code == TemplateType.HTPG.getCode();
+                || code == TemplateType.HTPG.getCode()
+                || code == TemplateType.BRAPI.getCode();
     }
     // endregion
 }

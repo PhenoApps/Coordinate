@@ -317,6 +317,24 @@ public class TemplateModel extends DisplayTemplateModel {
     }
 
     /**
+     * Called by TemplateModels.
+     */
+    @NonNull
+    static TemplateModel makeBrAPIDefault(
+            @NonNull final StringGetter stringGetter) {
+        return new TemplateModel(
+                /* title => */ stringGetter.get(
+                R.string.BrAPIDefaultTemplateTitle),
+                /* type => */ TemplateType.BRAPI,
+                /* rows => */ 8,
+                /* cols => */ 12,
+                /* generatedExcludedCellsAmount => */ 0,
+                /* rowNumbering => */ false,
+                /* optionalFields => */ NonNullOptionalFields.makeBrAPIDefault(stringGetter),
+                /* stringGetter => */ stringGetter);
+    }
+
+    /**
      * Called by TemplateCreator.
      */
     @NonNull

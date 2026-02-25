@@ -62,6 +62,8 @@ public class GridExporter extends Exporter {
         public abstract JoinedGridModel getJoinedGridModel();
 
         public abstract void deleteGrid();
+
+        default void onExportSuccess() {}
     }
 
     private static class AsyncTask extends Exporter.AsyncTask
@@ -152,6 +154,7 @@ public class GridExporter extends Exporter {
                 RestrictTo.Scope.SUBCLASSES)
         void handleExportSuccess(final File exportFile) {
             new CitationDialog(getContext()).show();
+            this.helper.onExportSuccess();
         }
 
         // region org.wheatgenetics.coordinate.model.JoinedGridModel.Helper Overridden Method

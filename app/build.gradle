@@ -33,6 +33,7 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = ['appAuthRedirectScheme': 'coordinate']
     }
 
     buildTypes {
@@ -138,6 +139,14 @@ dependencies {
     kspAndroidTest 'com.google.dagger:hilt-android-compiler:2.53'
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+
+    // BrAPI
+    implementation 'org.brapi:brapi-java-client:2.1.0'
+    implementation 'net.openid:appauth:0.11.1'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+    implementation 'io.gsonfire:gson-fire:1.8.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0'
 }
 
 repositories {

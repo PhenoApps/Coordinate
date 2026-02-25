@@ -42,6 +42,7 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
 
     private GridDeleter gridDeleterInstance = null;     // ll
     private org.wheatgenetics.coordinate.exporter.GridExporter gridExporter = null;
+    private Runnable exportSuccessCallback = null;
     // endregion
 
     public GridExporter(@NonNull final Activity activity,
@@ -101,7 +102,18 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
         super.finalize();
     }
 
+    public void setExportSuccessCallback(final Runnable callback) {
+        this.exportSuccessCallback = callback;
+    }
+
     // region org.wheatgenetics.coordinate.exporter.GridExporter.Helper Overridden Methods
+    @Override
+    public void onExportSuccess() {
+        if (null != this.exportSuccessCallback) {
+            this.exportSuccessCallback.run();
+        }
+    }
+
     @Override
     public void deleteGrid() {
         final JoinedGridModel joinedGridModel =

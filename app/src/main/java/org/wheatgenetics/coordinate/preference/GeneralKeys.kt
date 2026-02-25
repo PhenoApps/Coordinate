@@ -64,5 +64,19 @@ class GeneralKeys private constructor() {
         // Hidden Built-in Templates (comma-separated TemplateType codes)
         const val HIDDEN_BUILTIN_TEMPLATES = COORDINATE_PREFIX + "HIDDEN_BUILTIN_TEMPLATES"
 
+        // BrAPI Preferences
+        const val BRAPI_ENABLED          = COORDINATE_PREFIX + "BRAPI_ENABLED"
+        const val BRAPI_BASE_URL         = COORDINATE_PREFIX + "BRAPI_BASE_URL"
+        const val BRAPI_DISPLAY_NAME     = COORDINATE_PREFIX + "BRAPI_DISPLAY_NAME"
+        const val BRAPI_TOKEN            = COORDINATE_PREFIX + "BRAPI_TOKEN"
+        const val BRAPI_ID_TOKEN         = COORDINATE_PREFIX + "BRAPI_ID_TOKEN"
+        const val BRAPI_OIDC_URL         = COORDINATE_PREFIX + "BRAPI_OIDC_URL"
+        const val BRAPI_OIDC_FLOW        = COORDINATE_PREFIX + "BRAPI_OIDC_FLOW"
+        const val BRAPI_OIDC_CLIENT_ID   = COORDINATE_PREFIX + "BRAPI_OIDC_CLIENT_ID"
+        const val BRAPI_OIDC_SCOPE       = COORDINATE_PREFIX + "BRAPI_OIDC_SCOPE"
+        const val BRAPI_TIMEOUT          = COORDINATE_PREFIX + "BRAPI_TIMEOUT"
+        const val BRAPI_PAGE_SIZE        = COORDINATE_PREFIX + "BRAPI_PAGE_SIZE"
+        const val BRAPI_EXPLICIT_OIDC_URL = COORDINATE_PREFIX + "BRAPI_EXPLICIT_OIDC_URL"
+
     }
 }

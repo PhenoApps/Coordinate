@@ -4,4 +4,14 @@
         <item>1, 2, 3</item>
         <item>A, B, C</item>
     </string-array>
+
+    <string-array name="brapi_oidc_flow_entries">
+        <item>@string/pref_brapi_oidc_flow_implicit</item>
+        <item>@string/pref_brapi_oidc_flow_code</item>
+    </string-array>
+
+    <string-array name="brapi_oidc_flow_values">
+        <item>@string/pref_brapi_oidc_flow_implicit</item>
+        <item>@string/pref_brapi_oidc_flow_code</item>
+    </string-array>
 </resources>
