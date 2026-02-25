@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -25,6 +26,7 @@ class BrapiPlateListActivity : BackActivity() {
 
     companion object {
         const val EXTRA_PLATE_DB_IDS = "extra_plate_db_ids"
+        private const val TAG = "BrapiPlateList"
     }
 
     private lateinit var adapter: BrapiPlateAdapter
@@ -63,6 +65,7 @@ class BrapiPlateListActivity : BackActivity() {
 
         importButton.setOnClickListener {
             val selected = ArrayList(adapter.getSelectedPlateDbIds())
+            Log.d(TAG, "Import button clicked: ${selected.size} plate(s) selected: $selected")
             if (selected.isNotEmpty()) {
                 val intent = Intent(this, BrapiImportActivity::class.java)
                 intent.putStringArrayListExtra(EXTRA_PLATE_DB_IDS, selected)
@@ -86,18 +89,26 @@ class BrapiPlateListActivity : BackActivity() {
     }
 
     private fun loadPlates(progressBar: ProgressBar, emptyText: TextView) {
+        Log.d(TAG, "loadPlates: starting plate list fetch")
         progressBar.visibility = View.VISIBLE
         emptyText.visibility = View.GONE
 
         lifecycleScope.launch {
             try {
+                Log.d(TAG, "loadPlates: calling service.getPlates()")
                 allPlates = service.getPlates()
+                Log.d(TAG, "loadPlates: received ${allPlates.size} plate(s)")
+                allPlates.forEachIndexed { i, p ->
+                    Log.d(TAG, "  plate[$i]: plateDbId=${p.plateDbId}, plateName=${p.plateName}, studyDbId=${p.studyDbId}")
+                }
                 adapter.setPlates(allPlates)
                 progressBar.visibility = View.GONE
                 if (allPlates.isEmpty()) {
+                    Log.d(TAG, "loadPlates: no plates returned – showing empty state")
                     emptyText.visibility = View.VISIBLE
                 }
             } catch (e: Exception) {
+                Log.e(TAG, "loadPlates: error fetching plates", e)
                 progressBar.visibility = View.GONE
                 Toast.makeText(
                     this@BrapiPlateListActivity,

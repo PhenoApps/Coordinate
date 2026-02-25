@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.brapi
 
 import android.content.ContentValues
 import android.content.Context
+import android.util.Log
 import androidx.preference.PreferenceManager
 import org.brapi.v2.model.geno.BrAPIPlate
 import org.brapi.v2.model.geno.BrAPISample
@@ -41,10 +42,12 @@ class BrapiGridImporter(private val context: Context) {
         samples: List<BrAPISample>,
         mode: BrapiImportMode,
     ): Long {
+        Log.d(TAG, "importPlate: plateDbId=${plate.plateDbId}, plateName=${plate.plateName}, mode=$mode, sampleCount=${samples.size}")
         val db = Database.db(context)
         val now = System.currentTimeMillis()
         val person = PreferenceManager.getDefaultSharedPreferences(context)
             .getString(GeneralKeys.PERSON_NAME, "") ?: ""
+        Log.d(TAG, "importPlate: person=$person, timestamp=$now")
 
         // 1. Insert sentinel template (8×12, BRAPI type=5)
         val templateCv = ContentValues().apply {
@@ -63,10 +66,12 @@ class BrapiGridImporter(private val context: Context) {
             put("stamp", now)
         }
         val templateId = db.insert("templates", null, templateCv)
+        Log.d(TAG, "importPlate: inserted template, templateId=$templateId")
         check(templateId >= 0) { "Failed to create BrAPI sentinel template" }
 
         // 2. Build plate-level optional fields JSON
         val optionsJson = buildPlateOptionsJson(plate, person)
+        Log.d(TAG, "importPlate: optionsJson=$optionsJson")
 
         // 3. Insert grid row
         val gridCv = ContentValues().apply {
@@ -79,6 +84,7 @@ class BrapiGridImporter(private val context: Context) {
             put("stamp", now)
         }
         val gridId = db.insert("grids", null, gridCv)
+        Log.d(TAG, "importPlate: inserted grid, gridId=$gridId")
         check(gridId >= 0) { "Failed to create BrAPI grid" }
 
         // 4. Build well→sample map for WITH_SAMPLES mode
@@ -88,7 +94,16 @@ class BrapiGridImporter(private val context: Context) {
             emptyMap()
         }
 
+        Log.d(TAG, "importPlate: wellToSample has ${wellToSample.size} mapped well(s)")
+        if (mode == BrapiImportMode.WITH_SAMPLES) {
+            wellToSample.forEach { (well, s) ->
+                Log.d(TAG, "  wellToSample[$well]: sampleDbId=${s.sampleDbId}, sampleName=${s.sampleName}")
+            }
+        }
+
         // 5. Insert entries for all 96 wells (rows 1-8, cols 1-12)
+        Log.d(TAG, "importPlate: inserting 96 entries for gridId=$gridId")
+        var insertedCount = 0
         for (row in 1..8) {
             for (col in 1..12) {
                 val well = wellForRowCol(row, col)
@@ -100,6 +115,11 @@ class BrapiGridImporter(private val context: Context) {
 
                 if (mode == BrapiImportMode.WITH_SAMPLES) {
                     val sample = wellToSample[well]
+                    if (sample == null) {
+                        Log.d(TAG, "  $well: no sample mapped – inserting empty")
+                    } else {
+                        Log.d(TAG, "  $well: sampleDbId=${sample.sampleDbId}, sampleName=${sample.sampleName}, germplasmDbId=${sample.germplasmDbId}")
+                    }
                     entryCv.put("edata", sample?.sampleName ?: "")
                     val originalJson = sample?.let { buildOriginalValueJson(it) }
                     entryCv.put("original_value", originalJson)
@@ -110,9 +130,15 @@ class BrapiGridImporter(private val context: Context) {
                     entryCv.putNull("confirmed_timestamp")
                 }
 
-                db.insert("entries", null, entryCv)
+                val rowId = db.insert("entries", null, entryCv)
+                if (rowId < 0) {
+                    Log.w(TAG, "importPlate: failed to insert entry for well=$well (row=$row, col=$col)")
+                } else {
+                    insertedCount++
+                }
             }
         }
+        Log.d(TAG, "importPlate: finished inserting $insertedCount/96 entries for gridId=$gridId")
 
         return gridId
     }
@@ -153,6 +179,7 @@ class BrapiGridImporter(private val context: Context) {
     }
 
     companion object {
+        private const val TAG = "BrapiGridImporter"
         private val ROW_LETTERS = "ABCDEFGH"
 
         fun wellForRowCol(row: Int, col: Int): String {

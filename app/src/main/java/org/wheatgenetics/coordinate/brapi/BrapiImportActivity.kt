@@ -1,6 +1,7 @@
 package org.wheatgenetics.coordinate.brapi
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
@@ -25,6 +26,7 @@ class BrapiImportActivity : BackActivity() {
     companion object {
         const val EXTRA_PLATE_DB_IDS = BrapiPlateListActivity.EXTRA_PLATE_DB_IDS
         const val EXTRA_GRID_ID = "extra_grid_id"
+        private const val TAG = "BrapiImportActivity"
     }
 
     private lateinit var service: BrapiGenotypingService
@@ -53,8 +55,10 @@ class BrapiImportActivity : BackActivity() {
 
         val plateDbIds = intent.getStringArrayListExtra(EXTRA_PLATE_DB_IDS) ?: emptyList<String>()
         val plateDbId = plateDbIds.firstOrNull()
+        Log.d(TAG, "onCreate: received plateDbIds=$plateDbIds, using plateDbId=$plateDbId")
 
         if (plateDbId == null) {
+            Log.w(TAG, "onCreate: no plateDbId provided – finishing")
             Toast.makeText(this, R.string.brapi_not_configured, Toast.LENGTH_SHORT).show()
             finish()
             return
@@ -73,8 +77,16 @@ class BrapiImportActivity : BackActivity() {
         lifecycleScope.launch {
             progressBar.visibility = View.VISIBLE
             try {
+                Log.d(TAG, "Fetching plate details for plateDbId=$plateDbId")
                 val fetchedPlate = withContext(Dispatchers.IO) { service.getPlate(plateDbId) }
+                Log.d(TAG, "Plate fetch result: plateDbId=${fetchedPlate?.plateDbId}, plateName=${fetchedPlate?.plateName}, studyDbId=${fetchedPlate?.studyDbId}, programDbId=${fetchedPlate?.programDbId}")
+
+                Log.d(TAG, "Fetching samples for plateDbId=$plateDbId")
                 val fetchedSamples = withContext(Dispatchers.IO) { service.getSamplesForPlate(plateDbId) }
+                Log.d(TAG, "Samples fetch result: ${fetchedSamples.size} sample(s) returned")
+                fetchedSamples.forEachIndexed { i, s ->
+                    Log.d(TAG, "  sample[$i]: sampleDbId=${s.sampleDbId}, sampleName=${s.sampleName}, well=${s.well}, row=${s.row}, column=${s.column}, germplasmDbId=${s.germplasmDbId}")
+                }
 
                 plate = fetchedPlate
                 samples = fetchedSamples
@@ -92,6 +104,7 @@ class BrapiImportActivity : BackActivity() {
                 }
                 importButton.isEnabled = true
             } catch (e: Exception) {
+                Log.e(TAG, "Error fetching plate/samples for plateDbId=$plateDbId", e)
                 Toast.makeText(
                     this@BrapiImportActivity,
                     getString(R.string.brapi_export_error, e.message ?: ""),
@@ -107,6 +120,7 @@ class BrapiImportActivity : BackActivity() {
                 R.id.brapi_mode_with_samples -> BrapiImportMode.WITH_SAMPLES
                 else -> BrapiImportMode.EMPTY
             }
+            Log.d(TAG, "Import button clicked: mode=$mode, plate=${plate?.plateDbId}, sampleCount=${samples.size}")
             doImport(mode, progressBar, importButton)
         }
     }
@@ -116,15 +130,22 @@ class BrapiImportActivity : BackActivity() {
         progressBar: ProgressBar,
         importButton: Button,
     ) {
-        val currentPlate = plate ?: return
+        val currentPlate = plate
+        if (currentPlate == null) {
+            Log.w(TAG, "doImport: plate is null – aborting")
+            return
+        }
+        Log.d(TAG, "doImport: starting import for plateDbId=${currentPlate.plateDbId}, plateName=${currentPlate.plateName}, mode=$mode, samples=${samples.size}")
         importButton.isEnabled = false
         progressBar.visibility = View.VISIBLE
 
         lifecycleScope.launch {
             try {
+                Log.d(TAG, "doImport: calling importer.importPlate")
                 val gridId = withContext(Dispatchers.IO) {
                     importer.importPlate(currentPlate, samples, mode)
                 }
+                Log.d(TAG, "doImport: import succeeded, gridId=$gridId")
                 val toast = if (mode == BrapiImportMode.EMPTY) {
                     R.string.brapi_import_empty_toast
                 } else {
@@ -138,6 +159,7 @@ class BrapiImportActivity : BackActivity() {
                 setResult(RESULT_OK, resultIntent)
                 finish()
             } catch (e: Exception) {
+                Log.e(TAG, "doImport: import failed for plateDbId=${currentPlate.plateDbId}", e)
                 progressBar.visibility = View.GONE
                 importButton.isEnabled = true
                 Toast.makeText(

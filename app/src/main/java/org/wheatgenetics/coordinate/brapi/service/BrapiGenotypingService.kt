@@ -1,6 +1,7 @@
 package org.wheatgenetics.coordinate.brapi.service
 
 import android.content.Context
+import android.util.Log
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,6 +14,10 @@ import org.brapi.v2.model.geno.BrAPISample
 import org.wheatgenetics.coordinate.preference.GeneralKeys
 
 class BrapiGenotypingService(context: Context) {
+
+    companion object {
+        private const val TAG = "BrapiGenotypingService"
+    }
 
     private val client = BrapiClientFactory.buildClient(context)
     private val platesApi = PlatesApi(client)
@@ -30,11 +35,13 @@ class BrapiGenotypingService(context: Context) {
         programDbId: String? = null,
         plateName: String? = null,
     ): List<BrAPIPlate> = withContext(Dispatchers.IO) {
+        Log.d(TAG, "getPlates: studyDbId=$studyDbId, programDbId=$programDbId, plateName=$plateName, pageSize=$pageSize")
         val result = mutableListOf<BrAPIPlate>()
         var page = 0
         var totalPages = 1
 
         while (page < totalPages) {
+            Log.d(TAG, "getPlates: fetching page=$page of totalPages=$totalPages")
             val params = PlatesQueryParams().apply {
                 studyDbId?.let { studyDbId(it) }
                 programDbId?.let { programDbId(it) }
@@ -43,20 +50,42 @@ class BrapiGenotypingService(context: Context) {
                 pageSize(pageSize)
             }
             val response = platesApi.platesGet(params)
-            val body = response.body ?: break
-            result.addAll(body.result?.data ?: emptyList())
+            Log.d(TAG, "getPlates: response code=${response.statusCode}")
+            val body = response.body ?: run {
+                Log.w(TAG, "getPlates: null body on page=$page – stopping pagination")
+                break
+            }
+            val pageData = body.result?.data ?: emptyList()
+            Log.d(TAG, "getPlates: page=$page returned ${pageData.size} plate(s)")
+            result.addAll(pageData)
             totalPages = body.metadata?.pagination?.totalPages ?: 1
+            Log.d(TAG, "getPlates: totalPages=$totalPages after page=$page")
             page++
         }
+        Log.d(TAG, "getPlates: finished – total ${result.size} plate(s)")
         result
     }
 
     /**
      * Fetches a single plate by its ID.
+     *
+     * Note: platesPlateDbIdGet is avoided here because PlatesApi.java uses
+     * String.replaceAll("\\{plateDbId}", ...) which generates the regex pattern
+     * \{plateDbId} — the closing '}' is unescaped, causing a PatternSyntaxException
+     * on Android's ICU regex engine. Using platesGet with a plateDbId filter is
+     * functionally equivalent and avoids the bug.
      */
     suspend fun getPlate(plateDbId: String): BrAPIPlate? = withContext(Dispatchers.IO) {
-        val response = platesApi.platesPlateDbIdGet(plateDbId)
-        response.body?.result
+        Log.d(TAG, "getPlate: plateDbId=$plateDbId")
+        val params = PlatesQueryParams().apply {
+            plateDbId(plateDbId)
+            pageSize(1)
+        }
+        val response = platesApi.platesGet(params)
+        Log.d(TAG, "getPlate: response code=${response.statusCode}")
+        val plate = response.body?.result?.data?.firstOrNull()
+        Log.d(TAG, "getPlate: result plateDbId=${plate?.plateDbId}, plateName=${plate?.plateName}, studyDbId=${plate?.studyDbId}")
+        plate
     }
 
     /**
@@ -64,22 +93,32 @@ class BrapiGenotypingService(context: Context) {
      */
     suspend fun getSamplesForPlate(plateDbId: String): List<BrAPISample> =
         withContext(Dispatchers.IO) {
+            Log.d(TAG, "getSamplesForPlate: plateDbId=$plateDbId, pageSize=$pageSize")
             val result = mutableListOf<BrAPISample>()
             var page = 0
             var totalPages = 1
 
             while (page < totalPages) {
+                Log.d(TAG, "getSamplesForPlate: fetching page=$page of totalPages=$totalPages")
                 val params = SampleQueryParams().apply {
                     plateDbId(plateDbId)
                     page(page)
                     pageSize(pageSize)
                 }
                 val response = samplesApi.samplesGet(params)
-                val body = response.body ?: break
-                result.addAll(body.result?.data ?: emptyList())
+                Log.d(TAG, "getSamplesForPlate: response code=${response.statusCode}")
+                val body = response.body ?: run {
+                    Log.w(TAG, "getSamplesForPlate: null body on page=$page – stopping pagination")
+                    break
+                }
+                val pageData = body.result?.data ?: emptyList()
+                Log.d(TAG, "getSamplesForPlate: page=$page returned ${pageData.size} sample(s)")
+                result.addAll(pageData)
                 totalPages = body.metadata?.pagination?.totalPages ?: 1
+                Log.d(TAG, "getSamplesForPlate: totalPages=$totalPages after page=$page")
                 page++
             }
+            Log.d(TAG, "getSamplesForPlate: finished – total ${result.size} sample(s)")
             result
         }
 
@@ -88,8 +127,12 @@ class BrapiGenotypingService(context: Context) {
      */
     suspend fun createSamples(samples: List<BrAPISample>): List<BrAPISample> =
         withContext(Dispatchers.IO) {
+            Log.d(TAG, "createSamples: posting ${samples.size} sample(s)")
             val response = samplesApi.samplesPost(samples)
-            response.body?.result?.data ?: emptyList()
+            Log.d(TAG, "createSamples: response code=${response.statusCode}")
+            val created = response.body?.result?.data ?: emptyList()
+            Log.d(TAG, "createSamples: server returned ${created.size} created sample(s)")
+            created
         }
 
     /**
@@ -98,8 +141,12 @@ class BrapiGenotypingService(context: Context) {
      */
     suspend fun updateSample(sampleDbId: String, sample: BrAPISample): BrAPISample? =
         withContext(Dispatchers.IO) {
+            Log.d(TAG, "updateSample: sampleDbId=$sampleDbId, sampleName=${sample.sampleName}")
             val body = mapOf(sampleDbId to sample)
             val response = samplesApi.samplesPut(body)
-            response.body?.result?.data?.firstOrNull()
+            Log.d(TAG, "updateSample: response code=${response.statusCode}")
+            val updated = response.body?.result?.data?.firstOrNull()
+            Log.d(TAG, "updateSample: updated sampleDbId=${updated?.sampleDbId}")
+            updated
         }
 }

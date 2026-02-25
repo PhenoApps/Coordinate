@@ -24,7 +24,7 @@ import org.wheatgenetics.coordinate.utils.InsetHandler
 class BrapiAuthActivity : BackActivity() {
 
     companion object {
-        const val REDIRECT_URI = "coordinate://app/auth"
+        const val REDIRECT_URI = "fieldbook://app/auth"
         private const val TAG = "BrapiAuthActivity"
     }
 
@@ -72,6 +72,16 @@ class BrapiAuthActivity : BackActivity() {
 
         if (activityStarting) {
             activityStarting = false
+            // If the activity was destroyed and recreated by the auth redirect PendingIntent,
+            // onCreate will have received the auth data — handle it here instead of hanging.
+            val data = intent?.data
+            val ex = AuthorizationException.fromIntent(intent)
+            if (data != null || ex != null) {
+                when {
+                    data != null -> checkBrapiAuth(data)
+                    ex != null -> authError(ex)
+                }
+            }
             return
         }
 
@@ -91,9 +101,9 @@ class BrapiAuthActivity : BackActivity() {
     private fun authorizeBrAPIImplicit(prefs: android.content.SharedPreferences) {
         prefs.edit().putString(GeneralKeys.BRAPI_TOKEN, null).apply()
 
-        val clientId = prefs.getString(GeneralKeys.BRAPI_OIDC_CLIENT_ID, "coordinate") ?: "coordinate"
+        val clientId = prefs.getString(GeneralKeys.BRAPI_OIDC_CLIENT_ID, "fieldbook") ?: "fieldbook"
         val scope = prefs.getString(GeneralKeys.BRAPI_OIDC_SCOPE, "") ?: ""
-        val redirectUri = Uri.parse("https://phenoapps.org/coordinate")
+        val redirectUri = Uri.parse("https://phenoapps.org/field-book")
 
         try {
             authUtil.getAuthServiceConfiguration { config, err ->
@@ -116,7 +126,7 @@ class BrapiAuthActivity : BackActivity() {
     private fun authorizeBrAPICode(prefs: android.content.SharedPreferences) {
         prefs.edit().putString(GeneralKeys.BRAPI_TOKEN, null).apply()
 
-        val clientId = prefs.getString(GeneralKeys.BRAPI_OIDC_CLIENT_ID, "coordinate") ?: "coordinate"
+        val clientId = prefs.getString(GeneralKeys.BRAPI_OIDC_CLIENT_ID, "fieldbook") ?: "fieldbook"
         val scope = prefs.getString(GeneralKeys.BRAPI_OIDC_SCOPE, "") ?: ""
         val redirectUri = Uri.parse(REDIRECT_URI)
 
