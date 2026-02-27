@@ -46,7 +46,7 @@ public class Database extends Object {
                             /* context => */ context,
                             /* name    => */ fileName,
                             /* factory => */null,
-                            /* version => */5);
+                            /* version => */6);
                     this.context = context;
                 }
 
@@ -191,6 +191,11 @@ public class Database extends Object {
                         db.execSQL("INSERT INTO templates_v5 SELECT * FROM templates");
                         db.execSQL("DROP TABLE templates");
                         db.execSQL("ALTER TABLE templates_v5 RENAME TO templates");
+                    }
+                    if (oldVersion < 6) {
+                        // v5 → v6: add brapi_data and taken_by columns to entries
+                        db.execSQL("ALTER TABLE entries ADD COLUMN brapi_data TEXT");
+                        db.execSQL("ALTER TABLE entries ADD COLUMN taken_by TEXT");
                     }
                 }
 

@@ -27,6 +27,8 @@ public class EntriesTable extends Table
             STAMP_FIELD_NAME = "stamp";
     static final String CONFIRMED_TIMESTAMP_FIELD_NAME = "confirmed_timestamp";
     static final String ORIGINAL_VALUE_FIELD_NAME = "original_value";
+    static final String BRAPI_DATA_FIELD_NAME = "brapi_data";
+    static final String TAKEN_BY_FIELD_NAME = "taken_by";
     // endregion
 
     // region Constructors
@@ -147,6 +149,18 @@ public class EntriesTable extends Table
                     return idx >= 0 ? this.getLong(idx) : 0L;
                 }
 
+                private String brapiData() {
+                    final int idx = this.getColumnIndex(
+                            EntriesTable.BRAPI_DATA_FIELD_NAME);
+                    return idx >= 0 ? this.getString(idx) : null;
+                }
+
+                private String takenBy() {
+                    final int idx = this.getColumnIndex(
+                            EntriesTable.TAKEN_BY_FIELD_NAME);
+                    return idx >= 0 ? this.getString(idx) : null;
+                }
+
                 private EntryModel make() {
                     if (this.excluded())
                         return new ExcludedEntryModel(
@@ -167,6 +181,8 @@ public class EntriesTable extends Table
                                 /* originalValue      => */ origVal,
                                 /* confirmedTimestamp => */ this.confirmedTimestamp(),
                                 /* timestamp          => */ this.timestamp(),
+                                /* brapiData          => */ this.brapiData(),
+                                /* takenBy            => */ this.takenBy(),
                                 /* stringGetter       => */ this.stringGetter);
                     else return EntriesTable.this.makeIncludedEntryModel(
                             /* id        => */ this.id(),
@@ -206,6 +222,8 @@ public class EntriesTable extends Table
                 result.put(EntriesTable.ORIGINAL_VALUE_FIELD_NAME, iem.getOriginalValue());
                 result.put(EntriesTable.CONFIRMED_TIMESTAMP_FIELD_NAME,
                         iem.getConfirmedTimestamp());
+                result.put(EntriesTable.BRAPI_DATA_FIELD_NAME, iem.getBrapiData());
+                result.put(EntriesTable.TAKEN_BY_FIELD_NAME, iem.getTakenBy());
             }
         }
         return result;
@@ -278,6 +296,18 @@ public class EntriesTable extends Table
     public void updateConfirmedTimestamp(final long entryId, final long confirmedTimestamp) {
         final ContentValues cv = new ContentValues();
         cv.put(EntriesTable.CONFIRMED_TIMESTAMP_FIELD_NAME, confirmedTimestamp);
+        this.db().update(EntriesTable.TABLE_NAME, cv,
+                EntriesTable.ID_FIELD_NAME + " = ?",
+                new String[]{String.valueOf(entryId)});
+    }
+
+    public void updateConfirmedTimestampAndTakenBy(final long entryId,
+            final long confirmedTimestamp, @Nullable final String takenBy) {
+        final ContentValues cv = new ContentValues();
+        cv.put(EntriesTable.CONFIRMED_TIMESTAMP_FIELD_NAME, confirmedTimestamp);
+        if (takenBy != null && !takenBy.isEmpty()) {
+            cv.put(EntriesTable.TAKEN_BY_FIELD_NAME, takenBy);
+        }
         this.db().update(EntriesTable.TABLE_NAME, cv,
                 EntriesTable.ID_FIELD_NAME + " = ?",
                 new String[]{String.valueOf(entryId)});

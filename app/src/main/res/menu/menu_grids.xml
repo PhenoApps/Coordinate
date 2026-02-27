@@ -8,11 +8,6 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_brapi_import"
-        android:title="@string/brapi_import_from_brapi"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/help"
         android:icon="@drawable/ic_help_white"
         android:title="@string/preferences_appearance_tutorial_title"

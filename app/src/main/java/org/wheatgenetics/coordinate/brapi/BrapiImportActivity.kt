@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -34,6 +33,9 @@ class BrapiImportActivity : BackActivity() {
 
     private var plate: BrAPIPlate? = null
     private var samples: List<BrAPISample> = emptyList()
+    private var resolvedProgramName: String? = null
+    private var resolvedStudyName: String? = null
+    private var resolvedTrialName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,118 +57,132 @@ class BrapiImportActivity : BackActivity() {
 
         val plateDbIds = intent.getStringArrayListExtra(EXTRA_PLATE_DB_IDS) ?: emptyList<String>()
         val plateDbId = plateDbIds.firstOrNull()
-        Log.d(TAG, "onCreate: received plateDbIds=$plateDbIds, using plateDbId=$plateDbId")
 
         if (plateDbId == null) {
-            Log.w(TAG, "onCreate: no plateDbId provided – finishing")
             Toast.makeText(this, R.string.brapi_not_configured, Toast.LENGTH_SHORT).show()
             finish()
             return
         }
 
-        val plateNameText = findViewById<TextView>(R.id.brapi_plate_name_text)
-        val plateStudyText = findViewById<TextView>(R.id.brapi_plate_study_text)
+        val scrollView         = findViewById<View>(R.id.brapi_import_scroll)
+        val plateNameText      = findViewById<TextView>(R.id.brapi_plate_name_text)
+        val plateProgramText   = findViewById<TextView>(R.id.brapi_plate_program_text)
+        val plateTrialText     = findViewById<TextView>(R.id.brapi_plate_trial_text)
+        val plateStudyText     = findViewById<TextView>(R.id.brapi_plate_study_text)
+        val plateFormatText    = findViewById<TextView>(R.id.brapi_plate_format_text)
+        val plateSampleTypeText= findViewById<TextView>(R.id.brapi_plate_sample_type_text)
         val plateSampleCountText = findViewById<TextView>(R.id.brapi_plate_sample_count_text)
-        val modeGroup = findViewById<RadioGroup>(R.id.brapi_import_mode_group)
-        val modeWithSamples = findViewById<RadioButton>(R.id.brapi_mode_with_samples)
-        val progressBar = findViewById<ProgressBar>(R.id.brapi_import_progress)
-        val importButton = findViewById<Button>(R.id.brapi_import_btn)
+        val modeGroup          = findViewById<RadioGroup>(R.id.brapi_import_mode_group)
+        val modeConfirm        = findViewById<RadioButton>(R.id.brapi_mode_empty)       // "Import and Confirm Only" → WITH_SAMPLES
+        val modeCollect        = findViewById<RadioButton>(R.id.brapi_mode_with_samples) // "Collect New Samples" → EMPTY
+        val progressBar        = findViewById<View>(R.id.brapi_import_progress)
+        val importButton       = findViewById<Button>(R.id.brapi_import_btn)
 
-        importButton.isEnabled = false
+        // Show only progress bar until data is loaded
+        progressBar.visibility = View.VISIBLE
+        scrollView.visibility = View.GONE
+        importButton.visibility = View.GONE
 
         lifecycleScope.launch {
-            progressBar.visibility = View.VISIBLE
             try {
-                Log.d(TAG, "Fetching plate details for plateDbId=$plateDbId")
-                val fetchedPlate = withContext(Dispatchers.IO) { service.getPlate(plateDbId) }
-                Log.d(TAG, "Plate fetch result: plateDbId=${fetchedPlate?.plateDbId}, plateName=${fetchedPlate?.plateName}, studyDbId=${fetchedPlate?.studyDbId}, programDbId=${fetchedPlate?.programDbId}")
-
-                Log.d(TAG, "Fetching samples for plateDbId=$plateDbId")
+                val fetchedPlate   = withContext(Dispatchers.IO) { service.getPlate(plateDbId) }
                 val fetchedSamples = withContext(Dispatchers.IO) { service.getSamplesForPlate(plateDbId) }
-                Log.d(TAG, "Samples fetch result: ${fetchedSamples.size} sample(s) returned")
-                fetchedSamples.forEachIndexed { i, s ->
-                    Log.d(TAG, "  sample[$i]: sampleDbId=${s.sampleDbId}, sampleName=${s.sampleName}, well=${s.well}, row=${s.row}, column=${s.column}, germplasmDbId=${s.germplasmDbId}")
-                }
 
-                plate = fetchedPlate
+                plate   = fetchedPlate
                 samples = fetchedSamples
 
                 plateNameText.text = fetchedPlate?.plateName ?: plateDbId
-                plateStudyText.text = fetchedPlate?.studyDbId ?: ""
-                plateSampleCountText.text = getString(
-                    R.string.brapi_plate_sample_count,
-                    fetchedSamples.size,
-                    96,
-                )
+                plateSampleCountText.text = getString(R.string.brapi_plate_sample_count, fetchedSamples.size)
 
-                if (fetchedSamples.isNotEmpty()) {
-                    modeWithSamples.isEnabled = true
+                val programDbId = fetchedPlate?.programDbId
+                val studyDbId   = fetchedPlate?.studyDbId
+                val trialDbId   = fetchedPlate?.trialDbId
+
+                if (!programDbId.isNullOrEmpty()) {
+                    resolvedProgramName = withContext(Dispatchers.IO) {
+                        runCatching { service.getProgramName(programDbId) }.getOrNull()
+                    }
                 }
-                importButton.isEnabled = true
+                if (!studyDbId.isNullOrEmpty()) {
+                    resolvedStudyName = withContext(Dispatchers.IO) {
+                        runCatching { service.getStudyName(studyDbId) }.getOrNull()
+                    }
+                }
+                if (!trialDbId.isNullOrEmpty()) {
+                    resolvedTrialName = withContext(Dispatchers.IO) {
+                        runCatching { service.getTrialName(trialDbId) }.getOrNull()
+                    }
+                }
+
+                fun setDetail(tv: TextView, label: String, value: String?) {
+                    if (value.isNullOrEmpty()) { tv.visibility = View.GONE }
+                    else { tv.text = "$label: $value"; tv.visibility = View.VISIBLE }
+                }
+                setDetail(plateProgramText,    getString(R.string.brapi_detail_program),     resolvedProgramName)
+                setDetail(plateTrialText,      getString(R.string.brapi_detail_trial),       resolvedTrialName)
+                setDetail(plateStudyText,      getString(R.string.brapi_detail_study),       resolvedStudyName)
+                setDetail(plateFormatText,     getString(R.string.brapi_detail_plate_format),fetchedPlate?.plateFormat?.toString())
+                setDetail(plateSampleTypeText, getString(R.string.brapi_detail_sample_type), fetchedPlate?.sampleType?.toString())
+
+                // "Read Only" requires samples to confirm; "Read + Write" is always available
+                modeConfirm.isEnabled = fetchedSamples.isNotEmpty()
+                if (fetchedSamples.isNotEmpty()) {
+                    modeConfirm.isChecked = true
+                    modeCollect.isChecked = false
+                } else {
+                    modeCollect.isChecked = true
+                }
+
+                // Reveal UI now that data is ready
+                progressBar.visibility = View.GONE
+                scrollView.visibility = View.VISIBLE
+                importButton.visibility = View.VISIBLE
             } catch (e: Exception) {
                 Log.e(TAG, "Error fetching plate/samples for plateDbId=$plateDbId", e)
-                Toast.makeText(
-                    this@BrapiImportActivity,
-                    getString(R.string.brapi_export_error, e.message ?: ""),
-                    Toast.LENGTH_LONG,
-                ).show()
-            } finally {
                 progressBar.visibility = View.GONE
+                Toast.makeText(this@BrapiImportActivity,
+                    getString(R.string.brapi_export_error, e.message ?: ""),
+                    Toast.LENGTH_LONG).show()
             }
         }
 
         importButton.setOnClickListener {
+            // brapi_mode_empty     = "Read Only"    → WITH_SAMPLES (confirm existing)
+            // brapi_mode_with_samples = "Read + Write" → READ_WRITE  (confirm + collect new)
             val mode = when (modeGroup.checkedRadioButtonId) {
-                R.id.brapi_mode_with_samples -> BrapiImportMode.WITH_SAMPLES
-                else -> BrapiImportMode.EMPTY
+                R.id.brapi_mode_with_samples -> BrapiImportMode.READ_WRITE
+                else -> BrapiImportMode.WITH_SAMPLES
             }
-            Log.d(TAG, "Import button clicked: mode=$mode, plate=${plate?.plateDbId}, sampleCount=${samples.size}")
             doImport(mode, progressBar, importButton)
         }
     }
 
-    private fun doImport(
-        mode: BrapiImportMode,
-        progressBar: ProgressBar,
-        importButton: Button,
-    ) {
-        val currentPlate = plate
-        if (currentPlate == null) {
-            Log.w(TAG, "doImport: plate is null – aborting")
-            return
-        }
-        Log.d(TAG, "doImport: starting import for plateDbId=${currentPlate.plateDbId}, plateName=${currentPlate.plateName}, mode=$mode, samples=${samples.size}")
+    private fun doImport(mode: BrapiImportMode, progressBar: View, importButton: Button) {
+        val currentPlate = plate ?: return
         importButton.isEnabled = false
         progressBar.visibility = View.VISIBLE
 
         lifecycleScope.launch {
             try {
-                Log.d(TAG, "doImport: calling importer.importPlate")
                 val gridId = withContext(Dispatchers.IO) {
-                    importer.importPlate(currentPlate, samples, mode)
+                    importer.importPlate(currentPlate, samples, mode,
+                        resolvedProgramName, resolvedStudyName, resolvedTrialName)
                 }
-                Log.d(TAG, "doImport: import succeeded, gridId=$gridId")
-                val toast = if (mode == BrapiImportMode.EMPTY) {
-                    R.string.brapi_import_empty_toast
-                } else {
-                    R.string.brapi_import_samples_toast
-                }
+                val toast = if (mode == BrapiImportMode.WITH_SAMPLES || mode == BrapiImportMode.READ_WRITE)
+                                R.string.brapi_import_samples_toast
+                            else R.string.brapi_import_empty_toast
                 Toast.makeText(this@BrapiImportActivity, toast, Toast.LENGTH_LONG).show()
 
-                val resultIntent = android.content.Intent().apply {
-                    putExtra(EXTRA_GRID_ID, gridId)
-                }
+                val resultIntent = android.content.Intent().apply { putExtra(EXTRA_GRID_ID, gridId) }
                 setResult(RESULT_OK, resultIntent)
                 finish()
             } catch (e: Exception) {
-                Log.e(TAG, "doImport: import failed for plateDbId=${currentPlate.plateDbId}", e)
+                Log.e(TAG, "doImport: import failed", e)
                 progressBar.visibility = View.GONE
                 importButton.isEnabled = true
-                Toast.makeText(
-                    this@BrapiImportActivity,
+                Toast.makeText(this@BrapiImportActivity,
                     getString(R.string.brapi_export_error, e.message ?: ""),
-                    Toast.LENGTH_LONG,
-                ).show()
+                    Toast.LENGTH_LONG).show()
             }
         }
     }

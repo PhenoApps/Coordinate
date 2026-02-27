@@ -10,8 +10,10 @@ import org.wheatgenetics.coordinate.StringGetter;
 
 /**
  * Entry model for cells in imported grids. Extends IncludedEntryModel with:
- * - originalValue: the value from the imported CSV, immutable after import
+ * - originalValue: the sample name as imported, used for replacement detection
  * - confirmedTimestamp: epoch ms when the cell was approved (0 = not confirmed)
+ * - brapiData: JSON with sampleDbId/germplasmDbId for BrAPI sync (null for non-BrAPI)
+ * - takenBy: who confirmed this sample (set at confirmation time for BrAPI grids)
  *
  * Cell state is determined by:
  *   confirmed  — confirmedTimestamp > 0 (blue + checkmark)
@@ -27,6 +29,11 @@ public class ImportedEntryModel extends IncludedEntryModel {
     private final String originalValue;
     private long confirmedTimestamp;
 
+    @Nullable
+    private final String brapiData;
+    @Nullable
+    private String takenBy;
+
     public ImportedEntryModel(
             @IntRange(from = 1) final long id,
             @IntRange(from = 1) final long gridId,
@@ -37,9 +44,27 @@ public class ImportedEntryModel extends IncludedEntryModel {
             final long confirmedTimestamp,
             @IntRange(from = 0) final long timestamp,
             @NonNull final StringGetter stringGetter) {
+        this(id, gridId, row, col, value, originalValue, confirmedTimestamp, timestamp,
+                null, null, stringGetter);
+    }
+
+    public ImportedEntryModel(
+            @IntRange(from = 1) final long id,
+            @IntRange(from = 1) final long gridId,
+            @IntRange(from = 1) final int row,
+            @IntRange(from = 1) final int col,
+            @Nullable final String value,
+            @Nullable final String originalValue,
+            final long confirmedTimestamp,
+            @IntRange(from = 0) final long timestamp,
+            @Nullable final String brapiData,
+            @Nullable final String takenBy,
+            @NonNull final StringGetter stringGetter) {
         super(id, gridId, row, col, value, timestamp, stringGetter);
         this.originalValue = originalValue;
         this.confirmedTimestamp = confirmedTimestamp;
+        this.brapiData = brapiData;
+        this.takenBy = takenBy;
     }
 
     @Nullable
@@ -53,6 +78,20 @@ public class ImportedEntryModel extends IncludedEntryModel {
 
     public void setConfirmedTimestamp(final long confirmedTimestamp) {
         this.confirmedTimestamp = confirmedTimestamp;
+    }
+
+    @Nullable
+    public String getBrapiData() {
+        return brapiData;
+    }
+
+    @Nullable
+    public String getTakenBy() {
+        return takenBy;
+    }
+
+    public void setTakenBy(@Nullable final String takenBy) {
+        this.takenBy = takenBy;
     }
 
     public boolean isConfirmed() {

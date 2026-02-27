@@ -88,9 +88,7 @@ public class IncludedEntryModel extends EntryModel {
     @Override
     @DrawableRes
     public int backgroundResource() {
-        return this.valueIsEmpty() ?
-                R.drawable.empty_included_entry :
-                R.drawable.full_included_entry;
+        return this.valueIsEmpty() ? R.drawable.empty_included_entry : R.drawable.full_included_entry;
     }
 
     public boolean valueIsEmpty() {

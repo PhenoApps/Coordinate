@@ -112,11 +112,18 @@
         <activity
             android:name=".brapi.BrapiPlateListActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/MaterialAppThemeNoActionBar" />
 
         <activity
             android:name=".brapi.BrapiImportActivity"
             android:exported="false"
+            android:theme="@style/MaterialAppThemeNoActionBar" />
+
+        <activity
+            android:name=".brapi.BrapiFilterListActivity"
+            android:exported="false"
+            android:parentActivityName=".brapi.BrapiPlateListActivity"
             android:theme="@style/MaterialAppThemeNoActionBar" />
     </application>
 </manifest>

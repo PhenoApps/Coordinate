@@ -785,6 +785,56 @@ public class JoinedGridModel extends GridModel
         return result;
     }
 
+    private void exportBrapi(
+            @NonNull final CsvWriter csvWriter) throws IOException {
+        csvWriter.write("sample_name");
+        csvWriter.write("row");
+        csvWriter.write("column");
+        csvWriter.write("confirmed_timestamp");
+        csvWriter.write("taken_by");
+        csvWriter.write("plate_name");
+        csvWriter.write("program_name");
+        csvWriter.write("study_name");
+        csvWriter.endRecord();
+
+        final String plateName   = this.optionalFieldValue("plateName");
+        final String programName = this.optionalFieldValue("programName");
+        final String studyName   = this.optionalFieldValue("studyName");
+
+        ensureLabels();
+        final boolean
+                colNumbering = this.templateModel.getColNumbering(),
+                rowNumbering = this.templateModel.getRowNumbering();
+        final java.text.SimpleDateFormat tsFormat =
+                new java.text.SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", java.util.Locale.US);
+        @IntRange(from = 1) final int cols = this.getCols(), rows = this.getRows();
+        for (@IntRange(from = 1) int col = 1; col <= cols; col++) {
+            for (@IntRange(from = 1) int row = 1; row <= rows; row++) {
+                final EntryModel entryModel = this.getEntryModel(row, col);
+                if (entryModel instanceof ImportedEntryModel) {
+                    final ImportedEntryModel iem = (ImportedEntryModel) entryModel;
+                    csvWriter.write(org.wheatgenetics.coordinate.Utils.makeEmptyIfNull(iem.getValue()));
+                    final String rowLabel = getRowLabel(row);
+                    csvWriter.write(rowLabel != null ? rowLabel :
+                            (rowNumbering ? String.valueOf(row)
+                                    : org.wheatgenetics.coordinate.Utils.convert(row - 1)));
+                    final String colLabel = getColLabel(col);
+                    csvWriter.write(colLabel != null ? colLabel :
+                            (colNumbering ? String.valueOf(col)
+                                    : org.wheatgenetics.coordinate.Utils.convert(col - 1)));
+                    csvWriter.write(iem.isConfirmed()
+                            ? tsFormat.format(new java.util.Date(iem.getConfirmedTimestamp())) : "");
+                    csvWriter.write(org.wheatgenetics.coordinate.Utils.makeEmptyIfNull(iem.getTakenBy()));
+                    csvWriter.write(org.wheatgenetics.coordinate.Utils.makeEmptyIfNull(plateName));
+                    csvWriter.write(org.wheatgenetics.coordinate.Utils.makeEmptyIfNull(programName));
+                    csvWriter.write(org.wheatgenetics.coordinate.Utils.makeEmptyIfNull(studyName));
+                    csvWriter.endRecord();
+                }
+            }
+        }
+        csvWriter.close();
+    }
+
     private void exportImported(
             @NonNull final CsvWriter csvWriter) throws IOException {
         csvWriter.write("value");
@@ -847,6 +897,9 @@ public class JoinedGridModel extends GridModel
         else if (TemplateType.IMPORTED == templateType)
             this.exportImported(new CsvWriter(
                     new java.io.OutputStreamWriter(stream, StandardCharsets.UTF_8)));
+        else if (TemplateType.BRAPI == templateType)
+            this.exportBrapi(new CsvWriter(
+                    new java.io.OutputStreamWriter(stream, StandardCharsets.UTF_8)));
         else
             this.exportUserDefined(stream, helper, includeHeader);
     }
@@ -863,6 +916,8 @@ public class JoinedGridModel extends GridModel
             this.exportDNA(csvWriter, includeHeader);                     // throws java.io-
         else if (TemplateType.IMPORTED == templateType)                          //  .IOException
             this.exportImported(csvWriter);
+        else if (TemplateType.BRAPI == templateType)
+            this.exportBrapi(csvWriter);
         else                                                                      //  .IOException
             this.exportUserDefined(csvWriter, includeHeader);             // throws java.io-
     }                                                                             //  .IOException
@@ -870,6 +925,11 @@ public class JoinedGridModel extends GridModel
     // region Public Methods
     public boolean isImported() {
         return TemplateType.IMPORTED == this.templateModel.getType();
+    }
+
+    public boolean isBrapiWithSamples() {
+        if (TemplateType.BRAPI != this.templateModel.getType()) return false;
+        return "WITH_SAMPLES".equals(this.optionalFieldValue("importMode"));
     }
 
     @Nullable
@@ -888,6 +948,8 @@ public class JoinedGridModel extends GridModel
                 name = stringGetter.get(R.string.NonNullOptionalFieldsHTPG);
             else if (TemplateType.IMPORTED == templateType)
                 name = stringGetter.get(R.string.ImportedGridNameFieldName);
+            else if (TemplateType.BRAPI == templateType)
+                name = "plateName";
             else
                 name = BaseOptionalField.identificationFieldName(stringGetter);
         }

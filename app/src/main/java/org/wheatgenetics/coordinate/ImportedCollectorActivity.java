@@ -374,8 +374,13 @@ public class ImportedCollectorActivity extends BackActivity
         if (active != null && !active.isConfirmed()) {
             final long now = System.currentTimeMillis();
             active.setConfirmedTimestamp(now);
+            final String currentPerson = androidx.preference.PreferenceManager
+                    .getDefaultSharedPreferences(this)
+                    .getString(GeneralKeys.PERSON_NAME, "");
+            active.setTakenBy(currentPerson);
             if (mEntriesTable != null) {
-                mEntriesTable.updateConfirmedTimestamp(active.getId(), now);
+                mEntriesTable.updateConfirmedTimestampAndTakenBy(
+                        active.getId(), now, currentPerson);
             }
             notifyGrid();
             justConfirmed = true;

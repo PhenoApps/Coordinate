@@ -200,8 +200,10 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     private final ActivityResultLauncher<Intent> brapiImportLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     notifyDataSetChanged();
+                    long gridId = result.getData().getLongExtra(BrapiImportActivity.EXTRA_GRID_ID, -1L);
+                    if (gridId != -1L) startCollectorActivity(gridId);
                 }
             });
 
@@ -327,7 +329,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     // region Private Methods
     private void startCollectorActivity(@IntRange(from = 1) final long gridId) {
         final JoinedGridModel model = new GridsTable(this).get(gridId);
-        if (model != null && model.isImported()) {
+        if (model != null && (model.isImported() || model.isBrapiWithSamples())) {
             this.startActivity(ImportedCollectorActivity.intent(this, gridId));
         } else {
             this.startActivity(CollectorActivity.intent(this, gridId));
@@ -654,11 +656,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_grids_bnv));
 
         FloatingActionButton fabNewGrid = this.findViewById(R.id.fab_new_grid);
-        if (fabNewGrid != null) fabNewGrid.setOnClickListener(v -> createGrid());
-
-        FloatingActionButton fabImportGrid = this.findViewById(R.id.fab_import_grid);
-        if (fabImportGrid != null) fabImportGrid.setOnClickListener(v ->
-                importCsvLauncher.launch(new String[]{"text/csv", "text/comma-separated-values", "text/*"}));
+        if (fabNewGrid != null) fabNewGrid.setOnClickListener(v -> showAddGridDialog());
 
         setupActionBar();
 
@@ -934,24 +932,35 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     }
     // endregion
 
+    private void showAddGridDialog() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean brapiEnabled = prefs.getBoolean(GeneralKeys.BRAPI_ENABLED, false)
+                && !prefs.getString(GeneralKeys.BRAPI_BASE_URL, "").isEmpty();
+
+        final java.util.List<String> labels = new ArrayList<>();
+        labels.add(getString(R.string.add_grid_new));
+        labels.add(getString(R.string.add_grid_import_csv));
+        if (brapiEnabled) {
+            labels.add(getString(R.string.add_grid_import_brapi));
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.add_grid_dialog_title)
+                .setItems(labels.toArray(new String[0]), (dialog, which) -> {
+                    if (which == 0) {
+                        createGrid();
+                    } else if (which == 1) {
+                        importCsvLauncher.launch(new String[]{"text/csv", "text/comma-separated-values", "text/*"});
+                    } else if (which == 2 && brapiEnabled) {
+                        brapiPlateListLauncher.launch(new Intent(this, BrapiPlateListActivity.class));
+                    }
+                })
+                .show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_brapi_import) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            if (!prefs.getBoolean(GeneralKeys.BRAPI_ENABLED, false)) {
-                new AlertDialog.Builder(this)
-                        .setMessage(R.string.brapi_not_enabled)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show();
-            } else if (prefs.getString(GeneralKeys.BRAPI_BASE_URL, "").isEmpty()) {
-                new AlertDialog.Builder(this)
-                        .setMessage(R.string.brapi_not_configured)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show();
-            } else {
-                brapiPlateListLauncher.launch(new Intent(this, BrapiPlateListActivity.class));
-            }
-        } else if (item.getItemId() == R.id.action_sort) {
+        if (item.getItemId() == R.id.action_sort) {
             showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)

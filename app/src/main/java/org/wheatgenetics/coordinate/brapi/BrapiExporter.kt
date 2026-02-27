@@ -36,13 +36,13 @@ class BrapiExporter(private val context: Context) {
             ?.takeIf { it.isNotEmpty() }
             ?: return@withContext  // can't export without plateDbId
 
-        val takenBy = PreferenceManager.getDefaultSharedPreferences(context)
+        val defaultTakenBy = PreferenceManager.getDefaultSharedPreferences(context)
             .getString(GeneralKeys.PERSON_NAME, "") ?: ""
 
         val db = Database.db(context)
         val cursor = db.query(
             /* table       */ "entries",
-            /* columns     */ arrayOf("row", "col", "edata", "stamp", "original_value", "confirmed_timestamp"),
+            /* columns     */ arrayOf("row", "col", "edata", "stamp", "brapi_data", "taken_by", "confirmed_timestamp"),
             /* selection   */ "grid = ? AND edata IS NOT NULL AND edata != '' AND edata != ?",
             /* selectionArgs */ arrayOf(gridId.toString(), ExcludedEntryModel.DATABASE_VALUE),
             /* groupBy     */ null,
@@ -59,14 +59,17 @@ class BrapiExporter(private val context: Context) {
                 val col = it.getInt(it.getColumnIndexOrThrow("col"))
                 val sampleName = it.getString(it.getColumnIndexOrThrow("edata"))
                 val stamp = it.getLong(it.getColumnIndexOrThrow("stamp"))
-                val originalValue = it.getString(it.getColumnIndexOrThrow("original_value"))
+                val brapiDataJson = it.getString(it.getColumnIndexOrThrow("brapi_data"))
+                val entryTakenBy = it.getString(it.getColumnIndexOrThrow("taken_by"))
+                    ?.takeIf { s -> s.isNotEmpty() }
+                    ?: defaultTakenBy
                 val confirmedTs = it.getLong(it.getColumnIndexOrThrow("confirmed_timestamp"))
 
                 val rowLetter = "ABCDEFGH"[row - 1].toString()
                 val well = rowLetter + String.format("%02d", col)
 
                 // Use confirmed timestamp for imported entries, otherwise entry stamp
-                val tsMillis = if (originalValue != null && confirmedTs > 0) confirmedTs else stamp
+                val tsMillis = if (brapiDataJson != null && confirmedTs > 0) confirmedTs else stamp
                 val sampleTimestamp = OffsetDateTime.ofInstant(
                     Instant.ofEpochMilli(tsMillis), ZoneOffset.UTC
                 )
@@ -77,15 +80,15 @@ class BrapiExporter(private val context: Context) {
                     this.row = rowLetter
                     this.column = col
                     this.plateDbId = plateDbId
-                    this.takenBy = takenBy
+                    this.takenBy = entryTakenBy
                     this.sampleTimestamp = sampleTimestamp
                 }
 
-                // Parse original_value for existing sampleDbId + germplasm info
-                val sampleDbId = originalValue?.let { json ->
+                // Parse brapi_data for existing sampleDbId + germplasm info
+                val sampleDbId = brapiDataJson?.let { json ->
                     runCatching { JSONObject(json).optString("sampleDbId").takeIf { it.isNotEmpty() } }.getOrNull()
                 }
-                val germplasmDbId = originalValue?.let { json ->
+                val germplasmDbId = brapiDataJson?.let { json ->
                     runCatching { JSONObject(json).optString("germplasmDbId").takeIf { it.isNotEmpty() } }.getOrNull()
                 }
                 if (!germplasmDbId.isNullOrEmpty()) {

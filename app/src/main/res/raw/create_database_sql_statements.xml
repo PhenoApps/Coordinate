@@ -57,7 +57,9 @@
             edata               TEXT,
             stamp               INTEGER,
             confirmed_timestamp INTEGER,
-            original_value      TEXT
+            original_value      TEXT,
+            brapi_data          TEXT,
+            taken_by            TEXT
         )
     </statement>
 </sql>

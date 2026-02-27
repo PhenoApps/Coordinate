@@ -714,6 +714,14 @@
     <string name="brapi_import_title">Import Plate</string>
     <string name="brapi_import_mode_empty">Collect new samples</string>
     <string name="brapi_import_mode_with_samples">Confirm existing samples</string>
+    <string name="brapi_import_mode_label">Import Mode</string>
+    <string name="brapi_import_mode_read_only">Read Only</string>
+    <string name="brapi_import_mode_read_write">Read + Write</string>
+    <string name="brapi_detail_program">Program</string>
+    <string name="brapi_detail_trial">Trial</string>
+    <string name="brapi_detail_study">Study</string>
+    <string name="brapi_detail_plate_format">Plate Format</string>
+    <string name="brapi_detail_sample_type">Sample Type</string>
     <string name="brapi_import_button">Import</string>
     <string name="brapi_export_success">Plate synced to BrAPI server</string>
     <string name="brapi_export_error">BrAPI sync failed</string>
@@ -729,6 +737,43 @@
     <string name="brapi_auth_title">BrAPI Authorization</string>
     <string name="brapi_auth_success">Authorization successful</string>
     <string name="brapi_auth_failed">Authorization failed</string>
-    <string name="brapi_plate_sample_count">%1$d of %2$d samples loaded</string>
+    <string name="brapi_plate_sample_count">%1$d samples</string>
+    <string name="search">Search</string>
+    <string name="add_grid_dialog_title">Add Grid</string>
+    <string name="add_grid_new">Create new grid</string>
+    <string name="add_grid_import_csv">Import from file</string>
+    <string name="add_grid_import_brapi">Import from BrAPI</string>
+
+    <!-- BrAPI plate list filters -->
+    <string name="brapi_search_hint">Search plates…</string>
+    <plurals name="brapi_search_plates">
+        <item quantity="one">Search %d plate</item>
+        <item quantity="other">Search %d plates</item>
+    </plurals>
+    <string name="brapi_filter">Filter</string>
+    <string name="brapi_clear_filters">Clear Filters</string>
+    <string name="brapi_deselect_all">Deselect All</string>
+    <string name="brapi_reset_cache">Reset Cache</string>
+    <string name="brapi_filter_dialog_title">Filter by</string>
+    <string name="brapi_filter_programs">Programs (%s)</string>
+    <string name="brapi_filter_trials">Trials (%s)</string>
+    <string name="brapi_filter_studies">Studies (%s)</string>
+    <string name="brapi_filter_seasons">Seasons (%s)</string>
+    <string name="brapi_filter_crops">Crops (%s)</string>
+    <string name="brapi_chip_program">Program: %s</string>
+    <string name="brapi_chip_trial">Trial: %s</string>
+    <string name="brapi_chip_study">Study: %s</string>
+    <string name="brapi_chip_season">Season: %s</string>
+    <string name="brapi_chip_crop">Crop: %s</string>
+    <string name="brapi_loading_metadata">Loading metadata…</string>
+    <string name="brapi_filter_by_title">Filter by: %s</string>
+    <string name="brapi_select_all">Select All</string>
+    <string name="brapi_filter_apply">Apply</string>
+    <string name="brapi_filter_type_program">Program</string>
+    <string name="brapi_filter_type_trial">Trial</string>
+    <string name="brapi_filter_type_study">Study</string>
+    <string name="brapi_filter_type_season">Season</string>
+    <string name="brapi_filter_type_crop">Crop</string>
+    <string name="brapi_filter_no_items">No items found</string>
 
 </resources>

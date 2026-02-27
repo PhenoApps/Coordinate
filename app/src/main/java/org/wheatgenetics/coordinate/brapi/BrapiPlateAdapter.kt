@@ -13,15 +13,13 @@ class BrapiPlateAdapter(
     private val onSelectionChanged: (Int) -> Unit,
 ) : RecyclerView.Adapter<BrapiPlateAdapter.ViewHolder>() {
 
-    private var fullList: List<BrAPIPlate> = emptyList()
+    private var allPlates: List<BrAPIPlate> = emptyList()
     private var displayList: List<BrAPIPlate> = emptyList()
     private val selected = mutableSetOf<String>()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val checkbox: CheckBox = itemView.findViewById(R.id.plate_checkbox)
         val name: TextView = itemView.findViewById(R.id.plate_name)
-        val study: TextView = itemView.findViewById(R.id.plate_study)
-        val dbId: TextView = itemView.findViewById(R.id.plate_db_id)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,8 +33,6 @@ class BrapiPlateAdapter(
         val plateDbId = plate.plateDbId ?: ""
 
         holder.name.text = plate.plateName ?: plateDbId
-        holder.study.text = plate.studyDbId ?: ""
-        holder.dbId.text = plateDbId
 
         holder.checkbox.setOnCheckedChangeListener(null)
         holder.checkbox.isChecked = selected.contains(plateDbId)
@@ -53,25 +49,23 @@ class BrapiPlateAdapter(
     override fun getItemCount(): Int = displayList.size
 
     fun setPlates(plates: List<BrAPIPlate>) {
-        fullList = plates
+        allPlates = plates
         displayList = plates
         selected.clear()
         onSelectionChanged(0)
         notifyDataSetChanged()
     }
 
-    fun filter(query: String) {
-        displayList = if (query.isEmpty()) {
-            fullList
-        } else {
-            fullList.filter { plate ->
-                (plate.plateName ?: "").contains(query, ignoreCase = true) ||
-                    (plate.studyDbId ?: "").contains(query, ignoreCase = true) ||
-                    (plate.plateDbId ?: "").contains(query, ignoreCase = true)
-            }
-        }
+    fun setDisplayList(plates: List<BrAPIPlate>) {
+        displayList = plates
         notifyDataSetChanged()
     }
 
     fun getSelectedPlateDbIds(): List<String> = selected.toList()
+
+    fun clearSelection() {
+        selected.clear()
+        onSelectionChanged(0)
+        notifyDataSetChanged()
+    }
 }

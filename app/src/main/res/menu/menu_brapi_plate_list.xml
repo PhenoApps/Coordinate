@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_brapi_filter"
+        android:icon="@drawable/ic_filter_variant"
+        android:title="@string/brapi_filter"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_clear_filters"
+        android:icon="@drawable/ic_tb_delete_sweep"
+        android:title="@string/brapi_clear_filters"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_deselect_all"
+        android:icon="@drawable/ic_deselect_all_white"
+        android:title="@string/brapi_deselect_all"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_reset_cache"
+        android:title="@string/brapi_reset_cache"
+        app:showAsAction="never" />
+
+</menu>

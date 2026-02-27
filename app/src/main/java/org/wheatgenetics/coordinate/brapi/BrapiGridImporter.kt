@@ -14,96 +14,75 @@ import org.wheatgenetics.coordinate.preference.GeneralKeys
 enum class BrapiImportMode {
     /** Insert 96 blank cells; user enters sample names in CollectorActivity. */
     EMPTY,
-    /** Insert 96 pre-filled cells from existing samples; user confirms in ImportedCollectorActivity. */
+    /** Read Only: pre-fill cells from existing samples; user confirms in ImportedCollectorActivity. */
     WITH_SAMPLES,
+    /** Read + Write: pre-fill cells from existing samples; user confirms existing AND collects new. */
+    READ_WRITE,
 }
 
 /**
  * Creates a BrAPI grid in the database from a BrAPI plate.
- *
- * Follows the same direct-SQLite pattern as ImportedGridImporter:
- *  - Inserts a sentinel template (type=5, 8×12)
- *  - Inserts a grid row with plate metadata in the options JSON
- *  - Inserts 96 entry rows
- *
- * All work is synchronous and must be called from a background thread.
  */
 class BrapiGridImporter(private val context: Context) {
 
-    /**
-     * Imports a single plate and returns the newly created grid ID.
-     *
-     * @param plate     BrAPI plate metadata
-     * @param samples   List of BrAPI samples (may be empty for EMPTY mode)
-     * @param mode      Whether to import empty (collect) or with samples (confirm)
-     */
     fun importPlate(
         plate: BrAPIPlate,
         samples: List<BrAPISample>,
         mode: BrapiImportMode,
+        programName: String? = null,
+        studyName: String? = null,
+        trialName: String? = null,
     ): Long {
         Log.d(TAG, "importPlate: plateDbId=${plate.plateDbId}, plateName=${plate.plateName}, mode=$mode, sampleCount=${samples.size}")
         val db = Database.db(context)
         val now = System.currentTimeMillis()
         val person = PreferenceManager.getDefaultSharedPreferences(context)
             .getString(GeneralKeys.PERSON_NAME, "") ?: ""
-        Log.d(TAG, "importPlate: person=$person, timestamp=$now")
 
-        // 1. Insert sentinel template (8×12, BRAPI type=5)
-        val templateCv = ContentValues().apply {
-            put("title", "BrAPI Plate")
-            put("type", 5) // TemplateType.BRAPI
-            put("rows", 8)
-            put("cols", 12)
-            put("erand", 0)
-            putNull("ecells")
-            putNull("erows")
-            putNull("ecols")
-            put("cnumb", 1) // numeric columns (1-12)
-            put("rnumb", 0) // alphabetic rows (A-H)
-            putNull("entryLabel")
-            putNull("options")
-            put("stamp", now)
+        val templateId: Long = db.query(
+            "templates", arrayOf("_id"),
+            "title=?", arrayOf("BrAPI Plate"),
+            null, null, null
+        ).use { cursor ->
+            if (cursor.moveToFirst()) cursor.getLong(0) else -1L
+        }.let { existing ->
+            if (existing >= 0) {
+                existing
+            } else {
+                val templateCv = ContentValues().apply {
+                    put("title", "BrAPI Plate")
+                    put("type", 5)
+                    put("rows", 8)
+                    put("cols", 12)
+                    put("erand", 0)
+                    putNull("ecells"); putNull("erows"); putNull("ecols")
+                    put("cnumb", 1); put("rnumb", 0)
+                    putNull("entryLabel"); putNull("options")
+                    put("stamp", now)
+                }
+                db.insert("templates", null, templateCv)
+            }
         }
-        val templateId = db.insert("templates", null, templateCv)
-        Log.d(TAG, "importPlate: inserted template, templateId=$templateId")
         check(templateId >= 0) { "Failed to create BrAPI sentinel template" }
 
-        // 2. Build plate-level optional fields JSON
-        val optionsJson = buildPlateOptionsJson(plate, person)
-        Log.d(TAG, "importPlate: optionsJson=$optionsJson")
+        val optionsJson = buildPlateOptionsJson(plate, person, mode, programName, studyName, trialName)
 
-        // 3. Insert grid row
         val gridCv = ContentValues().apply {
             put("temp", templateId)
             putNull("projectId")
             put("person", person.ifEmpty { null })
-            put("activeRow", 0)
-            put("activeCol", 0)
+            put("activeRow", 0); put("activeCol", 0)
             put("options", optionsJson)
             put("stamp", now)
         }
         val gridId = db.insert("grids", null, gridCv)
-        Log.d(TAG, "importPlate: inserted grid, gridId=$gridId")
         check(gridId >= 0) { "Failed to create BrAPI grid" }
 
-        // 4. Build well→sample map for WITH_SAMPLES mode
-        val wellToSample: Map<String, BrAPISample> = if (mode == BrapiImportMode.WITH_SAMPLES) {
+        val prefillFromSamples = mode == BrapiImportMode.WITH_SAMPLES || mode == BrapiImportMode.READ_WRITE
+        val wellToSample: Map<String, BrAPISample> = if (prefillFromSamples) {
             samples.associateBy { computeWell(it) }
-        } else {
-            emptyMap()
-        }
+        } else emptyMap()
 
-        Log.d(TAG, "importPlate: wellToSample has ${wellToSample.size} mapped well(s)")
-        if (mode == BrapiImportMode.WITH_SAMPLES) {
-            wellToSample.forEach { (well, s) ->
-                Log.d(TAG, "  wellToSample[$well]: sampleDbId=${s.sampleDbId}, sampleName=${s.sampleName}")
-            }
-        }
-
-        // 5. Insert entries for all 96 wells (rows 1-8, cols 1-12)
-        Log.d(TAG, "importPlate: inserting 96 entries for gridId=$gridId")
-        var insertedCount = 0
         for (row in 1..8) {
             for (col in 1..12) {
                 val well = wellForRowCol(row, col)
@@ -113,69 +92,86 @@ class BrapiGridImporter(private val context: Context) {
                 entryCv.put("col", col)
                 entryCv.put("stamp", now)
 
-                if (mode == BrapiImportMode.WITH_SAMPLES) {
+                if (prefillFromSamples) {
                     val sample = wellToSample[well]
                     if (sample == null) {
-                        Log.d(TAG, "  $well: no sample mapped – inserting empty")
+                        entryCv.putNull("edata"); entryCv.putNull("original_value")
+                        entryCv.putNull("brapi_data"); entryCv.putNull("taken_by")
+                        entryCv.putNull("confirmed_timestamp")
                     } else {
-                        Log.d(TAG, "  $well: sampleDbId=${sample.sampleDbId}, sampleName=${sample.sampleName}, germplasmDbId=${sample.germplasmDbId}")
+                        // original_value = sampleName so isReplaced() works correctly (pending = blue)
+                        // brapi_data = JSON with sampleDbId/germplasmDbId for BrAPI sync
+                        entryCv.put("edata", sample.sampleName ?: "")
+                        entryCv.put("original_value", sample.sampleName ?: "")
+                        entryCv.put("brapi_data", buildBrapiDataJson(sample))
+                        entryCv.putNull("taken_by")
+                        entryCv.putNull("confirmed_timestamp")
                     }
-                    entryCv.put("edata", sample?.sampleName ?: "")
-                    val originalJson = sample?.let { buildOriginalValueJson(it) }
-                    entryCv.put("original_value", originalJson)
-                    entryCv.putNull("confirmed_timestamp")
                 } else {
-                    entryCv.putNull("edata")
-                    entryCv.putNull("original_value")
+                    entryCv.putNull("edata"); entryCv.putNull("original_value")
+                    entryCv.putNull("brapi_data"); entryCv.putNull("taken_by")
                     entryCv.putNull("confirmed_timestamp")
                 }
 
-                val rowId = db.insert("entries", null, entryCv)
-                if (rowId < 0) {
-                    Log.w(TAG, "importPlate: failed to insert entry for well=$well (row=$row, col=$col)")
-                } else {
-                    insertedCount++
-                }
+                db.insert("entries", null, entryCv)
             }
         }
-        Log.d(TAG, "importPlate: finished inserting $insertedCount/96 entries for gridId=$gridId")
 
         return gridId
     }
 
-    private fun buildPlateOptionsJson(plate: BrAPIPlate, takenBy: String): String {
+    private fun buildPlateOptionsJson(
+        plate: BrAPIPlate,
+        takenBy: String,
+        mode: BrapiImportMode,
+        programName: String?,
+        studyName: String?,
+        trialName: String?,
+    ): String {
         val array = JSONArray()
         fun addField(field: String, value: String?, hint: String = "") {
-            array.put(
-                JSONObject().apply {
-                    put("field", field)
-                    put("hint", hint)
-                    put("value", value ?: "")
-                    put("checked", true)
-                },
-            )
+            array.put(JSONObject().apply {
+                put("field", field)
+                put("hint", hint)
+                put("value", value ?: "")
+                put("checked", true)
+            })
         }
-        addField("plateDbId", plate.plateDbId, "Plate DB ID")
-        addField("plateName", plate.plateName, "Plate Name")
+        // Human-readable name fields (exported in CSV)
+        addField("plateName",   plate.plateName,   "Plate Name")
+        addField("programName", programName ?: "", "Program Name")
+        addField("studyName",   studyName   ?: "", "Study Name")
+        addField("trialName",   trialName   ?: "", "Trial Name")
+        // ID fields (for BrAPI sync; also exported but excluded via exportBrapi())
+        addField("plateDbId",   plate.plateDbId,   "Plate DB ID")
         addField("programDbId", plate.programDbId, "Program DB ID")
-        addField("trialDbId", plate.trialDbId, "Trial DB ID")
-        addField("studyDbId", plate.studyDbId, "Study DB ID")
-        addField("takenBy", takenBy.ifEmpty { null }, "Person who collected samples")
+        addField("trialDbId",   plate.trialDbId,   "Trial DB ID")
+        addField("studyDbId",   plate.studyDbId,   "Study DB ID")
+        // Metadata
+        addField("takenBy",     takenBy.ifEmpty { null }, "Person who collected samples")
+        addField("importMode",  mode.name, "Import Mode")
         return array.toString()
     }
 
-    private fun buildOriginalValueJson(sample: BrAPISample): String {
+    private fun buildBrapiDataJson(sample: BrAPISample): String {
         return JSONObject().apply {
-            put("sampleDbId", sample.sampleDbId ?: "")
+            put("sampleDbId",   sample.sampleDbId   ?: "")
             put("germplasmDbId", sample.germplasmDbId ?: "")
-            put("germplasmName", "")
         }.toString()
     }
 
     private fun computeWell(sample: BrAPISample): String {
         val row = sample.row ?: return ""
         val col = sample.column ?: return ""
-        return "$row${String.format("%02d", col)}"
+        // Support both letter rows ("A"–"H") and numeric rows ("1"–"8")
+        val rowLetter = if (row.length == 1 && row[0].isLetter()) {
+            row.uppercase()
+        } else {
+            val n = row.toIntOrNull() ?: return ""
+            if (n < 1 || n > 8) return ""
+            ROW_LETTERS[n - 1].toString()
+        }
+        return "$rowLetter${String.format("%02d", col)}"
     }
 
     companion object {
@@ -184,6 +180,32 @@ class BrapiGridImporter(private val context: Context) {
 
         fun wellForRowCol(row: Int, col: Int): String {
             return "${ROW_LETTERS[row - 1]}${String.format("%02d", col)}"
+        }
+
+        /**
+         * Returns the set of plateDbIds that have already been imported as grids.
+         * Used by BrapiPlateListActivity to exclude already-imported plates from the list.
+         */
+        fun getImportedPlateDbIds(context: Context): Set<String> {
+            val db = Database.db(context)
+            val ids = mutableSetOf<String>()
+            db.query("grids", arrayOf("options"), "options IS NOT NULL", null, null, null, null)
+                .use { cursor ->
+                    while (cursor.moveToNext()) {
+                        val options = cursor.getString(0) ?: continue
+                        try {
+                            val arr = org.json.JSONArray(options)
+                            for (i in 0 until arr.length()) {
+                                val obj = arr.getJSONObject(i)
+                                if (obj.optString("field") == "plateDbId") {
+                                    val id = obj.optString("value")
+                                    if (id.isNotEmpty()) ids.add(id)
+                                }
+                            }
+                        } catch (_: Exception) { }
+                    }
+                }
+            return ids
         }
     }
 }
