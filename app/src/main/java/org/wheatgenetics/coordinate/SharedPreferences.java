@@ -1,11 +1,8 @@
-package org.wheatgenetics.sharedpreferences;
-
-import org.wheatgenetics.coordinate.StringGetter;
+package org.wheatgenetics.coordinate;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
-import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.model.Model;
 import org.phenoapps.sharedpreferences.UpdateVersionSharedPreferences;
 
@@ -73,3 +70,4 @@ public class SharedPreferences extends UpdateVersionSharedPreferences {
     // endregion
     // endregion
 }
+

@@ -41,7 +41,7 @@ import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 import org.wheatgenetics.coordinate.utils.InsetHandler;
 import org.wheatgenetics.coordinate.utils.Keys;
-import org.wheatgenetics.sharedpreferences.SharedPreferences;
+import org.wheatgenetics.coordinate.SharedPreferences;
 
 import java.util.Iterator;
 

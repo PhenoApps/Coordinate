@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.model.ProjectModel;
-import org.wheatgenetics.sharedpreferences.SharedPreferences;
+import org.wheatgenetics.coordinate.SharedPreferences;
 
 public class OldCollector extends BaseCollector {
     @NonNull
