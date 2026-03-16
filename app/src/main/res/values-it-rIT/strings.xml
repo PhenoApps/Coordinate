@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!-- Utils -->
+  <!-- MainActivity, NavigationItemSelectedListener, TemplatesActivity -->
+  <!-- AppIntroActivity -->
+  <!-- CollectorActivity -->
+  <!-- AboutActivity -->
+  <!-- Folder names -->
+  <!-- TemplateImporter -->
+  <!-- TemplatesActivity -->
+  <!-- TemplatesAdapter -->
+  <!-- assign_title_rows_cols.xml -->
+  <!-- AssignTitleRowsColsAlertDialog -->
+  <!-- ExcludedRowsOrColsAlertDialog -->
+  <!-- ExcludedRowsOrColsAlertDialogTester -->
+  <!-- generated_excluded_cells.xml -->
+  <!-- GeneratedExcludedCellsAlertDialog -->
+  <!-- ExcludeAlertDialog -->
+  <!-- set_numbering.xml -->
+  <!-- SetNumberingAlertDialog -->
+  <!-- set_excludes_optional_fields_numbering.xml -->
+  <!-- SetExcludesOptionalFieldsNumberingAlertDialog -->
+  <!-- ProjectsActivity -->
+  <!-- COLLECTION PREFERENCES -->
+  <!-- Direction -->
+  <!-- Sounds -->
+  <!-- Unique -->
+  <!-- LAYOUT PREFERENCES -->
+  <!-- EXPORT PREFERENCES -->
+  <!-- Dialog -->
+  <!-- STORAGE PREFERENCES -->
+  <!-- PROFILE PREFERENCES -->
+  <!--  APPEARANCE PREFERENCES  -->
+  <!-- Citation Dialog -->
+  <!-- About -->
+  <!-- PreferenceFragment -->
+  <!-- PreferenceActivity -->
+  <!-- create_project.xml -->
+  <!-- CreateProjectAlertDialog -->
+  <!-- BaseOptionalField -->
+  <!-- DateOptionalField -->
+  <!-- NonNullOptionalFields seed tray template -->
+  <!-- NonNullOptionalFields DNA plate template -->
+  <!-- add_optional_field.xml -->
+  <!-- AddOptionalFieldAlertDialog -->
+  <!-- CheckAndAddOptionalFieldsAlertDialog -->
+  <!-- Cells -->
+  <!-- Model -->
+  <!-- TemplateModel -->
+  <!-- NonNullOptionalFields HTPG template -->
+  <!-- CheckedIncludedEntryModel -->
+  <!-- CurrentGridUniqueEntryModels -->
+  <!-- GridsActivity -->
+  <!-- AllGridsUniqueEntryModels -->
+  <!-- CurrentProjectUniqueEntryModels -->
+  <!-- FullyUniqueEntryModels -->
+  <!-- JoinedGridModel -->
+  <!-- CurrentGridUniqueJoinedGridModel -->
+  <!-- GridDisplay Strings -->
+  <!-- GC VS -->
+  <!-- ChoosingTemplateSetter-->
+  <!-- Grid Creator -->
+  <!-- ProjectChoiceAlertDialog -->
+  <!-- StatelessProjectSetter, StatefulProjectSetter -->
+  <!-- StatelessProjectSetter -->
+  <!-- StatefulProjectSetter -->
+  <!-- Exporter -->
+  <!-- Display -->
+  <!-- Deleter -->
+  <!-- GridDeleter -->
+  <!-- Action mode (multi-select) -->
+  <!-- TemplateDeleter -->
+  <!-- ProjectDeleter -->
+  <!-- Imported Grid Feature -->
+  <!-- optional_field_show.xml -->
+  <!-- fragment_data_entry.xml -->
+  <!-- UniqueAlertDialog -->
+  <!-- SampleData -->
+  <!-- GridCreator -->
+  <!-- TemplateCreatorRestoreBuiltins -->
+  <!-- TemplateCreator -->
+  <!-- StorageMigrator -->
+  <!-- BaseCollector -->
+  <!-- TUTORIAL -->
+</resources>
