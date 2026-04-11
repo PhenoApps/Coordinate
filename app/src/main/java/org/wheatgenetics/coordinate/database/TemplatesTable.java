@@ -8,7 +8,7 @@ import android.database.SQLException;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.model.TemplateModel;
@@ -284,7 +284,8 @@ public class TemplatesTable extends Table {
     public boolean deleteUserDefined() {
         boolean failed = false;
         try {
-            this.deleteUsingWhereClause("_id > 2");
+            this.deleteUsingWhereClause(
+                    TemplatesTable.TYPE_FIELD_NAME + " = " + TemplateType.USERDEFINED.getCode());
         } catch (SQLException e) {
             e.printStackTrace();
             failed = true;

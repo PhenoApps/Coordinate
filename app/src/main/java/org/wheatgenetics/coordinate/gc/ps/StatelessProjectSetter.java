@@ -13,7 +13,7 @@ import org.wheatgenetics.coordinate.SelectAlertDialog;
 import org.wheatgenetics.coordinate.database.ProjectsTable;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.ProjectModels;
-import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

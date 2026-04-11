@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/act_imported_collector_cl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/AppTheme.AppBarOverlay" />
+
+    <!-- Container for the grid display fragment; receives left/right content insets -->
+    <FrameLayout
+        android:id="@+id/gridDisplayFragmentContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/act_imported_actions_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <fragment
+            android:id="@+id/gridDisplayFragment"
+            android:name="org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            tools:layout="@layout/fragment_display" />
+    </FrameLayout>
+
+    <!-- Read-only display of the active cell's current value -->
+    <TextView
+        android:id="@+id/act_imported_value_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/edit_text_rounded_box"
+        android:enabled="false"
+        android:focusable="false"
+        android:gravity="center_vertical"
+        android:hint="@string/fragment_data_entryEntryHint"
+        android:lines="1"
+        android:minEms="8"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/act_imported_collector_bnv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/act_imported_actions_bar"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <!-- Action buttons: Edit / Barcode / Approve -->
+    <LinearLayout
+        android:id="@+id/act_imported_actions_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/act_imported_value_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gridDisplayFragmentContainer">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btn_imported_edit"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/btn_circle_primary"
+                android:contentDescription="@string/ImportedEditButton"
+                android:padding="14dp"
+                android:src="@drawable/ic_mdi_square_edit_outline" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btn_imported_missing"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/btn_circle_primary"
+                android:contentDescription="@string/ImportedMissingButton"
+                android:padding="14dp"
+                android:src="@drawable/main_ic_missing" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btn_imported_barcode"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/btn_circle_primary"
+                android:contentDescription="@string/ImportedBarcodeButton"
+                android:padding="14dp"
+                android:src="@drawable/ic_camera_barcode_white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btn_imported_approve"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/btn_circle_primary"
+                android:contentDescription="@string/ImportedApproveButton"
+                android:padding="14dp"
+                android:src="@drawable/ic_mdi_check_bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/act_imported_collector_bnv"
+        style="@style/AppTheme.BottomNavBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

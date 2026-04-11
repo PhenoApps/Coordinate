@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 
-import org.phenoapps.androidlibrary.ProgressDialog;
+import org.wheatgenetics.coordinate.dialogs.ProgressDialog;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Utils;
 
@@ -128,7 +128,7 @@ abstract class Exporter {
                 Utils.alert(
                         /* context => */ this.context,
                         /* title   => */ R.string.ExporterFailTitle,
-                        /* message => */ org.phenoapps.androidlibrary.Utils.replaceIfNull(this.message,
+                        /* message => */ Utils.replaceIfNull(this.message,
                                 this.getString(R.string.ExporterFailMessage)));
         }
 
@@ -161,6 +161,12 @@ abstract class Exporter {
         // region Subclass Package Methods
         // region export() Subclass Package Methods
         @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+        @NonNull
+        Context getContext() {
+            return this.context;
+        }
+
+        @RestrictTo(RestrictTo.Scope.SUBCLASSES)
         @Nullable
         File getExportFile() {
             return this.exportFile;
@@ -172,7 +178,7 @@ abstract class Exporter {
 
         @RestrictTo(RestrictTo.Scope.SUBCLASSES)
         void makeExportFileDiscoverable() {
-            org.phenoapps.androidlibrary.Utils.makeFileDiscoverable(
+            org.wheatgenetics.coordinate.Utils.makeFileDiscoverable(
                     this.context, this.exportFile);
         }
         // endregion

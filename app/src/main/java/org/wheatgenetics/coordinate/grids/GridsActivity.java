@@ -2,10 +2,12 @@ package org.wheatgenetics.coordinate.grids;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,23 +22,44 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.view.ActionMode;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.ImportedCollectorActivity;
+import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.gi.ImportedGridImporter;
 import org.wheatgenetics.coordinate.activities.BaseMainActivity;
 import org.wheatgenetics.coordinate.activity.AppIntroActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.activity.MainActivity;
+import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.database.SampleData;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
+import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.gc.GridCreator;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
 import org.wheatgenetics.coordinate.ge.GridExportPreprocessor;
@@ -49,11 +72,10 @@ import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.InsetHandler;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
-
-import java.io.OutputStream;
 
 public class GridsActivity extends BaseMainActivity implements TemplateCreator.Handler {
     // region Constants
@@ -67,6 +89,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     // endregion
     private static Intent INTENT_INSTANCE = null;                       // lazy load
     // region Fields
+    private boolean personReminderShownThisSession = false;
     private ExportingViewModel gridsViewModel;
     private View.OnClickListener onCollectDataButtonClickListenerInstance = null,
             onDeleteButtonClickListenerInstance = null, onExportButtonClickListenerInstance = null;//lls
@@ -89,6 +112,59 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     private boolean isProjectFilter = false;
 
     private Menu systemMenu;
+
+    // region Action mode fields
+    private ActionMode actionMode = null;
+    private Set<Long> pendingExportIds = null;
+    private ListView gridsListView = null;
+
+    private final ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_grids_action_mode, menu);
+            mode.setTitle(getString(R.string.action_mode_selected, 1));
+            View scrim = findViewById(R.id.status_bar_scrim);
+            if (scrim != null) {
+                scrim.bringToFront();
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            if (item.getItemId() == R.id.action_export_selected) {
+                exportSelectedGrids();
+                return true;
+            } else if (item.getItemId() == R.id.action_delete_selected) {
+                deleteSelectedGrids();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+            if (gridsAdapter != null) {
+                gridsAdapter.exitActionMode();
+                gridsAdapter.notifyDataSetChanged();
+            }
+        }
+    };
+    // endregion
+
+    private final ActivityResultLauncher<String> exportZipLauncher =
+            registerForActivityResult(new ActivityResultContracts.CreateDocument("application/zip"), uri -> {
+                if (uri != null && pendingExportIds != null) {
+                    exportGridsAsZip(pendingExportIds, uri);
+                }
+                pendingExportIds = null;
+            });
 
     private final ActivityResultLauncher<String> exportGridsLauncher = registerForActivityResult(new ActivityResultContracts.CreateDocument(), (uri) -> {
 
@@ -114,6 +190,55 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             }
         }
     });
+
+    private Uri pendingImportUri = null;
+    private String pendingImportFilename = null;
+    private final ActivityResultLauncher<String[]> importCsvLauncher =
+            registerForActivityResult(new ActivityResultContracts.OpenDocument(), uri -> {
+                if (uri != null) {
+                    // Resolve display name from URI
+                    String filename = resolveFilename(uri);
+                    // Strip .csv extension if present
+                    if (filename != null && filename.toLowerCase().endsWith(".csv")) {
+                        filename = filename.substring(0, filename.length() - 4);
+                    }
+                    if (filename == null || filename.isEmpty()) filename = "Imported";
+                    importedGridImporter().importFromUri(uri, filename);
+                }
+            });
+
+    @NonNull
+    private ImportedGridImporter importedGridImporter() {
+        return new ImportedGridImporter(this, new ImportedGridImporter.Handler() {
+            @Override
+            public void onImportSuccess(final long gridId) {
+                GridsActivity.this.notifyDataSetChanged();
+                GridsActivity.this.startCollectorActivity(gridId);
+            }
+            @Override
+            public void onImportError(final String message) {
+                new android.app.AlertDialog.Builder(GridsActivity.this)
+                        .setTitle(R.string.ImportedGridErrorTitle)
+                        .setMessage(message)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+            }
+        });
+    }
+
+    @Nullable
+    private String resolveFilename(@NonNull final Uri uri) {
+        try (android.database.Cursor c = getContentResolver().query(
+                uri, new String[]{android.provider.OpenableColumns.DISPLAY_NAME},
+                null, null, null)) {
+            if (c != null && c.moveToFirst()) {
+                return c.getString(0);
+            }
+        } catch (Exception ignored) { }
+        // Fallback: last path segment
+        final String path = uri.getLastPathSegment();
+        return path != null ? new java.io.File(path).getName() : null;
+    }
 
     // region intent Private Methods
     @NonNull
@@ -178,8 +303,12 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     // region Private Methods
     private void startCollectorActivity(@IntRange(from = 1) final long gridId) {
-        this.startActivity(
-                CollectorActivity.intent(this, gridId));
+        final JoinedGridModel model = new GridsTable(this).get(gridId);
+        if (model != null && model.isImported()) {
+            this.startActivity(ImportedCollectorActivity.intent(this, gridId));
+        } else {
+            this.startActivity(CollectorActivity.intent(this, gridId));
+        }
     }
     // endregion
 
@@ -317,6 +446,81 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     // endregion
     // endregion
 
+    // region Action mode export/delete methods
+    private void exportSelectedGrids() {
+        if (gridsAdapter == null) return;
+        final Set<Long> ids = gridsAdapter.getSelectedIds();
+        if (ids.isEmpty()) return;
+        if (ids.size() == 1) {
+            preprocessGridExport(ids.iterator().next());
+            if (actionMode != null) actionMode.finish();
+        } else {
+            pendingExportIds = new HashSet<>(ids);
+            final String ts = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+            exportZipLauncher.launch("coordinate_export_" + ts + ".zip");
+            if (actionMode != null) actionMode.finish();
+        }
+    }
+
+    private void exportGridsAsZip(@NonNull final Set<Long> gridIds, @NonNull final Uri outputUri) {
+        new Thread(() -> {
+            final File tempDir = new File(getCacheDir(),
+                    "multiexport_" + System.currentTimeMillis());
+            tempDir.mkdirs();
+            final List<File> temps = new ArrayList<>();
+            final GridsTable table = new GridsTable(GridsActivity.this);
+            try {
+                for (final long id : gridIds) {
+                    final JoinedGridModel m = table.get(id);
+                    if (m == null) continue;
+                    final String safe = m.getTitle()
+                            .replaceAll("[^a-zA-Z0-9_\\-]", "_")
+                            + "_" + m.getFormattedTimestamp();
+                    final File f = new File(tempDir, safe + ".csv");
+                    m.export(f, safe);
+                    temps.add(f);
+                }
+                try (OutputStream os = getContentResolver().openOutputStream(outputUri);
+                     ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(os))) {
+                    for (final File f : temps) {
+                        zos.putNextEntry(new ZipEntry(f.getName()));
+                        try (FileInputStream fis = new FileInputStream(f)) {
+                            final byte[] buf = new byte[8192];
+                            int len;
+                            while ((len = fis.read(buf)) > 0) zos.write(buf, 0, len);
+                        }
+                        zos.closeEntry();
+                    }
+                }
+                runOnUiThread(this::notifyDataSetChanged);
+            } catch (IOException e) {
+                runOnUiThread(() -> Utils.showLongToast(
+                        GridsActivity.this, getString(R.string.export_failed)));
+            } finally {
+                for (final File f : temps) f.delete();
+                tempDir.delete();
+            }
+        }).start();
+    }
+
+    private void deleteSelectedGrids() {
+        if (gridsAdapter == null) return;
+        final List<Long> ids = new ArrayList<>(gridsAdapter.getSelectedIds());
+        final int count = ids.size();
+        final String msg = count == 1
+                ? getString(R.string.GridDeleterConfirmation)
+                : getString(R.string.multi_delete_confirmation, count);
+        new AlertDialog.Builder(this)
+                .setMessage(msg)
+                .setPositiveButton(R.string.delete_button, (d, w) -> {
+                    gridDeleter().deleteMultiple(ids);
+                    if (actionMode != null) actionMode.finish();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+    // endregion
+
     // region createGrid() Private Methods
     private void handleGridCreated(@IntRange(from = 1) final long gridId) {
         this.notifyDataSetChanged();
@@ -368,11 +572,17 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_grids);
 
+        androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        InsetHandler.applyToolbarInsets(toolbar);
+        InsetHandler.applyStatusBarScrim(this.findViewById(R.id.status_bar_scrim));
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
+
         this.gridsViewModel = new ViewModelProvider(this).get(
                 ExportingViewModel.class);
 
-        final ListView gridsListView = this.findViewById(
-                R.id.gridsListView);
+        this.gridsListView = this.findViewById(R.id.gridsListView);
+        final ListView gridsListView = this.gridsListView;
 
 
         final String TEMPLATE_ID_KEY = GridsActivity.TEMPLATE_ID_KEY;
@@ -394,6 +604,14 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         }
 
         setupBottomNavigationBar();
+        InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_grids_bnv));
+
+        FloatingActionButton fabNewGrid = this.findViewById(R.id.fab_new_grid);
+        if (fabNewGrid != null) fabNewGrid.setOnClickListener(v -> createGrid());
+
+        FloatingActionButton fabImportGrid = this.findViewById(R.id.fab_import_grid);
+        if (fabImportGrid != null) fabImportGrid.setOnClickListener(v ->
+                importCsvLauncher.launch(new String[]{"text/csv", "text/comma-separated-values", "text/*"}));
 
         setupActionBar();
 
@@ -426,6 +644,26 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                 }
             }
             gridsListView.setAdapter(this.gridsAdapter);
+
+            this.gridsAdapter.setSelectionChangedListener(count -> {
+                if (count == 0) {
+                    if (actionMode != null) actionMode.finish();
+                } else {
+                    if (actionMode != null) actionMode.setTitle(getString(R.string.action_mode_selected, count));
+                }
+            });
+
+            this.gridsAdapter.setRowLongClickListener(view -> {
+                if (actionMode != null) return false;
+                final Object tag = view.getTag();
+                if (!(tag instanceof Long)) return false;
+                final long gridId = (Long) tag;
+                if (gridId < 1) return false;
+                gridsAdapter.enterActionMode(gridId);
+                gridsAdapter.notifyDataSetChanged();
+                actionMode = startSupportActionMode(actionModeCallback);
+                return true;
+            });
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             boolean firstLoadComplete = prefs.getBoolean(GeneralKeys.FIRST_LOAD_COMPLETE, false);
@@ -518,12 +756,87 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_grids_bnv);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_grids);
+        applyBnvVisibility(bottomNavigationView);
+
+        if (gridsAdapter != null) {
+            final int saved = PreferenceManager.getDefaultSharedPreferences(this)
+                    .getInt(GeneralKeys.SORT_GRIDS, GridsAdapter.SORT_DEFAULT);
+            if (gridsAdapter.getSortOrder() != saved) {
+                gridsAdapter.setSortOrder(saved);
+            }
+        }
+
+        if (!personReminderShownThisSession) {
+            checkPersonReminder();
+        }
+    }
+
+    private void checkPersonReminder() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (!prefs.getBoolean(GeneralKeys.FIRST_LOAD_COMPLETE, false)) return;
+
+        // Respect the user's verification interval setting
+        final String intervalStr = prefs.getString(GeneralKeys.VERIFICATION_INTERVAL, "24");
+        final int intervalHours;
+        try {
+            intervalHours = Integer.parseInt(intervalStr != null ? intervalStr : "24");
+        } catch (NumberFormatException e) {
+            return;
+        }
+        if (intervalHours < 0) return; // "Never"
+
+        final String personName = prefs.getString(GeneralKeys.PERSON_NAME, "");
+        final boolean personNotSet = personName == null || personName.isEmpty();
+
+        final boolean intervalElapsed;
+        if (intervalHours == 0) {
+            intervalElapsed = true; // "Every time"
+        } else {
+            final long lastOpened = prefs.getLong(GeneralKeys.LAST_TIME_OPENED, 0L);
+            final long intervalMs = (long) intervalHours * 60 * 60 * 1000L;
+            intervalElapsed = lastOpened == 0L || (System.currentTimeMillis() - lastOpened) >= intervalMs;
+        }
+
+        if (personNotSet || intervalElapsed) {
+            personReminderShownThisSession = true;
+            showPersonReminderDialog(personName);
+        }
+    }
+
+    private void showPersonReminderDialog(final String currentPerson) {
+        final String message;
+        if (currentPerson != null && !currentPerson.isEmpty()) {
+            message = getString(R.string.pref_profile_person_verify_message, currentPerson);
+        } else {
+            message = getString(R.string.pref_profile_person_set_message);
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle(message)
+                .setNegativeButton(R.string.pref_profile_person_reminder_update, (dialog, which) -> {
+                    // Create a fresh intent to avoid mutating the cached INTENT_INSTANCE
+                    Intent intent = new Intent(this, PreferenceActivity.class);
+                    intent.putExtra(PreferenceActivity.EXTRA_OPEN_PROFILE, true);
+                    startActivity(intent);
+                })
+                .setPositiveButton(R.string.pref_profile_person_reminder_dismiss, null)
+                .show();
+    }
+
+    private void applyBnvVisibility(@NonNull final BottomNavigationView bnv) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        bnv.getMenu().findItem(R.id.action_nav_templates)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_TEMPLATES, false));
+        bnv.getMenu().findItem(R.id.action_nav_projects)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_PROJECTS, false));
     }
 
     private void setupBottomNavigationBar() {
 
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_grids_bnv);
         bottomNavigationView.inflateMenu(R.menu.menu_bottom_nav_bar);
+        applyBnvVisibility(bottomNavigationView);
 
         bottomNavigationView.setOnItemSelectedListener((item -> {
 
@@ -580,11 +893,11 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             Intent mainActivity = new Intent(this, MainActivity.class);
             startActivity(mainActivity);
         }
-        else if (item.getItemId() == R.id.action_new_grid) {
-            createGrid();
+        else if (item.getItemId() == R.id.action_sort) {
+            showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)
-                    .targets(gridActivityTapTargetView(R.id.action_new_grid, getString(R.string.tutorial_grid_create_title), getString(R.string.tutorial_grid_create_summary), 60)
+                    .targets(gridActivityTapTargetView(R.id.fab_new_grid, getString(R.string.tutorial_grid_create_title), getString(R.string.tutorial_grid_create_summary), 60)
                     );
             if (!gridsAdapter.isEmpty()) {
                 sequence.targets(
@@ -606,6 +919,28 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     private TapTarget gridActivityTapTargetView(int id, String title, String desc, int targetRadius) {
         return TapTargetUtil.Companion.getTapTargetSettingsView(this, findViewById(id), title, desc, targetRadius);
+    }
+
+    private void showSortDialog() {
+        if (gridsAdapter == null) return;
+        final String[] options = {
+                getString(R.string.sort_by_name),
+                getString(R.string.sort_by_date)
+        };
+        final int current = gridsAdapter.getSortOrder();
+        final int checked = current == GridsAdapter.SORT_NAME ? 0
+                : current == GridsAdapter.SORT_DATE ? 1 : -1;
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.sort_title)
+                .setSingleChoiceItems(options, checked, (dialog, which) -> {
+                    final int order = which == 0 ? GridsAdapter.SORT_NAME : GridsAdapter.SORT_DATE;
+                    gridsAdapter.setSortOrder(order);
+                    PreferenceManager.getDefaultSharedPreferences(this)
+                            .edit().putInt(GeneralKeys.SORT_GRIDS, order).apply();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     @Override

@@ -119,7 +119,7 @@ abstract class CascadingDeleter extends Deleter
     public void delete(@IntRange(from = 1) final long id) {
         this.id = id;
         if (this.detailRecordsExists())
-            Utils.confirm(
+            Utils.confirmDelete(
                     /* context     => */ this.context(),
                     /* title       => */ this.confirmationTitle,
                     /* message     => */ this.confirmationMessage,

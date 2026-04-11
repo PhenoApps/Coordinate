@@ -38,4 +38,38 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <TextView
+        style="@style/AppIntroDefaultText"
+        android:id="@+id/default_templates_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/app_intro_default_templates_header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <org.wheatgenetics.coordinate.views.OptionalSetupItem
+            android:id="@+id/seed_tray_template_setup_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <org.wheatgenetics.coordinate.views.OptionalSetupItem
+            android:id="@+id/dna_plate_template_setup_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <org.wheatgenetics.coordinate.views.OptionalSetupItem
+            android:id="@+id/htpg_plate_template_setup_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 </LinearLayout>

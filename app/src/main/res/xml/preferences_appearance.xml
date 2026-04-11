@@ -10,6 +10,22 @@
         android:title="@string/preferences_appearance_tutorial_title"
         app:allowDividerBelow="true" />
 
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_templates"
+        android:key="org.wheatgenetics.coordinate.HIDE_TEMPLATES"
+        android:summary="@string/preferences_appearance_hide_templates_description"
+        android:title="@string/preferences_appearance_hide_templates_title"
+        app:allowDividerBelow="true" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_clipboard_list"
+        android:key="org.wheatgenetics.coordinate.HIDE_PROJECTS"
+        android:summary="@string/preferences_appearance_hide_projects_description"
+        android:title="@string/preferences_appearance_hide_projects_title"
+        app:allowDividerBelow="true" />
+
     <SeekBarPreference
         android:defaultValue="100"
         android:icon="@drawable/ic_layout_scaling"

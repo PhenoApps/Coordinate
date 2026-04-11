@@ -14,7 +14,8 @@ import org.wheatgenetics.coordinate.interfaces.TitleSelectedListener
 
 class TitleChoiceAdapter(
     private val listener: TitleSelectedListener,
-    private val adapterType: AdapterType
+    private val adapterType: AdapterType,
+    private val showAddNew: Boolean = true
 ) : ListAdapter<String, RecyclerView.ViewHolder>(DiffCallback()) {
 
     private var mSelected: String? = null
@@ -31,7 +32,7 @@ class TitleChoiceAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        if (position == itemCount - 1) { // for the last position, bind the addNewItem tile (New Project/New Template)
+        if (showAddNew && position == itemCount - 1) { // for the last position, bind the addNewItem tile (New Project/New Template)
             val newItemText = when (adapterType) {
                 AdapterType.PROJECT -> holder.itemView.context.getString(R.string.frag_grid_creator_project_add_new_text)
                 AdapterType.TEMPLATE -> holder.itemView.context.getString(R.string.frag_grid_creator_new_template_title)
@@ -44,8 +45,10 @@ class TitleChoiceAdapter(
                 with(holder as ViewHolder) {
                     itemView.tag = holder
                     bind(title, false) {
-                        mSelected = title
-                        this@TitleChoiceAdapter.notifyItemRangeChanged(0, itemCount)
+                        if (adapterType == AdapterType.PROJECT) {
+                            mSelected = title
+                            this@TitleChoiceAdapter.notifyItemRangeChanged(0, itemCount)
+                        }
                         listener.checked(title)
                     }
                 }
@@ -54,7 +57,7 @@ class TitleChoiceAdapter(
     }
 
     override fun getItemCount(): Int {
-        return super.getItemCount() + 1 // +1 for the addNewItemTile at the end
+        return if (showAddNew) super.getItemCount() + 1 else super.getItemCount()
     }
 
     inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
@@ -62,15 +65,28 @@ class TitleChoiceAdapter(
             with(view as CheckedTextView) {
                 setOnClickListener(onClick)
                 text = value
-                if (isAddNewItemTile) { // hide the check mark for the add item tile
+                if (isAddNewItemTile || adapterType == AdapterType.TEMPLATE) {
+                    // hide the check mark for the add item tile and for template items
+                    // (template selection navigates immediately, no checkbox needed)
                     checkMarkDrawable = null
                 } else {
+                    // PROJECT type: restore checkmark drawable in case this ViewHolder was
+                    // previously used for the add-new-item tile (checkMarkDrawable = null)
+                    if (checkMarkDrawable == null) {
+                        val a = context.obtainStyledAttributes(
+                            intArrayOf(android.R.attr.listChoiceIndicatorMultiple)
+                        )
+                        checkMarkDrawable = a.getDrawable(0)
+                        a.recycle()
+                    }
                     isChecked = text.toString() == mSelected
 
-                    // Set the color of the check mark for selected item
+                    // Set or reset the tint based on selected state
                     if (isChecked) {
                         val color = ContextCompat.getColor(context, R.color.colorAccent)
                         checkMarkTintList = ColorStateList.valueOf(color)
+                    } else {
+                        checkMarkTintList = null
                     }
                 }
             }

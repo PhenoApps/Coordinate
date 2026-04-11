@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.ProjectModels;
-import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.Utils;
 
 public class ProjectsTable extends Table {
     // region Constants

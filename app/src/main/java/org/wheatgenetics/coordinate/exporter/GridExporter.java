@@ -9,6 +9,7 @@ import androidx.annotation.RestrictTo;
 import androidx.preference.PreferenceManager;
 
 import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.dialogs.CitationDialog;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.utils.Keys;
 
@@ -102,10 +103,6 @@ public class GridExporter extends Exporter {
             this.prefs = prefs;
             this.deleteGrid = deleteGrid;
         }
-        private void deleteGrid() {
-            this.helper.deleteGrid();
-        }
-
         // region Overridden Methods
         @RestrictTo(RestrictTo.Scope.SUBCLASSES)
         @Override
@@ -154,21 +151,7 @@ public class GridExporter extends Exporter {
         @RestrictTo(
                 RestrictTo.Scope.SUBCLASSES)
         void handleExportSuccess(final File exportFile) {
-            @SuppressWarnings({"ClassExplicitlyExtendsObject"})
-            class YesRunnable extends Object implements Runnable {
-                @Override
-                public void run() {
-                    GridExporter.AsyncTask.this.deleteGrid();
-                    GridExporter.AsyncTask.this.share();
-                }
-            }
-
-            if (deleteGrid) {
-                this.alert(R.string.GridExporterDeleteConfirmation,
-                        new YesRunnable());
-            } else {
-                this.alert();
-            }
+            new CitationDialog(getContext()).show();
         }
 
         // region org.wheatgenetics.coordinate.model.JoinedGridModel.Helper Overridden Method

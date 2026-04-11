@@ -16,7 +16,7 @@ import org.wheatgenetics.coordinate.model.GridModel;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.model.JoinedGridModels;
 import org.wheatgenetics.coordinate.model.Model;
-import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.Utils;
 
 public class GridsTable extends Table {
     // region Constants
@@ -378,6 +378,15 @@ public class GridsTable extends Table {
     // endregion
 
     // region Operations
+    public void updatePerson(@IntRange(from = 1) final long gridId,
+                             @Nullable final String person) {
+        final ContentValues cv = new ContentValues();
+        if (person != null) cv.put(PERSON_FIELD_NAME, person);
+        else cv.putNull(PERSON_FIELD_NAME);
+        this.db().update(TABLE_NAME, cv,
+                Table.whereClause(), new String[]{String.valueOf(gridId)});
+    }
+
     public boolean exists(final long id) {
         return GridsTable.exists(this.queryDistinct(
                 /* selection => */ GridsTable.whereClause(id)));

@@ -6,12 +6,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.wheatgenetics.coordinate.utils.InsetHandler;
+
 public abstract class BackActivity extends AppCompatActivity {
     // region Overridden Methods
     @Override
     protected void onCreate(
             @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        InsetHandler.enableEdgeToEdge(this);
 
         @Nullable final ActionBar supportActionBar = this.getSupportActionBar();
         if (null != supportActionBar) {

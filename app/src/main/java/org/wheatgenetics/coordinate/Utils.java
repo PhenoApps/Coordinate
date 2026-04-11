@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.text.format.DateFormat;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -13,6 +18,7 @@ import androidx.annotation.StringRes;
 import org.phenoapps.permissions.RequestDir;
 import org.phenoapps.permissions.Dir;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Utils {
@@ -48,7 +54,7 @@ public class Utils {
             @StringRes final int title, final String message) {
         Utils.alert(context, context.getString(title), message,
                 context.getString(R.string.UtilsPositiveButtonText),
-                org.phenoapps.androidlibrary.Utils.cancellingOnClickListener(),
+                Utils.cancellingOnClickListener(),
                 null);
     }
 
@@ -149,6 +155,46 @@ public class Utils {
     }
     // endregion
     // endregion
+
+    // region confirmDelete() AlertDialog Methods
+    private static void confirmDelete(
+            @NonNull final Context context,
+            @StringRes final int title, final String message,
+            final Runnable yesRunnable,
+            @Nullable final Runnable noRunnable) {
+        Utils.alert(context, context.getString(title), message,
+                context.getString(R.string.delete_button),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        if (null != dialog) dialog.cancel();
+                        if (null != yesRunnable) yesRunnable.run();
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        if (null != dialog) dialog.cancel();
+                        if (null != noRunnable) noRunnable.run();
+                    }
+                });
+    }
+
+    public static void confirmDelete(
+            @NonNull final Context context,
+            @StringRes final int title,
+            @StringRes final int message, final Runnable yesRunnable) {
+        Utils.confirmDelete(context, title,
+                context.getString(message), yesRunnable, null);
+    }
+
+    public static void confirmDelete(
+            @NonNull final Context context,
+            @StringRes final int message, final Runnable yesRunnable) {
+        Utils.confirmDelete(context,
+                R.string.app_name, message, yesRunnable);
+    }
+    // endregion
+    // endregion
     // endregion
 
     public static int valid(final int value, final int minValue,
@@ -226,6 +272,73 @@ public class Utils {
                         /* requestCode => */ requestCode);
         result.createIfMissing();                        // throws java.io.IOException, org.wheatge-
         return result;                                   //  netics.javalib.Dir.PermissionException
+    }
+    // endregion
+
+    // region Phenolib-migrated Utility Methods
+    public static void showLongToast(final Context context, final CharSequence text) {
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+    }
+
+    public static void showShortToast(final Context context, final CharSequence text) {
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public static String getText(final EditText editText) {
+        if (null == editText) return "";
+        final CharSequence text = editText.getText();
+        return null == text ? "" : text.toString().trim();
+    }
+
+    @Nullable
+    public static String replaceIfNull(@Nullable final String s, @Nullable final String replacement) {
+        return null != s ? s : replacement;
+    }
+
+    @NonNull
+    public static String makeEmptyIfNull(@Nullable final String s) {
+        return null == s ? "" : s;
+    }
+
+    @SuppressWarnings({"UnusedReturnValue"})
+    public static File makeFileDiscoverable(final Context context, final File file) {
+        if (null != context && null != file)
+            MediaScannerConnection.scanFile(
+                    context,
+                    new String[]{file.getAbsolutePath()},
+                    null,
+                    (path, uri) -> {});
+        return file;
+    }
+
+    public static int convertToInt(final String text) {
+        if (null == text || text.trim().isEmpty()) return 0;
+        try { return Integer.parseInt(text.trim()); }
+        catch (final NumberFormatException e) { return 0; }
+    }
+
+    @Nullable
+    public static CharSequence formatDate(final long timestamp) {
+        return DateFormat.format("yyyy-MM-dd", timestamp);
+    }
+
+    @SuppressWarnings({"CStyleArrayDeclaration"})
+    public static String[] stringArray(final String... items) {
+        return items;
+    }
+
+    @SuppressWarnings({"CStyleArrayDeclaration"})
+    public static String[] stringArray(final long item) {
+        return new String[]{String.valueOf(item)};
+    }
+
+    @NonNull
+    public static String adjust(@Nullable final String s) {
+        return null == s ? "" : s.trim();
+    }
+
+    public static DialogInterface.OnClickListener cancellingOnClickListener() {
+        return (dialog, which) -> { if (null != dialog) dialog.cancel(); };
     }
     // endregion
 }

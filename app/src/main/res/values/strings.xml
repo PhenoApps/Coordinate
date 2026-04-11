@@ -5,6 +5,7 @@
     <!-- Utils -->
     <string name="UtilsNegativeButtonText">No</string>
     <string name="UtilsPositiveButtonText">OK</string>
+    <string name="delete_button">Delete</string>
     <string name="UtilsInvalidValue">value must be >= %d</string>
 
     <!-- MainActivity, NavigationItemSelectedListener, TemplatesActivity -->
@@ -31,6 +32,13 @@
     <string name="app_intro_load_sample_data_summary">Import a sample database that includes example grids, templates, and projects.</string>
     <string name="app_intro_enable_tutorial_title">Tutorial</string>
     <string name="app_intro_enable_tutorial_summary">Add a help icon to the top toolbar that describes features throughout the app.</string>
+    <string name="app_intro_default_templates_header">Default Templates</string>
+    <string name="app_intro_seed_tray_template_title">Seed Tray</string>
+    <string name="app_intro_seed_tray_template_summary">A 6×20 seed tray template with optional fields for tray ID, person, and date.</string>
+    <string name="app_intro_dna_plate_template_title">DNA Plate</string>
+    <string name="app_intro_dna_plate_template_summary">An 8×12 DNA plate template with optional fields for plate ID, plate name, and date.</string>
+    <string name="app_intro_htpg_plate_template_title">HTPG Plate</string>
+    <string name="app_intro_htpg_plate_template_summary">An 8×12 HTPG plate template with optional fields for plate ID, username, and date.</string>
 
     <!-- CollectorActivity -->
     <string name="CollectorActivityLabel">Collect Data</string>
@@ -253,15 +261,49 @@
     <string name="database_reload_warning">All data will be deleted and sample data will be loaded. Are you sure you want to reload the database?</string>
     <string name="database_reload_message">Sample data has been loaded</string>
 
+    <!-- PROFILE PREFERENCES -->
+    <string name="pref_profile_title">Profile</string>
+    <string name="pref_profile_person_title">Person</string>
+    <string name="pref_profile_person_summary">Set a name to auto-fill new grids</string>
+    <string name="pref_profile_person_dialog_title">Enter your name</string>
+    <string name="pref_profile_person_verify_message">Is this still %s?</string>
+    <string name="pref_profile_person_set_message">No collector name is set. Set a name to auto-fill new grids.</string>
+    <string name="pref_profile_person_reminder_update">Update</string>
+    <string name="pref_profile_person_reminder_dismiss">Yes</string>
+    <string name="pref_profile_verification_interval_title">Verification reminder</string>
+    <string name="pref_profile_verification_interval_summary">Ask to verify collector</string>
+    <string name="pref_profile_verification_interval_value_always">0</string>
+    <string name="pref_profile_verification_interval_value_12">12</string>
+    <string name="pref_profile_verification_interval_value_24">24</string>
+    <string name="pref_profile_verification_interval_value_never">-1</string>
+    <string-array name="pref_profile_verification_interval_entries">
+        <item>Every time</item>
+        <item>After 12 hours</item>
+        <item>After 24 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_profile_verification_interval_entry_values">
+        <item>0</item>
+        <item>12</item>
+        <item>24</item>
+        <item>-1</item>
+    </string-array>
+
     <!--  APPEARANCE PREFERENCES  -->
     <string name="pref_appearance_title">Appearance</string>
     <string name="preferences_appearance_system_category_title">Application</string>
     <string name="preferences_appearance_tutorial_title">Tutorial</string>
     <string name="preferences_appearance_tutorial_description">Adds a tutorial icon to the collect, settings, fields, and traits screens</string>
+    <string name="preferences_appearance_hide_templates_title">Hide Templates</string>
+    <string name="preferences_appearance_hide_templates_description">Remove the Templates tab from the bottom navigation bar</string>
+    <string name="preferences_appearance_hide_projects_title">Hide Projects</string>
+    <string name="preferences_appearance_hide_projects_description">Remove the Projects tab from the bottom navigation bar</string>
 
-
-
-
+    <!-- Citation Dialog -->
+    <string name="citation_title">Cite Coordinate</string>
+    <string name="citation_message">If you use Coordinate in your research, please cite the following publication:</string>
+    <string name="citation_text">Rife et al., (2025). Coordinate: An Android application to organize samples into grids. Journal of Open Source Software, 10(113), 8263</string>
+    <string name="citation_url" translatable="false">https://joss.theoj.org/papers/10.21105/joss.08263</string>
 
     <!-- About -->
     <string name="preferences_about_title">About</string>
@@ -336,6 +378,8 @@
     <string name="SeedDefaultTemplateTitle">Seed Tray</string>
     <string name="DNADefaultTemplateTitle">DNA Plate</string>
     <string name="HTPGTemplateTitle">HTPG</string>
+    <string name="HTPGDefaultTemplateTitle">HTPG Plate</string>
+    <string name="HTPGDefaultTemplateEntryLabel">Sample UUID</string>
 
     <!-- NonNullOptionalFields HTPG template -->
     <string name="NonNullOptionalFieldsHTPG">Plate ID</string>
@@ -420,7 +464,9 @@
     <string name="EntireProjectProjectExporterFailedMessage">Unable to export project.</string>
     <string name="template_export_dialog_title">Export Template</string>
     <string name="project_export_dialog_title">Export Project</string>
-
+    <string name="getExportFileNameAlertDialogTitle">Export File Name</string>
+    <string name="getExportFileNameAlertDialogHint">File name</string>
+    <string name="getExportFileNameAlertDialogToast">File name cannot be empty</string>
 
     <!-- Display -->
     <string name="display_cellContentDescription">cell</string>
@@ -435,6 +481,14 @@
     <string name="GridDeleterEntriesOfGridNotDeletedToast">Entries were not deleted</string>
     <string name="GridDeleterGridDeletedToast">Grid successfully deleted</string>
     <string name="GridDeleterGridNotDeletedToast">Grid could not be deleted</string>
+    <string name="multi_delete_confirmation">Delete %d grids? This cannot be undone.</string>
+    <string name="multi_delete_success">Grids deleted.</string>
+
+    <!-- Action mode (multi-select) -->
+    <string name="action_mode_selected">%d selected</string>
+    <string name="menu_grids_export_selected">Export</string>
+    <string name="menu_grids_delete_selected">Delete</string>
+    <string name="export_failed">Export failed.</string>
 
     <!-- TemplateDeleter -->
     <string name="TemplateDeleterConfirmationTitle">Delete template</string>
@@ -448,17 +502,42 @@
     <string name="ProjectDeleterProjectSuccessToast">Project successfully deleted</string>
     <string name="ProjectDeleterProjectFailToast">Project could not be deleted</string>
 
+    <!-- Imported Grid Feature -->
+    <string name="ImportedGridLabel">Imported</string>
+    <string name="ImportedGridNameFieldName">Grid Name</string>
+    <string name="ImportedGridFabDescription">Import grid from CSV</string>
+    <string name="ImportedEditDialogTitle">Edit cell value</string>
+    <string name="ImportedEditReplace">Replace</string>
+    <string name="ImportedEditMarkMissing">Mark Missing</string>
+    <string name="ImportedEditValueHint">Enter replacement value</string>
+    <string name="ImportedEditScan">Scan</string>
+    <string name="ImportedEditButton">Edit</string>
+    <string name="ImportedMissingButton">Missing</string>
+    <string name="ImportedBarcodeButton">Barcode</string>
+    <string name="ImportedApproveButton">Approve</string>
+    <string name="ImportedCancelConfirmButton">Cancel Confirmation</string>
+    <string name="ImportedBarcodeScanPrompt">Scan barcode to confirm cell value</string>
+    <string name="ImportedGridErrorTitle">Import Error</string>
+    <string name="ImportedGridErrorOpenFile">Could not open the selected file.</string>
+    <string name="ImportedGridErrorParse">Failed to parse the CSV file.</string>
+    <string name="ImportedGridErrorNoData">The CSV file contains no data rows.</string>
+    <string name="ImportedGridErrorMissingHeaders">CSV must have columns: value, row, column.</string>
+    <string name="ImportedGridErrorInsertTemplate">Failed to create template for imported grid.</string>
+    <string name="ImportedGridErrorInsertGrid">Failed to create imported grid.</string>
+    <string name="ImportedGridCompleteTitle">Grid Complete</string>
+    <string name="ImportedGridCompleteMessage">All cells have been confirmed. Would you like to export the grid?</string>
+
     <!-- optional_field_show.xml -->
-    <string name="optional_field_showNameText">Plate ID:</string>
+    <string name="optional_field_showNameText">Plate ID</string>
     <string name="optional_field_showValueText">...</string>
 
     <!-- fragment_data_entry.xml -->
     <string name="fragment_data_entryEntryHint">Cell ID</string>
     <string name="fragment_data_entryEntryActionLabel">Save</string>
     <string name="fragment_data_entryGridInformationHeaderText">Grid Information</string>
-    <string name="fragment_data_entryProjectLabelText">Project:</string>
+    <string name="fragment_data_entryProjectLabelText">Project</string>
     <string name="fragment_data_entryProjectTitleText">...</string>
-    <string name="fragment_data_entryTemplateLabelText">Template:</string>
+    <string name="fragment_data_entryTemplateLabelText">Template</string>
     <string name="fragment_data_entryTemplateTitleText">...</string>
 
     <!-- UniqueAlertDialog -->
@@ -475,14 +554,12 @@
     <string name="frag_grid_creator_project_add_new_text">New Project</string>
     <string name="frag_grid_creator_project_add_title">Add grid to a project</string>
     <string name="frag_grid_creator_add_project_summary">Optionally create a new project or select an existing project below.</string>
-    <string name="frag_grid_creator_template_options_title">Template options</string>
-    <string name="frag_grid_creator_template_options_summary">Create a new template or select an existing template below.</string>
+    <string name="frag_grid_creator_template_options_title">Select a Template</string>
     <string name="frag_grid_creator_new_template_title">New template</string>
-    <string name="frag_grid_creator_new_template_summary">Please enter a template name and its grid dimensions.</string>
     <string name="frag_grid_creator_template_rows_et_hint">Number of rows</string>
     <string name="frag_grid_creator_template_columns_et_hint">Number of columns</string>
     <string name="frag_grid_creator_template_name_et_hint">Template name</string>
-    <string name="frag_template_creator_fields_summary">Fill in the optional fields below.</string>
+    <string name="frag_template_creator_new_template_title">Template name and dimensions</string>
     <string name="frag_template_creator_options_title">Optional fields</string>
     <string name="frag_template_creator_options_summary">Metadata fields can be added or removed from each template.</string>
     <string name="frag_template_creator_options_new">Create a new field.</string>
@@ -496,6 +573,10 @@
     <string name="frag_exclude_reset_button">Reset</string>
     <string name="back">Back</string>
     <string name="finish">Finish</string>
+
+    <!-- TemplateCreatorRestoreBuiltins -->
+    <string name="frag_template_creator_restore_builtins_title">Restore Built-in Templates</string>
+    <string name="frag_template_creator_restore_builtins_summary">Select built-in templates to restore to the templates list.</string>
 
     <!-- TemplateCreator -->
     <string name="frag_template_creator_exclude_random_et_hint">Number of random cells to exclude.</string>
@@ -535,6 +616,7 @@
     <string name="BaseCollectorFilledGridAlertMessage">Grid has been filled!</string>
     <string name="grid_export_text">Export Grid</string>
     <string name="menu_collector_meta_data_title">Summarize Data</string>
+    <string name="menu_fit_to_width">Fit to Width</string>
     <string name="project_edit_menu_item_click">Edit Project</string>
 
     <string name="bottom_nav_bar_settings">Settings</string>
@@ -544,11 +626,16 @@
     <string name="Coordinate">Coordinate</string>
     <string name="act_grids_title">Grids</string>
 
-    <string name="dialog_act_templates_ask_delete">This will delete the selected template.</string>
+    <string name="dialog_act_templates_ask_delete">Delete this template?</string>
     <string name="templates_with_grids_cant_be_edited">Cannot edit templates that have already been used to create grids.</string>
     <string name="menu_projects_new">New project</string>
     <string name="menu_templates_new">New template</string>
     <string name="menu_grids_new">New grid</string>
+    <string name="menu_sort">Sort</string>
+    <string name="sort_title">Sort by</string>
+    <string name="sort_by_name">Name</string>
+    <string name="sort_by_date">Date Created</string>
+    <string name="sort_by_grid_count">Number of Grids</string>
 
     <string name="back_button_twice_press">Press back again to close app.</string>
     <string name="database_export_success">Database export successful!</string>

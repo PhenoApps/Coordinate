@@ -98,15 +98,29 @@ public class GridDisplayFragment extends DisplayFragment {
                                                          dataViewHolder) {
                                 GridDisplayFragment.this.activate(dataViewHolder);
                             }
-                        }, gridDisplayFragmentHandler.getChecker());
+                        }, gridDisplayFragmentHandler.getChecker(),
+                        gridDisplayFragmentHandler.isImportedMode());
         }
     }
 
     public void notifyDataSetChanged() {
-        if (null != this.adapter){
-            this.adapter.notifyDataSetChanged(this.getActiveRow(), this.getActiveCol());
-            scrollToActiveCell(this.getActiveRow(), this.getActiveCol());
-
+        if (null != this.adapter) {
+            final int activeRow = this.getActiveRow();
+            final int activeCol = this.getActiveCol();
+            // Post to the next frame so we never call notifyDataSetChanged() while
+            // RecyclerView is mid-layout (would throw IllegalStateException).
+            final android.view.View root = getView();
+            if (root != null) {
+                root.post(() -> {
+                    if (this.adapter != null) {
+                        this.adapter.notifyDataSetChanged(activeRow, activeCol);
+                        scrollToActiveCell(activeRow, activeCol);
+                    }
+                });
+            } else {
+                this.adapter.notifyDataSetChanged(activeRow, activeCol);
+                scrollToActiveCell(activeRow, activeCol);
+            }
         }
     }
     // endregion
@@ -121,5 +135,7 @@ public class GridDisplayFragment extends DisplayFragment {
 
         @Nullable
         public abstract CheckedIncludedEntryModel.Checker getChecker();
+
+        public default boolean isImportedMode() { return false; }
     }
 }

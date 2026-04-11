@@ -119,6 +119,11 @@ public class TemplateModels extends Object
         }
     }
 
+    public void sort(java.util.Comparator<TemplateModel> comparator) {
+        if (null != this.arrayListInstance && null != comparator)
+            java.util.Collections.sort(this.arrayListInstance, comparator);
+    }
+
     @NonNull
     public static TemplateModels makeDefault(
             @NonNull final StringGetter stringGetter) {
@@ -131,6 +136,7 @@ public class TemplateModels extends Object
         // just described), client code will break.
         result.add(TemplateModel.makeSeedDefault(stringGetter));
         result.add(TemplateModel.makeDNADefault(stringGetter));
+        result.add(TemplateModel.makeHTGPDefault(stringGetter));
 
         return result;
     }

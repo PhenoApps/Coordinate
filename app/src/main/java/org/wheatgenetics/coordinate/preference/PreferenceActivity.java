@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.preference;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceFragment;
@@ -22,11 +24,14 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.InsetHandler;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class PreferenceActivity extends BackActivity implements SearchPreferenceResultListener {
+
+    public static final String EXTRA_OPEN_PROFILE = "open_profile";
 
     private PreferenceFragment prefsFragment;
 
@@ -60,6 +65,12 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
 
         setContentView(R.layout.activity_preferences);
 
+        androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        InsetHandler.applyToolbarInsets(toolbar);
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
+
+        InsetHandler.applyBottomNavInsets(getBottomNavigationBarView());
         getBottomNavigationBarView().setSelectedItemId(R.id.action_nav_settings);
 
 
@@ -82,6 +93,14 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
 
         prefsFragment = new PreferenceFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.act_prefs_fragment, prefsFragment).commit();
+
+        if (getIntent().getBooleanExtra(EXTRA_OPEN_PROFILE, false)) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.act_prefs_fragment, new ProfilePreferencesFragment(null))
+                    .addToBackStack("ProfilePreferencesFragment")
+                    .commit();
+            setToolbarBackEnabled();
+        }
     }
 
     protected void setToolbarBackEnabled() {
@@ -124,6 +143,14 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
         }
     }
 
+    private void applyBnvVisibility(@NonNull final BottomNavigationView bnv) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        bnv.getMenu().findItem(R.id.action_nav_templates)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_TEMPLATES, false));
+        bnv.getMenu().findItem(R.id.action_nav_projects)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_PROJECTS, false));
+    }
+
     public void setupBottomNavigationBar() {
 
         BottomNavigationView bottomNavigationView = getBottomNavigationBarView();
@@ -133,6 +160,7 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
                 bottomNavigationView.inflateMenu(R.menu.menu_bottom_nav_bar);
             }
 
+            applyBnvVisibility(bottomNavigationView);
             bottomNavigationView.setSelectedItemId(R.id.action_nav_settings);
 
             bottomNavigationView.setOnItemSelectedListener((item -> {

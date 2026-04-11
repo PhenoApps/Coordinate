@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.projects;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ import androidx.preference.PreferenceManager;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.BackActivity;
@@ -43,6 +45,7 @@ import org.wheatgenetics.coordinate.preference.Utils;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
+import org.wheatgenetics.coordinate.utils.InsetHandler;
 import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 
 import java.io.OutputStream;
@@ -268,6 +271,12 @@ public class ProjectsActivity extends BackActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_projects);
 
+        androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle(null);
+        InsetHandler.applyToolbarInsets(toolbar);
+        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
+
         this.projectsViewModel = new ViewModelProvider(this).get(
                 ProjectsViewModel.class);
 
@@ -275,6 +284,10 @@ public class ProjectsActivity extends BackActivity {
                 R.id.projectsListView);
 
         setupBottomNavigationBar();
+        InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_projects_bnv));
+
+        FloatingActionButton fabNewProject = this.findViewById(R.id.fab_new_project);
+        if (fabNewProject != null) fabNewProject.setOnClickListener(v -> projectCreator().createAndReturn());
 
         if (null != projectsListView) projectsListView.setAdapter(this.projectsAdapter =
                 new ProjectsAdapter(this,
@@ -307,11 +320,11 @@ public class ProjectsActivity extends BackActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_new_project) {
-            projectCreator().createAndReturn();
+        if (item.getItemId() == R.id.action_sort) {
+            showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)
-                    .targets(projectsActivityTapTargetView(R.id.action_new_project, getString(R.string.tutorial_project_create_title), getString(R.string.tutorial_project_create_summary), 60)
+                    .targets(projectsActivityTapTargetView(R.id.fab_new_project, getString(R.string.tutorial_project_create_title), getString(R.string.tutorial_project_create_summary), 60)
                     );
             if (!projectsAdapter.isEmpty()) {
                 sequence.targets(
@@ -331,16 +344,60 @@ public class ProjectsActivity extends BackActivity {
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_projects_bnv);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_projects);
+        applyBnvVisibility(bottomNavigationView);
+
+        if (projectsAdapter != null) {
+            final int saved = PreferenceManager.getDefaultSharedPreferences(this)
+                    .getInt(GeneralKeys.SORT_PROJECTS, ProjectsAdapter.SORT_DEFAULT);
+            if (projectsAdapter.getSortOrder() != saved) {
+                projectsAdapter.setSortOrder(saved);
+            }
+        }
     }
 
     private TapTarget projectsActivityTapTargetView(int id, String title, String desc, int targetRadius) {
         return TapTargetUtil.Companion.getTapTargetSettingsView(this, findViewById(id), title, desc, targetRadius);
     }
 
+    private void showSortDialog() {
+        if (projectsAdapter == null) return;
+        final String[] options = {
+                getString(R.string.sort_by_name),
+                getString(R.string.sort_by_date),
+                getString(R.string.sort_by_grid_count)
+        };
+        final int current = projectsAdapter.getSortOrder();
+        final int checked = current == ProjectsAdapter.SORT_NAME ? 0
+                : current == ProjectsAdapter.SORT_DATE ? 1
+                : current == ProjectsAdapter.SORT_GRID_COUNT ? 2 : -1;
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.sort_title)
+                .setSingleChoiceItems(options, checked, (dialog, which) -> {
+                    final int order = which == 0 ? ProjectsAdapter.SORT_NAME
+                            : which == 1 ? ProjectsAdapter.SORT_DATE
+                            : ProjectsAdapter.SORT_GRID_COUNT;
+                    projectsAdapter.setSortOrder(order);
+                    PreferenceManager.getDefaultSharedPreferences(this)
+                            .edit().putInt(GeneralKeys.SORT_PROJECTS, order).apply();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void applyBnvVisibility(@NonNull final BottomNavigationView bnv) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        bnv.getMenu().findItem(R.id.action_nav_templates)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_TEMPLATES, false));
+        bnv.getMenu().findItem(R.id.action_nav_projects)
+                .setVisible(!prefs.getBoolean(GeneralKeys.HIDE_PROJECTS, false));
+    }
+
     private void setupBottomNavigationBar() {
 
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_projects_bnv);
         bottomNavigationView.inflateMenu(R.menu.menu_bottom_nav_bar);
+        applyBnvVisibility(bottomNavigationView);
 
         bottomNavigationView.setOnItemSelectedListener((item -> {
 

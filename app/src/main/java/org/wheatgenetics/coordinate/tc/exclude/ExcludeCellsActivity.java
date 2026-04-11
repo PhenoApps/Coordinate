@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
+import org.wheatgenetics.coordinate.utils.InsetHandler;
 import org.wheatgenetics.coordinate.model.Cell;
 import org.wheatgenetics.coordinate.model.ElementModel;
 import org.wheatgenetics.coordinate.model.TemplateModel;
@@ -49,7 +50,13 @@ public class ExcludeCellsActivity extends AppCompatActivity implements
     protected void onCreate(
             @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        InsetHandler.enableEdgeToEdge(this);
         this.setContentView(R.layout.activity_exclude_cells);
+
+        androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        android.view.View rootView = this.getWindow().getDecorView().findViewById(android.R.id.content);
+        InsetHandler.setupStandardInsets(rootView, toolbar);
 
         this.templateModel = TemplateModel.makeUserDefined(
                 null == savedInstanceState ? this.getIntent().getExtras() : savedInstanceState,

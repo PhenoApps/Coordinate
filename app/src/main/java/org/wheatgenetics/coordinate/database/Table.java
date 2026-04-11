@@ -64,6 +64,12 @@ abstract class Table
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     @NonNull
+    protected SQLiteDatabase db() {
+        return this.db;
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
     static String whereClause() {
         return Table.ID_FIELD_NAME + " = ?";
     }

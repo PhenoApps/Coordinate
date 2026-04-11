@@ -247,6 +247,17 @@ public class NonNullOptionalFields extends OptionalFields
     }
 
     @NonNull
+    public static NonNullOptionalFields makeHTGPDefault(
+            @NonNull final StringGetter stringGetter) {
+        @NonNull final NonNullOptionalFields result =
+                new NonNullOptionalFields(stringGetter);
+        result.add("Plate ID");
+        result.add("Username");
+        result.add("Date", null, "yyyy-mm-dd");
+        return result;
+    }
+
+    @NonNull
     private NonNullOptionalFields checkedAdd(
             @NonNull @Size(min = 1) final String name,
             final String value, final String hint) {
@@ -426,12 +437,21 @@ public class NonNullOptionalFields extends OptionalFields
     public String[] names() {
         @SuppressWarnings({"Convert2Diamond"}) final ArrayList<String> nameArrayList =
                 new ArrayList<String>();
-        for (final BaseOptionalField baseOptionalField :
-                this) {
-            // if an optional field has a default text, show the default
-            // else just show the name
+        for (final BaseOptionalField baseOptionalField : this)
+            nameArrayList.add(baseOptionalField.getName());
+
+        // noinspection CStyleArrayDeclaration
+        final String result[] = new String[nameArrayList.size()];
+        return nameArrayList.toArray(result);
+    }
+
+    @NonNull
+    public String[] displayNames() {
+        @SuppressWarnings({"Convert2Diamond"}) final ArrayList<String> nameArrayList =
+                new ArrayList<String>();
+        for (final BaseOptionalField baseOptionalField : this) {
             if (baseOptionalField instanceof OtherOptionalField && !baseOptionalField.getValue().isEmpty()) {
-                nameArrayList.add(baseOptionalField.getName() +  " (Default: " + baseOptionalField.getValue() + ")");
+                nameArrayList.add(baseOptionalField.getName() + " (Default: " + baseOptionalField.getValue() + ")");
             } else {
                 nameArrayList.add(baseOptionalField.getName());
             }

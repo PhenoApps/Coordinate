@@ -66,5 +66,9 @@ public class ProjectModels {
             return result;
         }
     }
+    public void sort(java.util.Comparator<ProjectModel> comparator) {
+        if (null != this.arrayListInstance && null != comparator)
+            java.util.Collections.sort(this.arrayListInstance, comparator);
+    }
     // endregion
 }

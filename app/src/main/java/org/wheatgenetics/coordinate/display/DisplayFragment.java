@@ -122,6 +122,36 @@ public abstract class DisplayFragment extends Fragment {
         super.onDetach();
     }
 
+    public void resetCellWidth() {
+        mCellWidth = 0;
+    }
+
+    public void setCompact(final boolean compact, final float scaleFactor, final int cellSize) {
+        if (adapterInstance != null) adapterInstance.setCompact(compact, scaleFactor, cellSize);
+    }
+
+    /**
+     * After a WRAP_CONTENT layout pass, reads the natural height of a row-header cell and
+     * applies it as a uniform cell size for all cells (headers and data alike).
+     * Must be called after populate(); measurement happens asynchronously via post().
+     */
+    public void normalizeCellSizes() {
+        if (recyclerView == null || adapterInstance == null) return;
+        recyclerView.post(() -> {
+            if (recyclerView == null || adapterInstance == null) return;
+            for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                android.view.View child = recyclerView.getChildAt(i);
+                int pos = recyclerView.getChildAdapterPosition(child);
+                if (pos == RecyclerView.NO_ID) continue;
+                if (adapterInstance.getItemViewType(pos) == 2 /* ItemViewType.LEFT */) {
+                    int size = child.getHeight();
+                    if (size > 0) setCompact(false, 1.0f, size);
+                    break;
+                }
+            }
+        });
+    }
+
     public void populate() {
         if (null != this.recyclerView) {
             final DisplayModel displayModel =

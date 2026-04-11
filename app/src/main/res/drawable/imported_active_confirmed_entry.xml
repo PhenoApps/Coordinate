@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Active (selected) + confirmed: solid orange fill + black thin checkmark.
+     Shown when a user taps a cell that has already been confirmed. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorPrimary" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/ic_check_black_cell"
+        android:gravity="center" />
+</layer-list>

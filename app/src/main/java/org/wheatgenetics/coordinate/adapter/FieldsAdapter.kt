@@ -14,23 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.interfaces.FieldsAdapterListener
 import org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
 import org.wheatgenetics.coordinate.optionalField.TimestampOptionalField
 
 class FieldsAdapter(
     private val listener: FieldsAdapterListener,
-    private val requiredName: String,
-    fields: NonNullOptionalFields
+    private val requiredName: String
 ) : ListAdapter<BaseOptionalField, RecyclerView.ViewHolder>(DiffCallback()) {
-
-    // linkedMapOf to preserve the order when doing 'get'
-    private val values = linkedMapOf<String, String>()
-
-    init {
-        fields.forEach {
-            values[it.name] = it.value
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -47,18 +36,18 @@ class FieldsAdapter(
                 itemView.tag = holder
                 
 
-                bind(it.name, this@FieldsAdapter.values[it.name] ?: it.value, it.hint, object : TextWatcher {
+                bind(it.name, it.value, it.hint, object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun afterTextChanged(text: Editable?) {
+
+                        it.value = text?.toString() ?: ""
 
                         if (it.name == requiredName) {
 
                             listener.onRequiredFieldCompleted()
 
                         }
-
-                        this@FieldsAdapter.values[it.name] = text?.toString() ?: ""
                     }
                 })
             }
@@ -83,7 +72,7 @@ class FieldsAdapter(
 
                 fieldTextView.text = field
                 valueEditText.hint = hint
-                valueEditText.setText(this@FieldsAdapter.values[field])
+                valueEditText.setText(value)
                 if (this@ViewHolder.watcher != null) {
                     valueEditText.removeTextChangedListener(this@ViewHolder.watcher)
                 }
@@ -106,8 +95,6 @@ class FieldsAdapter(
             }
         }
     }
-
-    fun getAllFieldValues(): Map<String, String> = values.toMap()
 
     class DiffCallback : DiffUtil.ItemCallback<BaseOptionalField>() {
 

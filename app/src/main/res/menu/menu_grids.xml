@@ -8,9 +8,9 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_new_grid"
-        android:icon="@drawable/ic_create_grid_white"
-        android:title="@string/menu_grids_new"
+        android:id="@+id/action_sort"
+        android:icon="@drawable/ic_sort_white"
+        android:title="@string/menu_sort"
         app:showAsAction="always" />
 
     <item

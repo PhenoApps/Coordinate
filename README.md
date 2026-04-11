@@ -6,6 +6,7 @@
 [![Latest](https://img.shields.io/github/v/release/phenoapps/coordinate)](https://github.com/PhenoApps/Coordinate/releases/latest)
 [![Crowdin](https://badges.crowdin.net/coordinate/localized.svg)](https://crowdin.com/project/coordinate)
 [![All Contributors](https://img.shields.io/github/all-contributors/phenoapps/coordinate)](#contributors)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.08263/status.svg)](https://doi.org/10.21105/joss.08263)
 
 Many life science research activities organize samples into grids and require metadata to be collected for downstream analyses.
 `Coordinate` enables robust and customizable grid-based data collection by creating a mobile, virtual grid layout that can be populated as samples are collected.

@@ -8,8 +8,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.phenoapps.androidlibrary.AlertDialog;
-import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.dialogs.AlertDialog;
+import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.R;
 
 public class AddOptionalFieldAlertDialog extends AlertDialog {

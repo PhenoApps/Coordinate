@@ -8,16 +8,30 @@
 
     tools:activity=".grids.GridsActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/AppTheme.AppBarOverlay" />
+
     <ListView
         android:id="@+id/gridsListView"
 
         android:layout_width="0dp"
         android:layout_height="0dp"
 
+        android:clipToPadding="false"
+        android:paddingBottom="72dp"
         app:layout_constraintBottom_toTopOf="@id/act_grids_bnv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
 
         tools:listitem="@layout/grids_list_item" />
 
@@ -30,5 +44,41 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Status bar scrim: always keeps colorPrimary behind the transparent status bar.
+         Needed because the AppCompat action mode bar starts below the status bar area and
+         would otherwise expose the white window background through it. Height is set to
+         exactly statusBarHeight at runtime by InsetHandler.applyStatusBarScrim(). -->
+    <View
+        android:id="@+id/status_bar_scrim"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_new_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/menu_grids_new"
+        android:src="@drawable/ic_create_grid_white"
+        app:layout_constraintBottom_toTopOf="@id/act_grids_bnv"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_import_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/ImportedGridFabDescription"
+        android:src="@drawable/ic_import_template_white"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@id/fab_new_grid"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

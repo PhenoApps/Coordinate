@@ -8,7 +8,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 
-import org.phenoapps.androidlibrary.AlertDialog;
+import org.wheatgenetics.coordinate.dialogs.AlertDialog;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 

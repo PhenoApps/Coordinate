@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.phenoapps.androidlibrary.MultiChoiceItemsAlertDialog;
+import org.wheatgenetics.coordinate.dialogs.MultiChoiceItemsAlertDialog;
 import org.wheatgenetics.coordinate.R;
 
 public class CheckAndAddOptionalFieldsAlertDialog
@@ -102,7 +102,7 @@ public class CheckAndAddOptionalFieldsAlertDialog
     public void show(@Nullable final NonNullOptionalFields nonNullOptionalFields) {
         if (null != nonNullOptionalFields) {
             this.nonNullOptionalFields = nonNullOptionalFields;
-            this.show(this.nonNullOptionalFields.names(), this.nonNullOptionalFields.checks(),
+            this.show(this.nonNullOptionalFields.displayNames(), this.nonNullOptionalFields.checks(),
                     this.onMultiChoiceClickListener());
         }
     }

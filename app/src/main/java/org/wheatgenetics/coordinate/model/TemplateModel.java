@@ -134,7 +134,7 @@ public class TemplateModel extends DisplayTemplateModel {
     public TemplateModel(
             @IntRange(from = 1) final long id,
             final String title,
-            @IntRange(from = 0, to = 2) final int code,
+            @IntRange(from = 0, to = 3) final int code,
             @IntRange(from = 1) final int rows,
             @IntRange(from = 1) final int cols,
             @IntRange(from = 0) final int generatedExcludedCellsAmount,
@@ -292,6 +292,28 @@ public class TemplateModel extends DisplayTemplateModel {
                 /* rowNumbering                 => */false,
                 /* optionalFields               => */ NonNullOptionalFields.makeDNADefault(stringGetter),
                 /* stringGetter => */ stringGetter);
+    }
+
+    /**
+     * Called by TemplateModels.
+     */
+    @NonNull
+    static TemplateModel makeHTGPDefault(
+            @NonNull final StringGetter stringGetter) {
+        final TemplateModel result = new TemplateModel(
+                /* title => */ stringGetter.get(
+                R.string.HTPGDefaultTemplateTitle),
+                /* type => */ TemplateType.HTPG,
+                /* rows => */8,
+                /* cols => */12,
+                /* generatedExcludedCellsAmount => */0,
+                /* rowNumbering                 => */false,
+                /* optionalFields               => */ NonNullOptionalFields.makeHTGPDefault(stringGetter),
+                /* stringGetter => */ stringGetter);
+        result.setEntryLabel(stringGetter.get(R.string.HTPGDefaultTemplateEntryLabel));
+        result.add(new Cell(8, 11, stringGetter));
+        result.add(new Cell(8, 12, stringGetter));
+        return result;
     }
 
     /**

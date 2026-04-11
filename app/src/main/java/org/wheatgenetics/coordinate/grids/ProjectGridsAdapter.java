@@ -43,8 +43,10 @@ class ProjectGridsAdapter extends GridsAdapter {
     @Override
     @Nullable
     BaseJoinedGridModels baseJoinedGridModels() {
-        if (null == this.baseJoinedGridModelsInstance)
+        if (null == this.baseJoinedGridModelsInstance) {
             this.baseJoinedGridModelsInstance = this.gridsTable().loadByProjectId(this.projectId);
+            applySort(this.baseJoinedGridModelsInstance);
+        }
         return this.baseJoinedGridModelsInstance;
     }
     // endregion

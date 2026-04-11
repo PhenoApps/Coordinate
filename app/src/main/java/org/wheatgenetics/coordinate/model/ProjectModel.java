@@ -4,7 +4,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.StringGetter;
 
 public class ProjectModel extends Model {

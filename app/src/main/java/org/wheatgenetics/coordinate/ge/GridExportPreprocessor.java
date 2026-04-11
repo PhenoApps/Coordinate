@@ -6,7 +6,7 @@ import android.content.Intent;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
-import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
+import org.wheatgenetics.coordinate.dialogs.GetExportFileNameAlertDialog;
 import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity;

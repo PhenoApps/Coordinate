@@ -31,6 +31,9 @@ public abstract class Adapter extends RecyclerView.Adapter<
     private DisplayModel
             displayModel;
     private LayoutInflater layoutInflaterInstance = null;                  // lazy load
+    private boolean mCompact = false;
+    private float mScaleFactor = 1.0f;
+    private int mCellSize = ViewGroup.LayoutParams.WRAP_CONTENT;
     // endregion
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
@@ -174,8 +177,23 @@ public abstract class Adapter extends RecyclerView.Adapter<
                         this.getItemViewType(position));
         switch (itemViewType) {
             case TOP:
-                ((TopViewHolder) viewHolder).bind(
-                        position, this.displayModel.getColNumbering());
+                {
+                    final String customColLabel = position > 0
+                            ? this.displayModel.getColLabel(position) : null;
+                    if (customColLabel != null) {
+                        ((TopOrLeftViewHolder) viewHolder).bindLabel(
+                                customColLabel, this.mCompact, this.mScaleFactor);
+                    } else {
+                        ((TopViewHolder) viewHolder).bind(
+                                position, this.displayModel.getColNumbering(), this.mCompact, this.mScaleFactor);
+                    }
+                    ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
+                    if (lp != null) {
+                        lp.width = mCellSize;
+                        lp.height = mCellSize;
+                        viewHolder.itemView.setLayoutParams(lp);
+                    }
+                }
                 break;
 
             case LEFT:
@@ -184,11 +202,31 @@ public abstract class Adapter extends RecyclerView.Adapter<
                         this.adapterRow(position);
                 switch (itemViewType) {
                     case LEFT:
-                        ((LeftViewHolder)
-                                viewHolder).bind(adapterRow, this.displayModel.getRowNumbering());
+                        {
+                            final String customRowLabel = this.displayModel.getRowLabel(adapterRow);
+                            if (customRowLabel != null) {
+                                ((TopOrLeftViewHolder) viewHolder).bindLabel(
+                                        customRowLabel, this.mCompact, this.mScaleFactor);
+                            } else {
+                                ((LeftViewHolder) viewHolder).bind(
+                                        adapterRow, this.displayModel.getRowNumbering(), this.mCompact, this.mScaleFactor);
+                            }
+                            ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
+                            if (lp != null) {
+                                lp.width = mCellSize;
+                                lp.height = mCellSize;
+                                viewHolder.itemView.setLayoutParams(lp);
+                            }
+                        }
                         break;
 
                     case DATA:
+                        ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
+                        if (lp != null) {
+                            lp.width = mCellSize;
+                            lp.height = mCellSize;
+                            viewHolder.itemView.setLayoutParams(lp);
+                        }
                         this.bind(
                                 (DataViewHolder)
                                         viewHolder,
@@ -209,5 +247,12 @@ public abstract class Adapter extends RecyclerView.Adapter<
     public void initialize(
             @NonNull final DisplayModel displayModel) {
         this.displayModel = displayModel;
+    }
+
+    public void setCompact(final boolean compact, final float scaleFactor, final int cellSize) {
+        this.mCompact = compact;
+        this.mScaleFactor = scaleFactor;
+        this.mCellSize = cellSize;
+        this.notifyDataSetChanged();
     }
 }

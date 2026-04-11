@@ -1,13 +1,17 @@
 package org.wheatgenetics.coordinate.gc.vs;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.optionalField.BaseOptionalField;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.preference.GeneralKeys;
 
 public class ValueSetter {
     // region Fields
@@ -75,8 +79,25 @@ public class ValueSetter {
                     optionalFields = templateModel.optionalFieldsClone();
             if (null == optionalFields)
                 this.clearValues();
-            else
+            else {
+                prefillPersonFields(optionalFields);
                 this.showSetOptionalFieldValuesAlertDialog(templateModel, optionalFields);
+            }
+        }
+    }
+
+    private void prefillPersonFields(@NonNull final NonNullOptionalFields optionalFields) {
+        final SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this.activity);
+        final String savedPerson = prefs.getString(GeneralKeys.PERSON_NAME, "");
+        if (savedPerson == null || savedPerson.isEmpty()) return;
+
+        for (final BaseOptionalField field : optionalFields) {
+            final String nameLower = field.getName().toLowerCase(java.util.Locale.getDefault());
+            if (nameLower.equals("person") || nameLower.equals("name")
+                    || nameLower.equals("operator") || nameLower.equals("username")) {
+                field.setValue(savedPerson);
+            }
         }
     }
 }

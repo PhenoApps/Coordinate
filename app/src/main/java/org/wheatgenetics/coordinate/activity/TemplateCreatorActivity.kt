@@ -20,6 +20,12 @@ import org.wheatgenetics.coordinate.ui.components.TemplateCreatorAppBar
 import org.wheatgenetics.coordinate.ui.navigation.TemplateCreatorDimensionsRoute
 import org.wheatgenetics.coordinate.ui.screens.templates.creator.TemplateCreatorDimensionsScreen
 import org.wheatgenetics.coordinate.ui.theme.CoordinateTheme
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import org.wheatgenetics.coordinate.R
+import org.wheatgenetics.coordinate.collector.Collector
+import org.wheatgenetics.coordinate.utils.InsetHandler
 
 @AndroidEntryPoint
 class TemplateCreatorActivity : ComponentActivity() {
@@ -30,6 +36,7 @@ class TemplateCreatorActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         val editTemplateId = intent.getLongExtra(EXTRA_EDIT_TEMPLATE_ID, -1L)
             .takeIf { it != -1L }

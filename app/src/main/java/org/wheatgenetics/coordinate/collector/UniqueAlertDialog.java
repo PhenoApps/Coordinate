@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import androidx.annotation.NonNull;
 
-import org.phenoapps.androidlibrary.AlertDialog;
+import org.wheatgenetics.coordinate.dialogs.AlertDialog;
 import org.wheatgenetics.coordinate.R;
 
 class UniqueAlertDialog extends AlertDialog {

@@ -6,6 +6,12 @@
         android:key="searchPreference" />
 
     <Preference
+        android:icon="@drawable/ic_pref_profile_person"
+        android:key="pref_key_profile"
+        android:title="@string/pref_profile_title"
+        app:fragment="org.wheatgenetics.coordinate.preference.ProfilePreferencesFragment" />
+
+    <Preference
         android:icon="@drawable/ic_pref_collection"
         android:key="pref_key_collection"
         android:title="@string/preferences_collection_title"
