@@ -15,7 +15,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.wheatgenetics.coordinate.R
-import org.wheatgenetics.coordinate.activity.TemplateCreatorActivity
+import org.wheatgenetics.coordinate.activity.OldTemplateCreatorActivity
 import org.wheatgenetics.coordinate.adapter.TitleChoiceAdapter
 import org.wheatgenetics.coordinate.database.TemplatesTable
 import org.wheatgenetics.coordinate.interfaces.TitleSelectedListener
@@ -175,6 +175,6 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
     }
 
     override fun onAddNewItemClicked() {
-        mTemplateActivityStarter.launch(Intent(requireActivity(), TemplateCreatorActivity::class.java))
+        mTemplateActivityStarter.launch(Intent(requireActivity(), OldTemplateCreatorActivity::class.java))
     }
 }

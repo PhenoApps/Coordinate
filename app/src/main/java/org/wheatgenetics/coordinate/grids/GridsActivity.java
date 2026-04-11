@@ -55,6 +55,7 @@ import org.wheatgenetics.coordinate.gi.ImportedGridImporter;
 import org.wheatgenetics.coordinate.activities.BaseMainActivity;
 import org.wheatgenetics.coordinate.activity.AppIntroActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
+import org.wheatgenetics.coordinate.activity.MainActivity;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.database.SampleData;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
@@ -888,7 +889,11 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_sort) {
+        if (item.getItemId() == R.id.action_main_activity) {
+            Intent mainActivity = new Intent(this, MainActivity.class);
+            startActivity(mainActivity);
+        }
+        else if (item.getItemId() == R.id.action_sort) {
             showSortDialog();
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)

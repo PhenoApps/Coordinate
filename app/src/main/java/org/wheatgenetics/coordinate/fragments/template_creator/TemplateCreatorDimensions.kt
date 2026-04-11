@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
-import org.wheatgenetics.coordinate.activity.TemplateCreatorActivity
+import org.wheatgenetics.coordinate.activity.OldTemplateCreatorActivity
 import org.wheatgenetics.coordinate.database.TemplatesTable
 import org.wheatgenetics.coordinate.model.TemplateModel
 
@@ -66,11 +66,11 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
         setHasOptionsMenu(true)
 
         //check if this is an edit action, populate ui
-        if (activity?.intent?.hasExtra(TemplateCreatorActivity.TEMPLATE_EDIT) == true) {
+        if (activity?.intent?.hasExtra(OldTemplateCreatorActivity.TEMPLATE_EDIT) == true) {
 
             view.findViewById<TextView>(R.id.frag_grid_creator_template_title_tv).text = getString(R.string.edit_template_title)
 
-            mEdit = activity?.intent?.getLongExtra(TemplateCreatorActivity.TEMPLATE_EDIT, -1L) ?: -1L
+            mEdit = activity?.intent?.getLongExtra(OldTemplateCreatorActivity.TEMPLATE_EDIT, -1L) ?: -1L
 
             if (mEdit != -1L) {
 

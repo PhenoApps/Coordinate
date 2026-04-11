@@ -35,7 +35,7 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
-import org.wheatgenetics.coordinate.activity.TemplateCreatorActivity;
+import org.wheatgenetics.coordinate.activity.OldTemplateCreatorActivity;
 import org.wheatgenetics.coordinate.contracts.OpenDocumentFancy;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.deleter.TemplateDeleter;
@@ -321,8 +321,8 @@ public class TemplatesActivity extends BackActivity
     }
 
     private void startTemplateEditor(final long templateId) {
-        Intent creator = new Intent(this, TemplateCreatorActivity.class);
-        creator.putExtra(TemplateCreatorActivity.TEMPLATE_EDIT, templateId);
+        Intent creator = new Intent(this, OldTemplateCreatorActivity.class);
+        creator.putExtra(OldTemplateCreatorActivity.TEMPLATE_EDIT, templateId);
         startActivityForResult(creator, TemplatesActivity.SHOW_GRIDS_REQUEST_CODE);
     }
 
@@ -369,7 +369,7 @@ public class TemplatesActivity extends BackActivity
     // endregion
 
     private void createTemplate() {
-        startActivityForResult(new Intent(this, TemplateCreatorActivity.class),
+        startActivityForResult(new Intent(this, OldTemplateCreatorActivity.class),
                 TemplatesActivity.SHOW_GRIDS_REQUEST_CODE);
 
         //old template creator
