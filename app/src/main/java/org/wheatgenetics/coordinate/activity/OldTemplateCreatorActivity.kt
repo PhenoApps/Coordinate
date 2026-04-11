@@ -16,11 +16,15 @@ class OldTemplateCreatorActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         setContentView(R.layout.activity_template_creator)
 
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-        
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        val rootView = window.decorView.findViewById<android.view.View>(android.R.id.content)
+        InsetHandler.setupStandardInsetsWithIme(rootView, toolbar)
+
         supportActionBar?.apply {
             title = if (intent?.hasExtra(TEMPLATE_EDIT) == true)
                 getString(R.string.edit_template_title)
