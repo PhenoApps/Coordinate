@@ -16,6 +16,7 @@ class TemplatesRepository @Inject constructor(private val templateDao: TemplateD
     suspend fun getTemplateByTitle(title: String): Template? = templateDao.getTemplateByTitle(title)
 
     suspend fun existsByType(type: Int): Boolean = templateDao.existsByType(type)
+    suspend fun existsByTitle(title: String): Boolean = templateDao.existsByTitle(title)
 
     suspend fun insertTemplate(template: Template): Long = templateDao.insertTemplate(template)
     suspend fun updateTemplate(template: Template) = templateDao.updateTemplate(template)

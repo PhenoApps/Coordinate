@@ -46,4 +46,7 @@ interface TemplateDao {
 
     @Query("DELETE FROM templates")
     suspend fun deleteAll()
+
+    @Query("SELECT EXISTS(SELECT 1 FROM templates WHERE title = :title)")
+    suspend fun existsByTitle(title: String): Boolean
 }
