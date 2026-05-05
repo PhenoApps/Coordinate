@@ -45,8 +45,11 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
     @Override
     protected void onResume() {
         super.onResume();
-        getBottomNavigationBarView().setSelectedItemId(R.id.action_nav_settings);
-        setupBottomNavigationBar();
+        final BottomNavigationView bnv = getBottomNavigationBarView();
+        applyBnvVisibility(bnv);
+        // Use setChecked to highlight the current tab without firing the OnItemSelectedListener
+        // (which would call callPreferenceFragment() and pop the back stack).
+        bnv.getMenu().findItem(R.id.action_nav_settings).setChecked(true);
     }
 
     @NonNull
@@ -71,8 +74,7 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
         InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
         InsetHandler.applyBottomNavInsets(getBottomNavigationBarView());
-        getBottomNavigationBarView().setSelectedItemId(R.id.action_nav_settings);
-
+        setupBottomNavigationBar();
 
         // Set up back stack listener for search screen
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {

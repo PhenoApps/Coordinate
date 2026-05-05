@@ -77,6 +77,7 @@ class GeneralKeys private constructor() {
         const val BRAPI_TIMEOUT          = COORDINATE_PREFIX + "BRAPI_TIMEOUT"
         const val BRAPI_PAGE_SIZE        = COORDINATE_PREFIX + "BRAPI_PAGE_SIZE"
         const val BRAPI_EXPLICIT_OIDC_URL = COORDINATE_PREFIX + "BRAPI_EXPLICIT_OIDC_URL"
+        const val BRAPI_VERSION          = COORDINATE_PREFIX + "BRAPI_VERSION"
 
     }
 }

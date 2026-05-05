@@ -47,10 +47,14 @@ class OpenAuthConfigUtil(
 
     fun getAuthServiceConfiguration(
         onRetrieveConfiguration: (AuthorizationServiceConfiguration?, Exception?) -> Unit,
+        oidcUrl: String? = null,
     ) {
         try {
-            val oidcConfigUri =
-                (preferences.getString(GeneralKeys.BRAPI_OIDC_URL, "") ?: "").toUri()
+            val rawOidcUrl = oidcUrl?.takeIf { it.isNotEmpty() }
+                ?: (preferences.getString(GeneralKeys.BRAPI_OIDC_URL, "") ?: "")
+            val oidcConfigUri = rawOidcUrl.let { url ->
+                if (url.startsWith(HTTP) || url.startsWith(HTTPS)) url else "$HTTPS://$url"
+            }.toUri()
 
             val scheme = oidcConfigUri.scheme ?: ""
             if (scheme != HTTP && scheme != HTTPS) {

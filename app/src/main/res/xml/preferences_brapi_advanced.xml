@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        android:icon="@drawable/ic_pref_brapi_pagination"
+        android:key="org.wheatgenetics.coordinate.BRAPI_PAGE_SIZE"
+        android:title="@string/pref_brapi_page_size_title"
+        android:defaultValue="50"
+        android:inputType="number"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        android:icon="@drawable/ic_pref_brapi_timeout"
+        android:key="org.wheatgenetics.coordinate.BRAPI_TIMEOUT"
+        android:title="@string/pref_brapi_timeout_title"
+        android:defaultValue="120"
+        android:inputType="number"
+        app:useSimpleSummaryProvider="true" />
+
+    <androidx.preference.PreferenceCategory
+        android:key="brapi_oidc_settings"
+        android:title="@string/pref_brapi_authorization_category"
+        app:iconSpaceReserved="false">
+
+        <ListPreference
+            android:icon="@drawable/ic_pref_brapi_version"
+            android:defaultValue="@string/pref_brapi_oidc_flow_implicit"
+            android:entries="@array/brapi_oidc_flow_entries"
+            android:entryValues="@array/brapi_oidc_flow_values"
+            android:key="org.wheatgenetics.coordinate.BRAPI_OIDC_FLOW"
+            android:title="@string/pref_brapi_oidc_flow_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:icon="@drawable/ic_adv_brapi_base"
+            android:key="org.wheatgenetics.coordinate.BRAPI_OIDC_URL"
+            android:title="@string/pref_brapi_oidc_url_title"
+            android:inputType="textUri"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:icon="@drawable/ic_pref_brapi_client_id"
+            android:key="org.wheatgenetics.coordinate.BRAPI_OIDC_CLIENT_ID"
+            android:title="@string/pref_brapi_oidc_client_id_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:icon="@drawable/ic_pref_brapi_scope"
+            android:key="org.wheatgenetics.coordinate.BRAPI_OIDC_SCOPE"
+            android:title="@string/pref_brapi_oidc_scope_title"
+            app:useSimpleSummaryProvider="true" />
+
+    </androidx.preference.PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

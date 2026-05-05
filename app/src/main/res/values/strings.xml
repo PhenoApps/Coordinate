@@ -710,6 +710,20 @@
     <string name="pref_brapi_revoke_title">Revoke Token</string>
     <string name="pref_brapi_revoke_summary">Log out of the BrAPI server</string>
     <string name="pref_brapi_token_revoked">Logged out of BrAPI server</string>
+    <string name="brapi_redirect_uri" translatable="false">coordinate://app/auth</string>
+    <string name="brapi_implicit_redirect_uri" translatable="false">https://phenoapps.org/coordinate</string>
+    <string name="brapi_oidc_clientid_default" translatable="false">coordinate</string>
+    <string name="brapi_auth_token_label">BrAPI Access Token</string>
+    <string name="brapi_add_account">Add Account</string>
+    <string name="brapi_add_account_in_app_only">Please add BrAPI accounts from within the app.</string>
+    <string name="brapi_access_confirm_title">BrAPI Account Access</string>
+    <string name="brapi_access_confirm_message">%1$s would like to access your "%2$s" BrAPI account.</string>
+    <string name="brapi_access_confirm_allow">Allow</string>
+    <string name="brapi_access_confirm_deny">Deny</string>
+    <string name="brapi_advanced_settings">Advanced Settings</string>
+    <string name="brapi_section_active_server">Active Server</string>
+    <string name="brapi_section_available_servers">Available Servers</string>
+    <string name="brapi_remove">Remove</string>
     <string name="brapi_plate_list_title">BrAPI Plates</string>
     <string name="brapi_import_title">Import Plate</string>
     <string name="brapi_import_mode_empty">Collect new samples</string>
@@ -737,6 +751,23 @@
     <string name="brapi_auth_title">BrAPI Authorization</string>
     <string name="brapi_auth_success">Authorization successful</string>
     <string name="brapi_auth_failed">Authorization failed</string>
+    <string name="brapi_invalid_url">Please enter a valid server URL (e.g. https://server.example.org)</string>
+    <string name="brapi_auth_failed_keep_title">Authorization Failed</string>
+    <string name="brapi_auth_failed_keep_message">Keep "%1$s" in the server list?</string>
+    <string name="brapi_auth_failed_keep">Keep</string>
+    <string name="brapi_auth_failed_remove">Remove</string>
+    <string name="brapi_switch_server_unauthenticated_message">Would you like to authenticate before switching to this server?</string>
+    <string name="brapi_logout_manage_title">Manage Server</string>
+    <string name="brapi_logout_manage_message">Choose an action for %1$s.</string>
+    <string name="brapi_logout_only">Logout</string>
+    <string name="brapi_logout_and_remove">Remove</string>
+    <string name="brapi_server_scan_error">Scan Error</string>
+    <string name="brapi_barcode_config_dialog_title">Scannable BrAPI Configuration</string>
+    <string name="brapi_dialog_yes">Yes</string>
+    <string name="brapi_dialog_no">No</string>
+    <string name="brapi_dialog_close">Close</string>
+    <string name="brapi_server_compatibility_title">Server Compatibility</string>
+    <string name="brapi_server_compatibility_unavailable">Unable to fetch server information.</string>
     <string name="brapi_plate_sample_count">%1$d samples</string>
     <string name="search">Search</string>
     <string name="add_grid_dialog_title">Add Grid</string>

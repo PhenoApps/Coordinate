@@ -8,6 +8,7 @@ import okhttp3.Response
 import org.brapi.client.v2.BrAPIClient
 import org.brapi.client.v2.model.exceptions.ApiException
 import org.wheatgenetics.coordinate.preference.GeneralKeys
+import org.wheatgenetics.coordinate.utilities.BrapiAccountHelper
 
 object BrapiClientFactory {
 
@@ -42,7 +43,10 @@ object BrapiClientFactory {
 
         try {
             client.authenticate { _ ->
-                prefs.getString(GeneralKeys.BRAPI_TOKEN, null)
+                val accountHelper = BrapiAccountHelper(context, prefs)
+                accountHelper.peekToken()
+                    ?: accountHelper.getTokenBlocking()
+                    ?: prefs.getString(GeneralKeys.BRAPI_TOKEN, null)
             }
         } catch (e: ApiException) {
             // Authentication setup is best-effort; continue without token if it fails

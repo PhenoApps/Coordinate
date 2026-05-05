@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.Nullable
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
 import net.openid.appauth.AppAuthConfiguration
@@ -16,17 +15,37 @@ import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.ResponseTypeValues
 import net.openid.appauth.TokenResponse
+import dagger.hilt.android.AndroidEntryPoint
 import org.wheatgenetics.coordinate.BackActivity
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.preference.GeneralKeys
+import org.wheatgenetics.coordinate.utilities.BrapiAccountHelper
 import org.wheatgenetics.coordinate.utils.InsetHandler
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class BrapiAuthActivity : BackActivity() {
 
     companion object {
-        const val REDIRECT_URI = "fieldbook://app/auth"
         private const val TAG = "BrapiAuthActivity"
+        const val EXTRA_SERVER_URL = "brapi_extra_server_url"
+        const val EXTRA_OIDC_URL = "brapi_extra_oidc_url"
+        const val EXTRA_OIDC_FLOW = "brapi_extra_oidc_flow"
+        const val EXTRA_OIDC_CLIENT_ID = "brapi_extra_oidc_client_id"
+        const val EXTRA_OIDC_SCOPE = "brapi_extra_oidc_scope"
+        const val EXTRA_BRAPI_VERSION = "brapi_extra_brapi_version"
     }
+
+    @Inject
+    lateinit var accountHelper: BrapiAccountHelper
+
+    private lateinit var redirectUri: String
+    private var launchServerUrl: String = ""
+    private var launchOidcUrl: String = ""
+    private var launchOidcFlow: String = ""
+    private var launchOidcClientId: String = ""
+    private var launchOidcScope: String = ""
+    private var launchBrapiVersion: String = ""
 
     private lateinit var authUtil: OpenAuthConfigUtil
     private var activityStarting = false
@@ -49,12 +68,34 @@ class BrapiAuthActivity : BackActivity() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         authUtil = OpenAuthConfigUtil(this, prefs)
 
+        redirectUri = getString(R.string.brapi_redirect_uri)
+        if (savedInstanceState != null) {
+            launchServerUrl = savedInstanceState.getString(EXTRA_SERVER_URL, "")
+            launchOidcUrl = savedInstanceState.getString(EXTRA_OIDC_URL, "")
+            launchOidcFlow = savedInstanceState.getString(EXTRA_OIDC_FLOW, "")
+            launchOidcClientId = savedInstanceState.getString(EXTRA_OIDC_CLIENT_ID, "")
+            launchOidcScope = savedInstanceState.getString(EXTRA_OIDC_SCOPE, "")
+            launchBrapiVersion = savedInstanceState.getString(EXTRA_BRAPI_VERSION, "")
+        } else {
+            launchServerUrl = intent?.getStringExtra(EXTRA_SERVER_URL)
+                ?: prefs.getString(GeneralKeys.BRAPI_BASE_URL, "") ?: ""
+            launchOidcUrl = intent?.getStringExtra(EXTRA_OIDC_URL)
+                ?: prefs.getString(GeneralKeys.BRAPI_OIDC_URL, "") ?: ""
+            launchOidcFlow = intent?.getStringExtra(EXTRA_OIDC_FLOW)
+                ?: prefs.getString(GeneralKeys.BRAPI_OIDC_FLOW, "") ?: ""
+            launchOidcClientId = intent?.getStringExtra(EXTRA_OIDC_CLIENT_ID)
+                ?: prefs.getString(GeneralKeys.BRAPI_OIDC_CLIENT_ID, getString(R.string.brapi_oidc_clientid_default)) ?: ""
+            launchOidcScope = intent?.getStringExtra(EXTRA_OIDC_SCOPE)
+                ?: prefs.getString(GeneralKeys.BRAPI_OIDC_SCOPE, "") ?: ""
+            launchBrapiVersion = intent?.getStringExtra(EXTRA_BRAPI_VERSION) ?: ""
+        }
+        if (launchOidcClientId.isEmpty()) launchOidcClientId = getString(R.string.brapi_oidc_clientid_default)
+        if (launchOidcFlow.isEmpty()) launchOidcFlow = getString(R.string.pref_brapi_oidc_flow_implicit)
         activityStarting = true
 
-        // Start auth only when not returning from deep link
-        if (intent?.data == null) {
-            val flow = prefs.getString(GeneralKeys.BRAPI_OIDC_FLOW, "") ?: ""
-            if (flow == getString(R.string.pref_brapi_oidc_flow_implicit)) {
+        // Start auth only when not returning from a deep link or AppAuth result.
+        if (!hasAuthResult()) {
+            if (isImplicitFlow(launchOidcFlow)) {
                 authorizeBrAPIImplicit(prefs)
             } else {
                 authorizeBrAPICode(prefs)
@@ -67,57 +108,51 @@ class BrapiAuthActivity : BackActivity() {
         setIntent(intent)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(EXTRA_SERVER_URL, launchServerUrl)
+        outState.putString(EXTRA_OIDC_URL, launchOidcUrl)
+        outState.putString(EXTRA_OIDC_FLOW, launchOidcFlow)
+        outState.putString(EXTRA_OIDC_CLIENT_ID, launchOidcClientId)
+        outState.putString(EXTRA_OIDC_SCOPE, launchOidcScope)
+        outState.putString(EXTRA_BRAPI_VERSION, launchBrapiVersion)
+    }
+
     override fun onResume() {
         super.onResume()
 
         if (activityStarting) {
             activityStarting = false
-            // If the activity was destroyed and recreated by the auth redirect PendingIntent,
-            // onCreate will have received the auth data — handle it here instead of hanging.
-            val data = intent?.data
-            val ex = AuthorizationException.fromIntent(intent)
-            if (data != null || ex != null) {
-                when {
-                    data != null -> checkBrapiAuth(data)
-                    ex != null -> authError(ex)
-                }
-            }
+            handleAuthResultIfPresent()
             return
         }
 
-        val ex = AuthorizationException.fromIntent(intent)
-        val data = intent?.data
-
-        when {
-            data != null -> checkBrapiAuth(data)
-            ex != null -> authError(ex)
-            else -> {
-                intent?.data = null
-                finish()
-            }
+        if (!handleAuthResultIfPresent()) {
+            intent?.data = null
+            finish()
         }
     }
 
     private fun authorizeBrAPIImplicit(prefs: android.content.SharedPreferences) {
         prefs.edit().putString(GeneralKeys.BRAPI_TOKEN, null).apply()
 
-        val clientId = prefs.getString(GeneralKeys.BRAPI_OIDC_CLIENT_ID, "fieldbook") ?: "fieldbook"
-        val scope = prefs.getString(GeneralKeys.BRAPI_OIDC_SCOPE, "") ?: ""
-        val redirectUri = Uri.parse("https://phenoapps.org/field-book")
+        val clientId = launchOidcClientId.ifEmpty { getString(R.string.brapi_oidc_clientid_default) }
+        val scope = launchOidcScope
+        val implicitRedirectUri = Uri.parse(getString(R.string.brapi_implicit_redirect_uri))
 
         try {
-            authUtil.getAuthServiceConfiguration { config, err ->
+            authUtil.getAuthServiceConfiguration({ config, err ->
                 if (err != null || config == null) {
                     Log.e(TAG, "Failed to fetch OIDC config", err)
                     authError(err ?: Exception("No config"))
                     return@getAuthServiceConfiguration
                 }
                 try {
-                    requestAuthorization(config, clientId, ResponseTypeValues.TOKEN, redirectUri, scope)
+                    requestAuthorization(config, clientId, ResponseTypeValues.TOKEN, implicitRedirectUri, scope)
                 } catch (e: Exception) {
                     authError(e)
                 }
-            }
+            }, launchOidcUrl)
         } catch (e: Exception) {
             authError(e)
         }
@@ -126,23 +161,23 @@ class BrapiAuthActivity : BackActivity() {
     private fun authorizeBrAPICode(prefs: android.content.SharedPreferences) {
         prefs.edit().putString(GeneralKeys.BRAPI_TOKEN, null).apply()
 
-        val clientId = prefs.getString(GeneralKeys.BRAPI_OIDC_CLIENT_ID, "fieldbook") ?: "fieldbook"
-        val scope = prefs.getString(GeneralKeys.BRAPI_OIDC_SCOPE, "") ?: ""
-        val redirectUri = Uri.parse(REDIRECT_URI)
+        val clientId = launchOidcClientId.ifEmpty { getString(R.string.brapi_oidc_clientid_default) }
+        val scope = launchOidcScope
+        val codeRedirectUri = Uri.parse(redirectUri)
 
         try {
-            authUtil.getAuthServiceConfiguration { config, err ->
+            authUtil.getAuthServiceConfiguration({ config, err ->
                 if (err != null || config == null) {
                     Log.e(TAG, "Failed to fetch OIDC config", err)
                     authError(err ?: Exception("No config"))
                     return@getAuthServiceConfiguration
                 }
                 try {
-                    requestAuthorization(config, clientId, ResponseTypeValues.CODE, redirectUri, scope)
+                    requestAuthorization(config, clientId, ResponseTypeValues.CODE, codeRedirectUri, scope)
                 } catch (e: Exception) {
                     authError(e)
                 }
-            }
+            }, launchOidcUrl)
         } catch (e: Exception) {
             authError(e)
         }
@@ -173,11 +208,22 @@ class BrapiAuthActivity : BackActivity() {
 
         val responseIntent = Intent(this, BrapiAuthActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra(EXTRA_SERVER_URL, launchServerUrl)
+            putExtra(EXTRA_OIDC_URL, launchOidcUrl)
+            putExtra(EXTRA_OIDC_FLOW, launchOidcFlow)
+            putExtra(EXTRA_OIDC_CLIENT_ID, launchOidcClientId)
+            putExtra(EXTRA_OIDC_SCOPE, launchOidcScope)
+            putExtra(EXTRA_BRAPI_VERSION, launchBrapiVersion)
         }
 
         authService.performAuthorizationRequest(
             authRequest,
-            PendingIntent.getActivity(this, 0, responseIntent, PendingIntent.FLAG_MUTABLE),
+            PendingIntent.getActivity(
+                this,
+                0,
+                responseIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE,
+            ),
         )
     }
 
@@ -187,7 +233,30 @@ class BrapiAuthActivity : BackActivity() {
         return AuthorizationService(this, builder.build())
     }
 
-    fun checkBrapiAuth(data: Uri) {
+    private fun handleAuthResultIfPresent(): Boolean {
+        val ex = AuthorizationException.fromIntent(intent)
+        val response = AuthorizationResponse.fromIntent(intent)
+        val data = intent?.data
+
+        return when {
+            ex != null -> {
+                authError(ex)
+                true
+            }
+            response != null || data != null -> {
+                checkBrapiAuth(data)
+                true
+            }
+            else -> false
+        }
+    }
+
+    private fun hasAuthResult(): Boolean =
+        intent?.data != null ||
+            AuthorizationException.fromIntent(intent) != null ||
+            AuthorizationResponse.fromIntent(intent) != null
+
+    fun checkBrapiAuth(data: Uri?) {
         val authService = getAuthorizationService()
         val ex = AuthorizationException.fromIntent(intent)
         val response = AuthorizationResponse.fromIntent(intent)
@@ -214,6 +283,10 @@ class BrapiAuthActivity : BackActivity() {
         }
 
         // Fallback: parse access_token from fragment
+        if (data == null) {
+            authError(null)
+            return
+        }
         val modifiedData = Uri.parse(data.toString().replaceFirst("#", "?"))
         var token = modifiedData.getQueryParameter("access_token")
         if (token == null) {
@@ -227,10 +300,13 @@ class BrapiAuthActivity : BackActivity() {
     }
 
     private fun authSuccess(accessToken: String, idToken: String?) {
-        PreferenceManager.getDefaultSharedPreferences(this).edit().apply {
-            putString(GeneralKeys.BRAPI_TOKEN, accessToken)
-            putString(GeneralKeys.BRAPI_ID_TOKEN, idToken)
-            apply()
+        val serverUrl = launchServerUrl.ifEmpty {
+            PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(GeneralKeys.BRAPI_BASE_URL, "") ?: ""
+        }
+        if (serverUrl.isNotEmpty()) {
+            accountHelper.storeToken(serverUrl, accessToken, idToken)
+            accountHelper.setActiveAccount(accountHelper.normalizeUrl(serverUrl))
         }
 
         intent?.data = null
@@ -247,4 +323,8 @@ class BrapiAuthActivity : BackActivity() {
         setResult(RESULT_CANCELED)
         finish()
     }
+
+    private fun isImplicitFlow(flow: String): Boolean =
+        flow == getString(R.string.pref_brapi_oidc_flow_implicit)
+            || flow.contains("implicit", ignoreCase = true)
 }

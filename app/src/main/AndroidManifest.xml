@@ -86,6 +86,7 @@
         <activity
             android:name=".brapi.BrapiAuthActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/MaterialAppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -95,15 +96,35 @@
 
                 <data
                     android:host=""
-                    android:scheme="fieldbook"
+                    android:scheme="${appAuthRedirectScheme}"
                     tools:ignore="AppLinkUrlError" /> <!-- https://stackoverflow.com/questions/48093833/deeplink-empty-path-error-androidpath-cannot-be-empty -->
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="fieldbook"
+                    android:scheme="https"
+                    android:host="phenoapps.org"
+                    android:path="/coordinate" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="net.openid.appauth.RedirectUriReceiverActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            tools:node="replace">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="${appAuthRedirectScheme}"
                     android:host="app"
                     android:path="/auth" />
             </intent-filter>
@@ -125,5 +146,27 @@
             android:exported="false"
             android:parentActivityName=".brapi.BrapiPlateListActivity"
             android:theme="@style/MaterialAppThemeNoActionBar" />
+
+        <activity
+            android:name=".brapi.BrapiAddAccountActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".brapi.BrapiAccessConfirmActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
+
+        <service
+            android:name=".brapi.BrapiAuthenticatorService"
+            android:exported="true"
+            android:permission="android.permission.AUTHENTICATE_ACCOUNTS">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/brapi_authenticator" />
+        </service>
     </application>
 </manifest>

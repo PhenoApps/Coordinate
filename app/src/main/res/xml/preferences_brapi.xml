@@ -9,96 +9,37 @@
         android:summary="@string/pref_brapi_enabled_summary"
         android:title="@string/pref_brapi_enabled_title" />
 
-    <androidx.preference.PreferenceCategory
-        android:key="brapi_server"
-        android:title="@string/pref_brapi_server_category"
-        app:iconSpaceReserved="false">
+    <Preference
+        android:icon="@drawable/pheno_brapi_ic_key"
+        android:key="brapi_add_account"
+        android:title="@string/pheno_brapi_add_account" />
 
-        <EditTextPreference
-            android:icon="@drawable/ic_adv_brapi_base"
-            android:key="org.wheatgenetics.coordinate.BRAPI_BASE_URL"
-            android:title="@string/pref_brapi_base_url_title"
-            android:hint="@string/pref_brapi_base_url_hint"
-            android:inputType="textUri"
-            app:useSimpleSummaryProvider="true" />
+    <Preference
+        android:icon="@drawable/pheno_brapi_ic_share"
+        android:key="brapi_shared_servers"
+        android:title="@string/pheno_brapi_shared_servers" />
 
-        <EditTextPreference
-            android:icon="@drawable/ic_pref_brapi_name"
-            android:key="org.wheatgenetics.coordinate.BRAPI_DISPLAY_NAME"
-            android:title="@string/pref_brapi_display_name_title"
-            app:useSimpleSummaryProvider="true" />
-
-        <Preference
-            android:icon="@drawable/ic_adv_brapi_base"
-            android:key="brapi_authorize"
-            android:title="@string/pref_brapi_authorize_title"
-            android:summary="@string/pref_brapi_authorize_summary" />
-
-        <Preference
-            android:icon="@drawable/ic_pref_brapi_logout"
-            android:key="brapi_revoke"
-            android:title="@string/pref_brapi_revoke_title"
-            android:summary="@string/pref_brapi_revoke_summary" />
-
-    </androidx.preference.PreferenceCategory>
+    <Preference
+        android:fragment="org.wheatgenetics.coordinate.preference.BrapiAdvancedPreferencesFragment"
+        android:icon="@drawable/ic_cog"
+        android:key="brapi_advanced_settings"
+        android:title="@string/brapi_advanced_settings"
+        app:iconSpaceReserved="true" />
 
     <androidx.preference.PreferenceCategory
-        android:key="brapi_oidc_settings"
-        android:title="@string/pref_brapi_authorization_category"
-        app:iconSpaceReserved="false">
-
-        <ListPreference
-            android:icon="@drawable/ic_pref_brapi_version"
-            android:defaultValue="@string/pref_brapi_oidc_flow_implicit"
-            android:entries="@array/brapi_oidc_flow_entries"
-            android:entryValues="@array/brapi_oidc_flow_values"
-            android:key="org.wheatgenetics.coordinate.BRAPI_OIDC_FLOW"
-            android:title="@string/pref_brapi_oidc_flow_title"
-            app:useSimpleSummaryProvider="true" />
-
-        <EditTextPreference
-            android:icon="@drawable/ic_adv_brapi_base"
-            android:key="org.wheatgenetics.coordinate.BRAPI_OIDC_URL"
-            android:title="@string/pref_brapi_oidc_url_title"
-            android:inputType="textUri"
-            app:useSimpleSummaryProvider="true" />
-
-        <EditTextPreference
-            android:icon="@drawable/ic_pref_brapi_client_id"
-            android:key="org.wheatgenetics.coordinate.BRAPI_OIDC_CLIENT_ID"
-            android:title="@string/pref_brapi_oidc_client_id_title"
-            app:useSimpleSummaryProvider="true" />
-
-        <EditTextPreference
-            android:icon="@drawable/ic_pref_brapi_scope"
-            android:key="org.wheatgenetics.coordinate.BRAPI_OIDC_SCOPE"
-            android:title="@string/pref_brapi_oidc_scope_title"
-            app:useSimpleSummaryProvider="true" />
-
-    </androidx.preference.PreferenceCategory>
+        android:key="brapi_active_server_category"
+        android:title="@string/brapi_section_active_server"
+        app:allowDividerBelow="false"
+        app:iconSpaceReserved="false" />
 
     <androidx.preference.PreferenceCategory
-        android:key="brapi_advanced"
-        android:title="@string/pref_brapi_advanced_category"
-        app:iconSpaceReserved="false">
+        android:key="brapi_available_servers_category"
+        android:title="@string/brapi_section_available_servers"
+        app:iconSpaceReserved="false" />
 
-        <EditTextPreference
-            android:icon="@drawable/ic_pref_brapi_pagination"
-            android:key="org.wheatgenetics.coordinate.BRAPI_PAGE_SIZE"
-            android:title="@string/pref_brapi_page_size_title"
-            android:defaultValue="50"
-            android:inputType="number"
-            app:useSimpleSummaryProvider="true" />
-
-        <EditTextPreference
-            android:icon="@drawable/ic_pref_brapi_timeout"
-            android:key="org.wheatgenetics.coordinate.BRAPI_TIMEOUT"
-            android:title="@string/pref_brapi_timeout_title"
-            android:defaultValue="120"
-            android:inputType="number"
-            app:useSimpleSummaryProvider="true" />
-
-    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory
+        android:key="brapi_shared_accounts_category"
+        android:title="@string/pheno_brapi_section_shared_accounts"
+        app:iconSpaceReserved="false" />
 
 </androidx.preference.PreferenceScreen>
-
