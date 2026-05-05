@@ -56,3 +56,5 @@ proguard/
 *.jks
 *.keystore
 keystore.config
+
+.claude/
