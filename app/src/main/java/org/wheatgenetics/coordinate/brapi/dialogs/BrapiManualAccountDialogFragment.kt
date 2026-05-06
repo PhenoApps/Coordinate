@@ -17,6 +17,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.phenoapps.brapi.ui.BrapiAccountConfig
 import org.phenoapps.brapi.ui.BrapiManualAccountForm
 import org.phenoapps.brapi.ui.PhenoBrapiTheme
+import org.phenoapps.brapi.ui.defaultBrapiAccountState
+import org.phenoapps.brapi.ui.isValidBrapiUrl
+import org.phenoapps.brapi.ui.withConfig
+import org.phenoapps.brapi.ui.withUrlUpdate
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.utilities.BrapiAccountHelper
 import javax.inject.Inject
@@ -70,7 +74,10 @@ class BrapiManualAccountDialogFragment : DialogFragment() {
                 scope = arguments?.getString(ARG_PREFILL_SCOPE),
             )
             originalUrl = config.url
-            uiState = defaultBrapiAccountState(requireContext()).withConfig(config)
+            uiState = defaultBrapiAccountState(
+                requireContext(),
+                getString(R.string.brapi_oidc_clientid_default),
+            ).withConfig(config)
         }
     }
 
@@ -120,7 +127,11 @@ class BrapiManualAccountDialogFragment : DialogFragment() {
     private fun saveEdit() {
         val url = runCatching { accountHelper.normalizeUrl(uiState.url) }.getOrDefault("")
         if (url.isEmpty() || !isValidBrapiUrl(url)) {
-            Toast.makeText(requireContext(), R.string.brapi_invalid_url, Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                requireContext(),
+                org.phenoapps.brapi.R.string.pheno_brapi_invalid_url,
+                Toast.LENGTH_LONG,
+            ).show()
             return
         }
         accountHelper.addAccountConfig(

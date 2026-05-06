@@ -713,13 +713,7 @@
     <string name="brapi_redirect_uri" translatable="false">coordinate://app/auth</string>
     <string name="brapi_implicit_redirect_uri" translatable="false">https://phenoapps.org/coordinate</string>
     <string name="brapi_oidc_clientid_default" translatable="false">coordinate</string>
-    <string name="brapi_auth_token_label">BrAPI Access Token</string>
     <string name="brapi_add_account">Add Account</string>
-    <string name="brapi_add_account_in_app_only">Please add BrAPI accounts from within the app.</string>
-    <string name="brapi_access_confirm_title">BrAPI Account Access</string>
-    <string name="brapi_access_confirm_message">%1$s would like to access your "%2$s" BrAPI account.</string>
-    <string name="brapi_access_confirm_allow">Allow</string>
-    <string name="brapi_access_confirm_deny">Deny</string>
     <string name="brapi_advanced_settings">Advanced Settings</string>
     <string name="brapi_section_active_server">Active Server</string>
     <string name="brapi_section_available_servers">Available Servers</string>
@@ -751,10 +745,6 @@
     <string name="brapi_auth_title">BrAPI Authorization</string>
     <string name="brapi_auth_success">Authorization successful</string>
     <string name="brapi_auth_failed">Authorization failed</string>
-    <string name="brapi_invalid_url">Please enter a valid server URL (e.g. https://server.example.org)</string>
-    <string name="brapi_auth_failed_keep_title">Authorization Failed</string>
-    <string name="brapi_auth_failed_keep_message">Keep "%1$s" in the server list?</string>
-    <string name="brapi_auth_failed_keep">Keep</string>
     <string name="brapi_auth_failed_remove">Remove</string>
     <string name="brapi_switch_server_unauthenticated_message">Would you like to authenticate before switching to this server?</string>
     <string name="brapi_logout_manage_title">Manage Server</string>

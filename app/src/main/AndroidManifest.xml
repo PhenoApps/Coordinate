@@ -152,11 +152,6 @@
             android:exported="false"
             android:launchMode="singleTop" />
 
-        <activity
-            android:name=".brapi.BrapiAccessConfirmActivity"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
-
         <service
             android:name=".brapi.BrapiAuthenticatorService"
             android:exported="true"

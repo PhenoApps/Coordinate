@@ -28,6 +28,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.phenoapps.brapi.ui.BrapiStepperAccountForm
 import org.phenoapps.brapi.ui.PhenoBrapiTheme
+import org.phenoapps.brapi.ui.defaultBrapiAccountState
+import org.phenoapps.brapi.ui.isValidBrapiUrl
+import org.phenoapps.brapi.ui.parseBrapiConfig
+import org.phenoapps.brapi.ui.withConfig
+import org.phenoapps.brapi.ui.withUrlUpdate
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.brapi.BrapiAuthActivity
 import org.wheatgenetics.coordinate.brapi.BrapiAuthenticator
@@ -100,7 +105,10 @@ class BrapiStepperAccountDialogFragment : DialogFragment() {
         setStyle(STYLE_NO_FRAME, org.phenoapps.brapi.R.style.PhenoBrapiComposeDialog)
         authResponse = arguments?.getParcelable(ARG_AUTH_RESPONSE)
         if (savedInstanceState == null) {
-            uiState = defaultBrapiAccountState(requireContext())
+            uiState = defaultBrapiAccountState(
+                requireContext(),
+                getString(R.string.brapi_oidc_clientid_default),
+            )
         }
     }
 
@@ -155,7 +163,11 @@ class BrapiStepperAccountDialogFragment : DialogFragment() {
             1 -> {
                 val normalized = runCatching { accountHelper.normalizeUrl(uiState.url) }.getOrDefault("")
                 if (normalized.isEmpty() || !isValidBrapiUrl(normalized)) {
-                    Toast.makeText(requireContext(), R.string.brapi_invalid_url, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        org.phenoapps.brapi.R.string.pheno_brapi_invalid_url,
+                        Toast.LENGTH_LONG,
+                    ).show()
                     return
                 }
                 uiState = uiState.copy(url = normalized, currentStep = 2)
@@ -167,7 +179,11 @@ class BrapiStepperAccountDialogFragment : DialogFragment() {
     private fun authorize() {
         val url = runCatching { accountHelper.normalizeUrl(uiState.url) }.getOrDefault("")
         if (url.isEmpty() || !isValidBrapiUrl(url)) {
-            Toast.makeText(requireContext(), R.string.brapi_invalid_url, Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                requireContext(),
+                org.phenoapps.brapi.R.string.pheno_brapi_invalid_url,
+                Toast.LENGTH_LONG,
+            ).show()
             return
         }
 
@@ -207,9 +223,16 @@ class BrapiStepperAccountDialogFragment : DialogFragment() {
 
         val serverName = uiState.displayName.trim().ifEmpty { uiState.url }
         AlertDialog.Builder(requireContext())
-            .setTitle(R.string.brapi_auth_failed_keep_title)
-            .setMessage(getString(R.string.brapi_auth_failed_keep_message, serverName))
-            .setPositiveButton(R.string.brapi_auth_failed_keep) { _, _ ->
+            .setTitle(org.phenoapps.brapi.R.string.pheno_brapi_auth_failed_keep_title)
+            .setMessage(
+                getString(
+                    org.phenoapps.brapi.R.string.pheno_brapi_auth_failed_keep_message,
+                    serverName,
+                ),
+            )
+            .setPositiveButton(
+                org.phenoapps.brapi.R.string.pheno_brapi_auth_failed_keep,
+            ) { _, _ ->
                 authResponse?.onError(AccountManager.ERROR_CODE_CANCELED, "cancelled")
                 dismiss()
                 if (authResponse != null) activity?.finish()
