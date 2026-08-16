@@ -16,6 +16,7 @@ import net.openid.appauth.AuthorizationService
 import net.openid.appauth.ResponseTypeValues
 import net.openid.appauth.TokenResponse
 import dagger.hilt.android.AndroidEntryPoint
+import org.phenoapps.brapi.account.BrapiTokenStoreResult
 import org.wheatgenetics.coordinate.BackActivity
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.preference.GeneralKeys
@@ -304,14 +305,24 @@ class BrapiAuthActivity : BackActivity() {
             PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(GeneralKeys.BRAPI_BASE_URL, "") ?: ""
         }
+        var stored = BrapiTokenStoreResult.STORED
         if (serverUrl.isNotEmpty()) {
-            accountHelper.storeToken(serverUrl, accessToken, idToken)
+            stored = accountHelper.storeToken(serverUrl, accessToken, idToken)
             accountHelper.setActiveAccount(accountHelper.normalizeUrl(serverUrl))
         }
 
+        // The provider signed us in either way, but only STORED means the server now has an
+        // account of its own here. Saying "authorization successful" for the other outcomes would
+        // promise a server card that never appears.
+        val message = when (stored) {
+            BrapiTokenStoreResult.STORED -> R.string.brapi_auth_success
+            BrapiTokenStoreResult.ALREADY_SHARED -> R.string.brapi_auth_success_already_shared
+            BrapiTokenStoreResult.ACCOUNT_UNAVAILABLE -> R.string.brapi_auth_success_no_account
+        }
+
         intent?.data = null
-        Log.d(TAG, "Auth successful")
-        Toast.makeText(this, R.string.brapi_auth_success, Toast.LENGTH_LONG).show()
+        Log.d(TAG, "Auth successful, token stored: $stored")
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         setResult(RESULT_OK)
         finish()
     }
@@ -319,9 +330,39 @@ class BrapiAuthActivity : BackActivity() {
     private fun authError(ex: Exception?) {
         intent?.data = null
         Log.e(TAG, "Auth error", ex)
-        Toast.makeText(this, R.string.brapi_auth_failed, Toast.LENGTH_LONG).show()
+
+        // A bare "authorization failed" gives the user nothing to act on and nothing to report, so
+        // surface whatever the provider actually said — a bad client id and a refused redirect URI
+        // are very different problems and look identical without this.
+        val reason = describeAuthFailure(ex)
+        val message = if (reason.isEmpty()) {
+            getString(R.string.brapi_auth_failed)
+        } else {
+            getString(R.string.brapi_auth_failed_reason, reason)
+        }
+
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         setResult(RESULT_CANCELED)
         finish()
+    }
+
+    /**
+     * Best available human-readable cause for an auth failure, or empty when nothing was reported.
+     *
+     * AppAuth puts the provider's own wording in [AuthorizationException.errorDescription] and the
+     * OAuth error code in [AuthorizationException.error]; both are absent for transport-level
+     * failures, where the exception message is all there is.
+     */
+    private fun describeAuthFailure(ex: Exception?): String {
+        if (ex == null) return ""
+
+        if (ex is AuthorizationException) {
+            ex.errorDescription?.takeIf { it.isNotEmpty() }?.let { return it }
+            ex.error?.takeIf { it.isNotEmpty() }?.let { return it }
+            ex.cause?.message?.takeIf { it.isNotEmpty() }?.let { return it }
+        }
+
+        return ex.message.orEmpty()
     }
 
     private fun isImplicitFlow(flow: String): Boolean =

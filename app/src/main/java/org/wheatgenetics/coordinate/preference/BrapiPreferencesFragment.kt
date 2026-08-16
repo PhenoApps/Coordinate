@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import org.phenoapps.brapi.BrapiAccountConstants
+import org.phenoapps.brapi.config.BrapiAccountInfo
 import org.phenoapps.brapi.ui.BrapiAccountConfig
 import org.phenoapps.brapi.ui.BrapiServerCardPreference as ProviderBrapiServerCardPreference
 import org.wheatgenetics.coordinate.R
@@ -114,6 +115,7 @@ class BrapiPreferencesFragment(
     override fun onResume() {
         super.onResume()
         accountHelper.refreshOwnedAccountVisibility()
+        accountHelper.pruneStaleGrants()
         populateServerCards()
     }
 
@@ -133,35 +135,29 @@ class BrapiPreferencesFragment(
         availableCategory.removeAll()
         sharedCategory.removeAll()
 
-        val am = AccountManager.get(requireContext())
         val allAccounts = accountHelper.getAllAccounts()
-        val activeUrl = accountHelper.findAccount()
-            ?.let { am.getUserData(it, BrapiAuthenticator.KEY_SERVER_URL) }
+        val activeUrl = accountHelper.findAccount()?.let { accountHelper.accountInfo(it)?.serverUrl }
 
-        val ownedAccounts = allAccounts.filter {
-            accountHelper.isOwnAccount(it)
-        }
-        val foreignAccounts = allAccounts.filter {
-            !accountHelper.isOwnAccount(it)
-        }
+        // An account owned by another app keeps its config out of reach of getUserData, so every
+        // description here comes from accountInfo(), which falls back to that app's config provider.
+        val (ownedAccounts, foreignAccounts) = allAccounts.partition { accountHelper.isOwnAccount(it) }
 
         for (account in ownedAccounts) {
-            val serverUrl = am.getUserData(account, BrapiAuthenticator.KEY_SERVER_URL) ?: ""
-            val isActive = serverUrl == activeUrl
-            val card = buildCard(account, isActive, ownerLabel = null)
+            val info = accountHelper.accountInfoOrEmpty(account)
+            val isActive = info.serverUrl == activeUrl
+            val card = buildCard(account, info, isActive, ownerLabel = null)
             if (isActive) activeCategory.addPreference(card)
             else availableCategory.addPreference(card)
         }
 
         for (account in foreignAccounts) {
-            val ownerPkg = am.getUserData(account, BrapiAuthenticator.KEY_OWNER_PACKAGE) ?: ""
+            val info = accountHelper.accountInfoOrEmpty(account)
             val ownerLabel = getString(
                 org.phenoapps.brapi.R.string.pheno_brapi_shared_account_from,
-                BrapiAccountConstants.displayNameForPackage(ownerPkg),
+                BrapiAccountConstants.displayNameForPackage(info.ownerPackage),
             )
-            val serverUrl = am.getUserData(account, BrapiAuthenticator.KEY_SERVER_URL) ?: ""
-            val isActive = serverUrl == activeUrl
-            val card = buildCard(account, isActive = isActive, ownerLabel = ownerLabel)
+            val isActive = info.serverUrl == activeUrl
+            val card = buildCard(account, info, isActive = isActive, ownerLabel = ownerLabel)
             if (isActive) activeCategory.addPreference(card)
             else sharedCategory.addPreference(card)
         }
@@ -171,23 +167,45 @@ class BrapiPreferencesFragment(
         availableCategory.isVisible = availableCategory.preferenceCount > 0
     }
 
-    private fun buildCard(account: Account, isActive: Boolean, ownerLabel: String?): ProviderBrapiServerCardPreference {
+    private fun buildCard(
+        account: Account,
+        info: BrapiAccountInfo,
+        isActive: Boolean,
+        ownerLabel: String?,
+    ): ProviderBrapiServerCardPreference {
         return ProviderBrapiServerCardPreference(requireContext()).apply {
             this.account = account
             this.isActive = isActive
             this.ownerLabel = ownerLabel
-            this.hasToken = !accountHelper.peekTokenForAccount(account).isNullOrEmpty()
+            this.displayName = info.label
+            this.serverUrl = info.serverUrl
+            // A shared account's token lives in the owning app, out of reach of peekAuthToken, so
+            // its sign-in state comes from what that app published about it.
+            this.hasToken = if (accountHelper.isOwnAccount(account)) {
+                !accountHelper.peekTokenForAccount(account).isNullOrEmpty()
+            } else {
+                info.hasToken
+            }
             key = "brapi_card_${account.name}"
             isExpanded = isActive
 
+            val isOwn = accountHelper.isOwnAccount(account)
+
             onEnable = { acct -> enableAccount(acct) }
             onSwitchServer = { acct -> showSwitchServerDialog(acct) }
-            onAuthorize = { acct -> authorizeAccount(acct) }
-            onLogOut = { acct -> showManageServerDialog(acct, allowLogoutOnly = true) }
-            onRemove = { acct -> showManageServerDialog(acct, allowLogoutOnly = false) }
-            onEdit = { acct -> editAccount(acct) }
             onShareSettings = { acct -> shareAccountSettings(acct) }
             onCheckCompatibility = { acct -> checkServerCompatibility(acct) }
+
+            // No local sign-in, edit or removal for a shared account. Authorizing here would run
+            // Coordinate's own OAuth and store the result against a new Coordinate account,
+            // leaving the same server listed twice in the system account settings. Its token is
+            // borrowed from its owner instead.
+            onAuthorize = if (isOwn) ({ acct -> authorizeAccount(acct) }) else null
+            onEdit = if (isOwn) ({ acct -> editAccount(acct) }) else null
+            onRemove = if (isOwn) ({ acct -> showManageServerDialog(acct, offerLogout = false) }) else null
+            // Logging out stays available on a shared account: it drops the borrowed token from
+            // this app's mirrors without touching the owner's account.
+            onLogOut = { acct -> showManageServerDialog(acct, offerLogout = true) }
         }
     }
 
@@ -211,9 +229,26 @@ class BrapiPreferencesFragment(
     }
 
     private fun activateAccount(account: Account) {
-        val url = accountHelper.getUserData(account, BrapiAuthenticator.KEY_SERVER_URL) ?: account.name
+        val url = accountHelper.serverUrlOf(account)
         accountHelper.setActiveAccount(url)
-        syncActiveAccountPrefs(account)
+
+        if (!accountHelper.isOwnAccount(account)) {
+            // Selecting a shared server is not enough to use it: its token belongs to the app that
+            // owns the account, so fetch it now and mirror it locally. Without this the server
+            // looks signed out no matter how many times it is selected.
+            accountHelper.borrowToken(account, activity) { token ->
+                if (token == null) {
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.brapi_shared_account_not_signed_in,
+                        Toast.LENGTH_LONG,
+                    ).show()
+                }
+                populateServerCards()
+            }
+            return
+        }
+
         populateServerCards()
     }
 
@@ -225,8 +260,10 @@ class BrapiPreferencesFragment(
 
         val accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME) ?: return
         val accountType = data.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE)
-            ?: BrapiAuthenticator.ACCOUNT_TYPE
-        if (accountType != BrapiAuthenticator.ACCOUNT_TYPE) return
+            ?: BrapiAuthenticator.accountType(requireContext())
+        // Any PhenoApp's type, not just this app's — picking a sibling's account here is how the
+        // user grants Coordinate access to a server that app owns.
+        if (!BrapiAuthenticator.isBrapiAccountType(accountType)) return
 
         val selected = Account(accountName, accountType)
         val accountToUse = pending ?: selected
@@ -240,37 +277,45 @@ class BrapiPreferencesFragment(
     }
 
     private fun authorizeAccount(account: Account) {
-        val url = accountHelper.getUserData(account, BrapiAuthenticator.KEY_SERVER_URL) ?: account.name
+        val info = accountHelper.accountInfoOrEmpty(account)
+        val url = info.serverUrl.ifEmpty { account.name }
         accountHelper.setActiveAccount(url)
-        syncActiveAccountPrefs(account)
         authLauncher.launch(
             Intent(requireContext(), BrapiAuthActivity::class.java).apply {
                 putExtra(BrapiAuthActivity.EXTRA_SERVER_URL, url)
-                putExtra(BrapiAuthActivity.EXTRA_OIDC_URL, accountHelper.getUserData(account, BrapiAuthenticator.KEY_OIDC_URL))
-                putExtra(BrapiAuthActivity.EXTRA_OIDC_FLOW, accountHelper.getUserData(account, BrapiAuthenticator.KEY_OIDC_FLOW))
-                putExtra(BrapiAuthActivity.EXTRA_OIDC_CLIENT_ID, accountHelper.getUserData(account, BrapiAuthenticator.KEY_OIDC_CLIENT_ID))
-                putExtra(BrapiAuthActivity.EXTRA_OIDC_SCOPE, accountHelper.getUserData(account, BrapiAuthenticator.KEY_OIDC_SCOPE))
-                putExtra(BrapiAuthActivity.EXTRA_BRAPI_VERSION, accountHelper.getUserData(account, BrapiAuthenticator.KEY_BRAPI_VERSION))
+                putExtra(BrapiAuthActivity.EXTRA_OIDC_URL, info.oidcUrl)
+                putExtra(BrapiAuthActivity.EXTRA_OIDC_FLOW, info.oidcFlow)
+                putExtra(BrapiAuthActivity.EXTRA_OIDC_CLIENT_ID, info.oidcClientId)
+                putExtra(BrapiAuthActivity.EXTRA_OIDC_SCOPE, info.oidcScope)
+                putExtra(BrapiAuthActivity.EXTRA_BRAPI_VERSION, info.brapiVersion)
             },
         )
     }
 
-    private fun showManageServerDialog(account: Account, allowLogoutOnly: Boolean) {
-        val displayName = accountHelper.getUserData(account, BrapiAuthenticator.KEY_DISPLAY_NAME) ?: account.name
+    /**
+     * Offers logout, and removal only when this app owns the account.
+     *
+     * Removal is the owner's to do: [BrapiAccountHelper.removeAccount] only touches accounts this
+     * app owns, so offering it for a shared server would promise something it cannot deliver.
+     */
+    private fun showManageServerDialog(account: Account, offerLogout: Boolean) {
+        val info = accountHelper.accountInfoOrEmpty(account)
+        val url = info.serverUrl.ifEmpty { account.name }
         val builder = AlertDialog.Builder(requireContext())
             .setTitle(R.string.brapi_logout_manage_title)
-            .setMessage(getString(R.string.brapi_logout_manage_message, displayName))
-            .setPositiveButton(R.string.brapi_logout_and_remove) { _, _ ->
-                val url = accountHelper.getUserData(account, BrapiAuthenticator.KEY_SERVER_URL) ?: account.name
+            .setMessage(getString(R.string.brapi_logout_manage_message, info.label))
+            .setNegativeButton(android.R.string.cancel, null)
+
+        if (accountHelper.isOwnAccount(account)) {
+            builder.setPositiveButton(R.string.brapi_logout_and_remove) { _, _ ->
                 accountHelper.clearToken(url)
                 accountHelper.removeAccount(url)
                 Toast.makeText(requireContext(), R.string.pref_brapi_token_revoked, Toast.LENGTH_SHORT).show()
                 populateServerCards()
             }
-            .setNegativeButton(android.R.string.cancel, null)
-        if (allowLogoutOnly) {
+        }
+        if (offerLogout) {
             builder.setNeutralButton(R.string.brapi_logout_only) { _, _ ->
-                val url = accountHelper.getUserData(account, BrapiAuthenticator.KEY_SERVER_URL) ?: account.name
                 accountHelper.clearToken(url)
                 Toast.makeText(requireContext(), R.string.pref_brapi_token_revoked, Toast.LENGTH_SHORT).show()
                 populateServerCards()
@@ -318,7 +363,7 @@ class BrapiPreferencesFragment(
     }
 
     private fun checkServerCompatibility(account: Account) {
-        val url = accountHelper.getUserData(account, BrapiAuthenticator.KEY_SERVER_URL) ?: account.name
+        val url = accountHelper.serverUrlOf(account)
         lifecycleScope.launch {
             val message = withContext(Dispatchers.IO) {
                 runCatching {
@@ -342,43 +387,18 @@ class BrapiPreferencesFragment(
         }
     }
 
-    private fun syncActiveAccountPrefs(account: Account) {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        prefs.edit().apply {
-            accountHelper.getUserData(account, BrapiAuthenticator.KEY_SERVER_URL)?.let {
-                putString(GeneralKeys.BRAPI_BASE_URL, it)
-            }
-            accountHelper.getUserData(account, BrapiAuthenticator.KEY_DISPLAY_NAME)?.let {
-                putString(GeneralKeys.BRAPI_DISPLAY_NAME, it)
-            }
-            accountHelper.getUserData(account, BrapiAuthenticator.KEY_OIDC_URL)?.let {
-                putString(GeneralKeys.BRAPI_OIDC_URL, it)
-            }
-            accountHelper.getUserData(account, BrapiAuthenticator.KEY_OIDC_FLOW)?.let {
-                putString(GeneralKeys.BRAPI_OIDC_FLOW, it)
-            }
-            accountHelper.getUserData(account, BrapiAuthenticator.KEY_OIDC_CLIENT_ID)?.let {
-                putString(GeneralKeys.BRAPI_OIDC_CLIENT_ID, it)
-            }
-            accountHelper.getUserData(account, BrapiAuthenticator.KEY_OIDC_SCOPE)?.let {
-                putString(GeneralKeys.BRAPI_OIDC_SCOPE, it)
-            }
-            accountHelper.getUserData(account, BrapiAuthenticator.KEY_BRAPI_VERSION)?.let {
-                putString(GeneralKeys.BRAPI_VERSION, it)
-            }
-        }.apply()
-    }
-
     private fun Account.toBrapiConfig(): BrapiAccountConfig =
-        BrapiAccountConfig(
-            url = accountHelper.getUserData(this, BrapiAuthenticator.KEY_SERVER_URL),
-            name = accountHelper.getUserData(this, BrapiAuthenticator.KEY_DISPLAY_NAME),
-            version = accountHelper.getUserData(this, BrapiAuthenticator.KEY_BRAPI_VERSION),
-            authFlow = accountHelper.getUserData(this, BrapiAuthenticator.KEY_OIDC_FLOW),
-            oidcUrl = accountHelper.getUserData(this, BrapiAuthenticator.KEY_OIDC_URL),
-            clientId = accountHelper.getUserData(this, BrapiAuthenticator.KEY_OIDC_CLIENT_ID),
-            scope = accountHelper.getUserData(this, BrapiAuthenticator.KEY_OIDC_SCOPE),
-        )
+        accountHelper.accountInfoOrEmpty(this).let { info ->
+            BrapiAccountConfig(
+                url = info.serverUrl,
+                name = info.displayName,
+                version = info.brapiVersion,
+                authFlow = info.oidcFlow,
+                oidcUrl = info.oidcUrl,
+                clientId = info.oidcClientId,
+                scope = info.oidcScope,
+            )
+        }
 
     private fun updateHiddenTemplates(brapiEnabled: Boolean) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())

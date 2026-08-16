@@ -66,7 +66,10 @@ class BrapiStepperAccountDialogFragment : DialogFragment() {
             if (result.resultCode == Activity.RESULT_OK) {
                 authResponse?.onResult(Bundle().apply {
                     putString(AccountManager.KEY_ACCOUNT_NAME, uiState.url)
-                    putString(AccountManager.KEY_ACCOUNT_TYPE, BrapiAuthenticator.ACCOUNT_TYPE)
+                    putString(
+                        AccountManager.KEY_ACCOUNT_TYPE,
+                        BrapiAuthenticator.accountType(requireContext()),
+                    )
                 })
                 dismiss()
                 if (authResponse != null) {
@@ -187,6 +190,8 @@ class BrapiStepperAccountDialogFragment : DialogFragment() {
             return
         }
 
+        if (rejectedAsAlreadyShared(accountHelper, url)) return
+
         accountWasNew = accountHelper.getAccountByUrl(url) == null
         val displayName = uiState.displayName.trim().ifEmpty { url }
         accountHelper.addAccountConfig(
@@ -197,7 +202,7 @@ class BrapiStepperAccountDialogFragment : DialogFragment() {
             oidcClientId = uiState.oidcClientId.trim(),
             oidcScope = uiState.oidcScope.trim(),
             brapiVersion = uiState.brapiVersion,
-        )
+        ) ?: return
         accountHelper.setActiveAccount(url)
 
         authLauncher.launch(

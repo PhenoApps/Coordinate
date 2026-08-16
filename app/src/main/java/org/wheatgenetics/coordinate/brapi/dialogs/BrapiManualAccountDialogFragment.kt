@@ -134,6 +134,10 @@ class BrapiManualAccountDialogFragment : DialogFragment() {
             ).show()
             return
         }
+        // Only an edit that repoints this account at a server a sibling shares is a problem; an
+        // edit that leaves the URL alone is matched to the existing account by originalServerUrl.
+        if (url != originalUrl && rejectedAsAlreadyShared(accountHelper, url)) return
+
         accountHelper.addAccountConfig(
             serverUrl = url,
             displayName = uiState.displayName.trim().ifEmpty { url },
@@ -143,7 +147,7 @@ class BrapiManualAccountDialogFragment : DialogFragment() {
             oidcScope = uiState.oidcScope.trim(),
             brapiVersion = uiState.brapiVersion,
             originalServerUrl = originalUrl,
-        )
+        ) ?: return
         parentFragmentManager.setFragmentResult(REQUEST_KEY_EDIT_SAVED, Bundle.EMPTY)
         dismiss()
     }
