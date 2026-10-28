@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.activity
 
 import android.app.Activity
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -17,6 +18,11 @@ class DefineStorageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finishWithStorageResult()
+            }
+        })
         enableEdgeToEdge()
         setContentView(R.layout.activity_define_storage)
 
@@ -26,10 +32,9 @@ class DefineStorageActivity : AppCompatActivity() {
         InsetHandler.setupStandardInsets(rootView, toolbar)
     }
 
-    override fun onBackPressed() {
+    private fun finishWithStorageResult() {
 
         if (mBackButtonEnabled) {
-            super.onBackPressed()
             setResult(
                 if (BaseDocumentTreeUtil.isEnabled(this)) {
                     Activity.RESULT_OK

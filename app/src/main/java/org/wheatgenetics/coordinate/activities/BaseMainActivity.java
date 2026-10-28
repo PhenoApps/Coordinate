@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -111,8 +112,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
     }
     // endregion
 
-    @Override
-    public void onBackPressed() {
+    private void handleBackPressed() {
         if (backPressed) {
             finish();
         } else {
@@ -127,6 +127,13 @@ public abstract class BaseMainActivity extends AppCompatActivity
     protected void onCreate(
             @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                handleBackPressed();
+            }
+        });
+
         InsetHandler.enableEdgeToEdge(this);
 
         // region Initialize Default Templates

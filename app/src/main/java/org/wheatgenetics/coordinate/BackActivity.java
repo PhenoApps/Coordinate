@@ -25,8 +25,8 @@ public abstract class BackActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        this.onBackPressed();
-        return super.onSupportNavigateUp();
+        getOnBackPressedDispatcher().onBackPressed();
+        return true;
     }
     // endregion
 }

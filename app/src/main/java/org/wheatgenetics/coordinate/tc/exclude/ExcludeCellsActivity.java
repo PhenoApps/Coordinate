@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +51,13 @@ public class ExcludeCellsActivity extends AppCompatActivity implements
     protected void onCreate(
             @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finishWithTemplateResult();
+            }
+        });
+
         InsetHandler.enableEdgeToEdge(this);
         this.setContentView(R.layout.activity_exclude_cells);
 
@@ -74,8 +82,7 @@ public class ExcludeCellsActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onBackPressed() {
+    private void finishWithTemplateResult() {
         if (null != this.templateModel) {
             final Intent intent = new Intent();
             {
@@ -85,7 +92,7 @@ public class ExcludeCellsActivity extends AppCompatActivity implements
             }
             this.setResult(Activity.RESULT_OK, intent);
         }
-        super.onBackPressed();
+        finish();
     }
 
     // region org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.Handler Overridden Methods
