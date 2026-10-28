@@ -66,6 +66,18 @@ object InsetHandler {
         ViewCompat.requestApplyInsets(rootView)
     }
 
+    @JvmStatic
+    fun applyRootInsetsWithIme(rootView: View, bottomNav: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { view, insets ->
+            val bars = insets.getInsets(systemBarsAndCutout)
+            val imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            bottomNav.visibility = if (imeBottom > 0) View.GONE else View.VISIBLE
+            view.updatePadding(left = bars.left, right = bars.right, bottom = imeBottom)
+            insets
+        }
+        ViewCompat.requestApplyInsets(rootView)
+    }
+
     /**
      * Applies system bar insets to both a toolbar (top) and a root view (bottom + left + right),
      * and also handles IME (keyboard) insets on the root view so that bottom-anchored buttons are

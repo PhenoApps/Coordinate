@@ -30,6 +30,7 @@
 
         <activity
             android:name=".CollectorActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/CollectorActivityLabel"
             android:theme="@style/AppThemeNoActionBar"/>
 
