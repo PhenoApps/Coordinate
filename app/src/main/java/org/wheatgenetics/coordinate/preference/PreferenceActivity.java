@@ -46,7 +46,6 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
     @Override
     protected void onResume() {
         super.onResume();
-        getBottomNavigationBarView().setSelectedItemId(R.id.action_nav_settings);
         setupBottomNavigationBar();
     }
 
@@ -177,6 +176,8 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
             }
 
             applyBnvVisibility(bottomNavigationView);
+            // selecting settings must not invoke the previous navigation listener
+            bottomNavigationView.setOnItemSelectedListener(null);
             bottomNavigationView.setSelectedItemId(R.id.action_nav_settings);
 
             bottomNavigationView.setOnItemSelectedListener((item -> {
