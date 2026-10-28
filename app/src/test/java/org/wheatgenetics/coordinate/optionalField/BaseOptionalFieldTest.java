@@ -58,19 +58,16 @@ extends Object implements StringGetter
     @Override @Nullable public String get(
     @StringRes final int resId)
     {
-        switch (resId)
-        {
-            case R.string.BaseOptionalFieldPersonFieldName:
-                return "Person";
-
-            case R.string.BaseOptionalFieldNameFieldName:
-                return "Name";
-
-            case R.string.BaseOptionalFieldIdentificationFieldName:
-                return "Identification";
-
-            default: Assert.fail(); return null;
+        if (resId == R.string.BaseOptionalFieldPersonFieldName) {
+            return "Person";
         }
+        if (resId == R.string.BaseOptionalFieldNameFieldName) {
+            return "Name";
+        }
+        if (resId == R.string.BaseOptionalFieldIdentificationFieldName) {
+            return "Identification";
+        }
+        Assert.fail(); return null;
     }
 
     @Override @NonNull public String getQuantity(

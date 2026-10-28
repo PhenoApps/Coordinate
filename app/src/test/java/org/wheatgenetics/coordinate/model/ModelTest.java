@@ -54,13 +54,10 @@ extends Object implements StringGetter
     @StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
-        switch (resId)
-        {
-            case R.string.ModelIdMustBeGreaterThanZero:
-                return "id must be > 0";
-
-            default: Assert.fail(); return null;
+        if (resId == R.string.ModelIdMustBeGreaterThanZero) {
+            return "id must be > 0";
         }
+        Assert.fail(); return null;
     }
 
     @Override @NonNull public String getQuantity(

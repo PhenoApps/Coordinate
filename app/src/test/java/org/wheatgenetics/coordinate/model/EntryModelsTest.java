@@ -54,16 +54,13 @@ extends Object implements StringGetter
     @Override @Nullable public String get(
     @StringRes final int resId)
     {
-        switch (resId)
-        {
-            case R.string.ModelIdMustBeGreaterThanZero:
-                return "id must be > 0";
-
-            case R.string.UtilsInvalidValue:
-                return "value must be >= %d";
-
-            default: Assert.fail(); return null;
+        if (resId == R.string.ModelIdMustBeGreaterThanZero) {
+            return "id must be > 0";
         }
+        if (resId == R.string.UtilsInvalidValue) {
+            return "value must be >= %d";
+        }
+        Assert.fail(); return null;
     }
 
     @Override @NonNull public String getQuantity(
