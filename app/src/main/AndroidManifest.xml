@@ -73,7 +73,7 @@
             android:exported="false"
             android:name=".preference.PreferenceActivity"
             android:label="@string/preference_activity_label"
-            android:theme="@style/AppThemeNoActionBar">
+            android:theme="@style/MaterialAppThemeNoActionBar">
 
             <intent-filter>
                 <action android:name="org.wheatgenetics.coordinate.preference.PreferenceActivity" />
