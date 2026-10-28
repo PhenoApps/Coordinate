@@ -170,28 +170,20 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
                 final int projects = R.id.action_nav_projects;
                 final int settings = R.id.action_nav_settings;
 
-                switch (item.getItemId()) {
-                    case grids:
-                        Intent gridsIntent = GridsActivity.intent(this);
-                        gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(gridsIntent);
-                        break;
-                    case templates:
-                        Intent templateIntent = TemplatesActivity.intent(this);
-                        templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(templateIntent);
-                        break;
-                    case projects:
-                        Intent projectIntent = ProjectsActivity.intent(this);
-                        projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(projectIntent);
-                        break;
-                    case settings:
-                        callPreferenceFragment();
-                        break;
-                    default:
-                        break;
-
+                if (item.getItemId() == grids) {
+                    Intent gridsIntent = GridsActivity.intent(this);
+                    gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(gridsIntent);
+                } else if (item.getItemId() == templates) {
+                    Intent templateIntent = TemplatesActivity.intent(this);
+                    templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(templateIntent);
+                } else if (item.getItemId() == projects) {
+                    Intent projectIntent = ProjectsActivity.intent(this);
+                    projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(projectIntent);
+                } else if (item.getItemId() == settings) {
+                    callPreferenceFragment();
                 }
 
                 return true;

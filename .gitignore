@@ -56,3 +56,4 @@ proguard/
 *.jks
 *.keystore
 keystore.config
+.kotlin/

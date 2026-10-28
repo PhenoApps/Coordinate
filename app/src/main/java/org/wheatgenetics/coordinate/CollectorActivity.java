@@ -359,22 +359,14 @@ public class CollectorActivity extends BackActivity implements
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 prefs.edit().putLong(Keys.COLLECTOR_LAST_GRID, mGridId).apply();
             }
-
-            switch(item.getItemId()) {
-                case templates:
-                    startActivity(TemplatesActivity.intent(this));
-                    break;
-                case projects:
-                    startActivity(ProjectsActivity.intent(this));
-                    break;
-                case settings:
-                    startActivity(PreferenceActivity.intent(this));
-                    break;
-                case grids:
-                    startActivity(GridsActivity.intent(this));
-                    break;
-                default:
-                    break;
+            if (item.getItemId() == templates) {
+                startActivity(TemplatesActivity.intent(this));
+            } else if (item.getItemId() == projects) {
+                startActivity(ProjectsActivity.intent(this));
+            } else if (item.getItemId() == settings) {
+                startActivity(PreferenceActivity.intent(this));
+            } else if (item.getItemId() == grids) {
+                startActivity(GridsActivity.intent(this));
             }
 
             return true;

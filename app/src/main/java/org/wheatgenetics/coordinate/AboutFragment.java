@@ -84,30 +84,22 @@ public class AboutFragment extends MaterialAboutFragment {
                     final int templates = R.id.action_nav_templates;
                     final int projects = R.id.action_nav_projects;
                     final int settings = R.id.action_nav_settings;
-
-                    switch (item.getItemId()) {
-                        case grids:
-                            Intent gridsIntent = GridsActivity.intent(context);
-                            gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(gridsIntent);
-                            break;
-                        case templates:
-                            Intent templateIntent = TemplatesActivity.intent((context));
-                            templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(templateIntent);
-                            break;
-                        case settings:
-                            Intent prefsIntent = PreferenceActivity.intent((context));
-                            prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(prefsIntent);
-                            break;
-                        case projects:
-                            Intent projectIntent = ProjectsActivity.intent(context);
-                            projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(projectIntent);
-                            break;
-                        default:
-                            break;
+                    if (item.getItemId() == grids) {
+                        Intent gridsIntent = GridsActivity.intent(context);
+                        gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(gridsIntent);
+                    } else if (item.getItemId() == templates) {
+                        Intent templateIntent = TemplatesActivity.intent((context));
+                        templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(templateIntent);
+                    } else if (item.getItemId() == settings) {
+                        Intent prefsIntent = PreferenceActivity.intent((context));
+                        prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(prefsIntent);
+                    } else if (item.getItemId() == projects) {
+                        Intent projectIntent = ProjectsActivity.intent(context);
+                        projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(projectIntent);
                     }
 
                     return true;
@@ -135,7 +127,6 @@ public class AboutFragment extends MaterialAboutFragment {
         MaterialAboutCard.Builder appCardBuilder = new MaterialAboutCard.Builder();
 
         // Add items to card
-        int colorIcon = R.color.mal_color_icon_light_theme;
 
         appCardBuilder.addItem(new MaterialAboutTitleItem.Builder()
                 .text(getString(R.string.app_name))
@@ -223,8 +214,6 @@ public class AboutFragment extends MaterialAboutFragment {
                     @Override
                     public void onClick() {
                         new LibsBuilder()
-                                .withActivityTheme(R.style.AppThemeNoActionBar)
-                                .withAutoDetect(true)
                                 .withActivityTitle(getString(R.string.libraries_title))
                                 .withLicenseShown(true)
                                 .withVersionShown(true)

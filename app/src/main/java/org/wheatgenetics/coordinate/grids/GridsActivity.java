@@ -842,19 +842,14 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             final int templates = R.id.action_nav_templates;
             final int projects = R.id.action_nav_projects;
             final int settings = R.id.action_nav_settings;
-
-            switch(item.getItemId()) {
-                case projects:
-                    navigateToProjects();
-                    break;
-                case templates:
-                    navigateToTemplates();
-                    break;
-                case settings:
-                    Intent prefsIntent = PreferenceActivity.intent(this);
-                    prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(prefsIntent);
-                    break;
+            if (item.getItemId() == projects) {
+                navigateToProjects();
+            } else if (item.getItemId() == templates) {
+                navigateToTemplates();
+            } else if (item.getItemId() == settings) {
+                Intent prefsIntent = PreferenceActivity.intent(this);
+                prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(prefsIntent);
             }
 
             return true;
