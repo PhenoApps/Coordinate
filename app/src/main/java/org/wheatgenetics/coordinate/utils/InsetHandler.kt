@@ -1,9 +1,15 @@
 package org.wheatgenetics.coordinate.utils
 
+import android.content.res.Configuration
+import android.graphics.Color
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
+import androidx.core.view.updateLayoutParams
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 
@@ -12,12 +18,40 @@ object InsetHandler {
     private val systemBarsAndCutout =
         WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
 
-    /**
-     * Enables edge-to-edge display. Callable from Java via InsetHandler.enableEdgeToEdge(activity).
-     */
     @JvmStatic
     fun enableEdgeToEdge(activity: ComponentActivity) {
         activity.enableEdgeToEdge()
+        val decor = activity.window.decorView as ViewGroup
+        fun addScrim(gravity: Int): View {
+            val view = View(activity).apply {
+                setBackgroundColor(Color.BLACK)
+                importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+            }
+            decor.addView(view, FrameLayout.LayoutParams(0, 0, gravity))
+            return view
+        }
+        fun resizeScrim(view: View, width: Int, height: Int) {
+            if (view.layoutParams.width != width || view.layoutParams.height != height) {
+                view.updateLayoutParams<FrameLayout.LayoutParams> {
+                    this.width = width
+                    this.height = height
+                }
+            }
+        }
+        // edge-to-edge keeps system bars transparent, so protection belongs in app content
+        val leftScrim = addScrim(Gravity.LEFT)
+        val rightScrim = addScrim(Gravity.RIGHT)
+        ViewCompat.setOnApplyWindowInsetsListener(leftScrim) { _, insets ->
+            val landscape = activity.resources.configuration.orientation ==
+                Configuration.ORIENTATION_LANDSCAPE
+            val cutout = insets.getInsets(WindowInsetsCompat.Type.displayCutout())
+            resizeScrim(leftScrim, if (landscape) cutout.left else 0,
+                ViewGroup.LayoutParams.MATCH_PARENT)
+            resizeScrim(rightScrim, if (landscape) cutout.right else 0,
+                ViewGroup.LayoutParams.MATCH_PARENT)
+            insets
+        }
+        ViewCompat.requestApplyInsets(leftScrim)
     }
 
     /**
