@@ -55,6 +55,12 @@ public class AboutFragment extends MaterialAboutFragment {
 //        });
 //    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setToolbar();
+    }
+
     public void setToolbar() {
         setHasOptionsMenu(true);
         if (getActivity() != null) {

@@ -49,6 +49,15 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
         setupBottomNavigationBar();
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (getSupportFragmentManager().findFragmentById(R.id.act_prefs_fragment)
+                instanceof SearchPreferenceFragment) {
+            setToolbarBackEnabled();
+        }
+    }
+
     @NonNull
     public static Intent intent(@NonNull final Context context) {
         return null == INTENT_INSTANCE ?
@@ -106,15 +115,21 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
             }
         });
 
-        prefsFragment = new PreferenceFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.act_prefs_fragment, prefsFragment).commit();
-
-        if (getIntent().getBooleanExtra(EXTRA_OPEN_PROFILE, false)) {
+        prefsFragment = (PreferenceFragment) getSupportFragmentManager()
+                .findFragmentByTag(PreferenceFragment.TAG);
+        if (savedInstanceState == null) {
+            prefsFragment = new PreferenceFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.act_prefs_fragment, new ProfilePreferencesFragment(null))
-                    .addToBackStack("ProfilePreferencesFragment")
+                    .replace(R.id.act_prefs_fragment, prefsFragment, PreferenceFragment.TAG)
                     .commit();
-            setToolbarBackEnabled();
+
+            if (getIntent().getBooleanExtra(EXTRA_OPEN_PROFILE, false)) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.act_prefs_fragment, new ProfilePreferencesFragment(null))
+                        .addToBackStack("ProfilePreferencesFragment")
+                        .commit();
+                setToolbarBackEnabled();
+            }
         }
     }
 
