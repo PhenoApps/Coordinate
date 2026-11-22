@@ -63,13 +63,10 @@ implements StringGetter
     @StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
-        switch (resId)
-        {
-            case R.string.CallCheckThenSetValueInstead:
-                return "Call checkThenSetValue() instead";
-
-            default: Assert.fail(); return null;
+        if (resId == R.string.CallCheckThenSetValueInstead) {
+            return "Call checkThenSetValue() instead";
         }
+        Assert.fail(); return null;
     }
 
     @Override @NonNull public String getQuantity(

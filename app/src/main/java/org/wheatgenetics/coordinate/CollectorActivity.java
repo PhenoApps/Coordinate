@@ -10,8 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -24,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.widget.NestedScrollView;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -100,7 +97,6 @@ public class CollectorActivity extends BackActivity implements
         androidx.appcompat.widget.Toolbar toolbar = this.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         InsetHandler.applyToolbarInsets(toolbar);
-        InsetHandler.applyRootInsets(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
         @Nullable final Intent intent = this.getIntent();
         if (null != intent) {
@@ -136,9 +132,11 @@ public class CollectorActivity extends BackActivity implements
             keepCollectorETinFocus(dataEntryEt);
         }
 
-        attachKeyboardListeners();
         setupBottomNavigationBar();
         InsetHandler.applyBottomNavInsets(this.findViewById(R.id.act_collector_bnv));
+        InsetHandler.applyRootInsetsWithIme(
+                this.getWindow().getDecorView().findViewById(android.R.id.content),
+                this.findViewById(R.id.act_collector_bnv));
         setupBarcodeButton();
     }
 
@@ -315,14 +313,6 @@ public class CollectorActivity extends BackActivity implements
     }
 
     @Override
-    protected void onDestroy() {
-        if (keyboardListenersAttached) {
-            rootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(keyboardLayoutListener);
-        }
-        super.onDestroy();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_collector_bnv);
@@ -359,76 +349,18 @@ public class CollectorActivity extends BackActivity implements
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 prefs.edit().putLong(Keys.COLLECTOR_LAST_GRID, mGridId).apply();
             }
-
-            switch(item.getItemId()) {
-                case templates:
-                    startActivity(TemplatesActivity.intent(this));
-                    break;
-                case projects:
-                    startActivity(ProjectsActivity.intent(this));
-                    break;
-                case settings:
-                    startActivity(PreferenceActivity.intent(this));
-                    break;
-                case grids:
-                    startActivity(GridsActivity.intent(this));
-                    break;
-                default:
-                    break;
+            if (item.getItemId() == templates) {
+                startActivity(TemplatesActivity.intent(this));
+            } else if (item.getItemId() == projects) {
+                startActivity(ProjectsActivity.intent(this));
+            } else if (item.getItemId() == settings) {
+                startActivity(PreferenceActivity.intent(this));
+            } else if (item.getItemId() == grids) {
+                startActivity(GridsActivity.intent(this));
             }
 
             return true;
         }));
-    }
-
-    //https://stackoverflow.com/questions/25216749/soft-keyboard-open-and-close-listener-in-an-activity-in-android/25681196#25681196
-    private final ViewTreeObserver.OnGlobalLayoutListener keyboardLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-        @Override
-        public void onGlobalLayout() {
-            int heightDiff = rootLayout.getRootView().getHeight() - rootLayout.getHeight();
-            int contentViewTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
-
-            LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
-
-            if(heightDiff <= contentViewTop){
-                onHideKeyboard();
-
-                Intent intent = new Intent("KeyboardWillHide");
-                broadcastManager.sendBroadcast(intent);
-            } else {
-                int keyboardHeight = heightDiff - contentViewTop;
-                onShowKeyboard(keyboardHeight);
-
-                Intent intent = new Intent("KeyboardWillShow");
-                intent.putExtra("KeyboardHeight", keyboardHeight);
-                broadcastManager.sendBroadcast(intent);
-            }
-        }
-    };
-
-    private boolean keyboardListenersAttached = false;
-    private ViewGroup rootLayout;
-
-    protected void onShowKeyboard(int keyboardHeight) {
-        if (keyboardHeight > 256) {
-            findViewById(R.id.act_collector_bnv).setVisibility(View.GONE);
-        } else {
-            onHideKeyboard();
-        }
-    }
-    protected void onHideKeyboard() {
-        findViewById(R.id.act_collector_bnv).setVisibility(View.VISIBLE);
-    }
-
-    protected void attachKeyboardListeners() {
-        if (keyboardListenersAttached) {
-            return;
-        }
-
-        rootLayout = (ViewGroup) findViewById(R.id.act_collector_cl);
-        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(keyboardLayoutListener);
-
-        keyboardListenersAttached = true;
     }
 
     // region org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler Overridden Methods

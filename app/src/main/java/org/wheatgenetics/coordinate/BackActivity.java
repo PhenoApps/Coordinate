@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,17 @@ public abstract class BackActivity extends AppCompatActivity {
     protected void onCreate(
             @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                setEnabled(false);
+                try {
+                    getOnBackPressedDispatcher().onBackPressed();
+                } finally {
+                    setEnabled(true);
+                }
+            }
+        });
         InsetHandler.enableEdgeToEdge(this);
 
         @Nullable final ActionBar supportActionBar = this.getSupportActionBar();
@@ -25,8 +37,8 @@ public abstract class BackActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        this.onBackPressed();
-        return super.onSupportNavigateUp();
+        getOnBackPressedDispatcher().onBackPressed();
+        return true;
     }
     // endregion
 }

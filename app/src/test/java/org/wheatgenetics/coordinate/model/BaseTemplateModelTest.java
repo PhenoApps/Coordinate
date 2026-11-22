@@ -12,7 +12,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
-import org.wheatgenetics.javalib.Utils;
 
 /**
  * Uses:
@@ -26,8 +25,6 @@ import org.wheatgenetics.javalib.Utils;
  *
  * org.junit.Assert
  * org.junit.Test
- *
- * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
@@ -79,16 +76,13 @@ extends Object implements StringGetter
     @Override @Nullable public String get(
     @StringRes final int resId)
     {
-        switch (resId)
-        {
-            case R.string.ModelIdMustBeGreaterThanZero:
-                return "id must be > 0";
-
-            case R.string.UtilsInvalidValue:
-                return "value must be >= %d";
-
-            default: Assert.fail(); return null;
+        if (resId == R.string.ModelIdMustBeGreaterThanZero) {
+            return "id must be > 0";
         }
+        if (resId == R.string.UtilsInvalidValue) {
+            return "value must be >= %d";
+        }
+        Assert.fail(); return null;
     }
 
     @Override @NonNull public String getQuantity(
@@ -735,7 +729,7 @@ extends Object implements StringGetter
                     /* timestamp                    => */0,
                     /* stringGetter                 => */this);
         Assert.assertArrayEquals(
-            Utils.stringArray("Row 1"),
+            new String[] {"Row 1"},
             concreteBaseTemplateModel.rowItems("Row"));
 
         concreteBaseTemplateModel =
@@ -770,7 +764,7 @@ extends Object implements StringGetter
                     /* timestamp                    => */0,
                     /* stringGetter                 => */this);
         Assert.assertArrayEquals(
-            Utils.stringArray("Column 1"),
+            new String[] {"Column 1"},
             concreteBaseTemplateModel.colItems("Column"));
 
         concreteBaseTemplateModel =

@@ -25,7 +25,7 @@ public class TemplateTypeTest extends Object
     }
 
     @Test(expected = IllegalArgumentException.class) public void getFails()
-    { TemplateType.get(4); }
+    { TemplateType.get(-1); }
     // endregion
 
     @Test() public void getCodeSucceeds()

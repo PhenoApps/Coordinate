@@ -52,6 +52,16 @@
         <item name="actionModeStyle">@style/AppTheme.ActionMode</item>
     </style>
 
+    <style name="LibrariesTheme" parent="MaterialAppThemeNoActionBar">
+        <item name="toolbarStyle">@style/LibrariesToolbar</item>
+    </style>
+
+    <style name="LibrariesToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:theme">@style/AppTheme.AppBarOverlay</item>
+        <item name="popupTheme">@style/AppTheme.PopupOverlay</item>
+    </style>
+
     <style name="AppTheme.ActionMode" parent="Widget.AppCompat.ActionMode">
         <item name="background">@color/colorPrimary</item>
         <item name="titleTextStyle">@style/AppTheme.ActionMode.TitleText</item>
@@ -65,7 +75,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" tools:ignore="PrivateResource" />
 
-    <style name="AppTheme.MaterialAboutActivity" parent="Theme.Mal.Light.DarkActionBar">
+    <style name="AppTheme.MaterialAboutActivity" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

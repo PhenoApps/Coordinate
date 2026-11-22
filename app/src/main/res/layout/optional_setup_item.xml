@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="0dp"
-            android:buttonTint="@color/WHITE"
+            android:buttonTint="@android:color/white"
             android:clickable="false"
             android:focusable="false"/>
 

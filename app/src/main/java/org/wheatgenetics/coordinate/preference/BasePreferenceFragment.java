@@ -12,6 +12,7 @@ import androidx.preference.PreferenceFragmentCompat;
 public class BasePreferenceFragment extends PreferenceFragmentCompat {
 
     private String mRootKey;
+    private String toolbarTitle;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -19,6 +20,7 @@ public class BasePreferenceFragment extends PreferenceFragmentCompat {
     }
 
     protected void setToolbar(String title) {
+        toolbarTitle = title;
         setHasOptionsMenu(true);
         if (getActivity() != null) {
             AppCompatActivity act = (AppCompatActivity) getActivity();
@@ -30,6 +32,14 @@ public class BasePreferenceFragment extends PreferenceFragmentCompat {
             }
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (toolbarTitle != null) {
+            setToolbar(toolbarTitle);
+        }
     }
 
     // for toolbar with no action or title

@@ -90,12 +90,10 @@ implements StringGetter
     @StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
-        switch (resId)
-        {
-            case R.string.CallCheckThenSetInstead:
-                return "Call checkThenSet() instead";
-            default: Assert.fail(); return null;
+        if (resId == R.string.CallCheckThenSetInstead) {
+            return "Call checkThenSet() instead";
         }
+        Assert.fail(); return null;
     }
 
     @Override @NonNull public String getQuantity(

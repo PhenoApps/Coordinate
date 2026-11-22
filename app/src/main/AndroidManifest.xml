@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!-- To switch to the old user interface perform the three steps indicated below. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="org.wheatgenetics.coordinate">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:name=".application.Coordinate"
@@ -10,6 +9,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${crashlyticsCollectionEnabled}" />
 
         <activity android:name=".activity.AppIntroActivity"
             android:label="@string/app_intro_activity_label" />
@@ -27,6 +30,7 @@
 
         <activity
             android:name=".CollectorActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/CollectorActivityLabel"
             android:theme="@style/AppThemeNoActionBar"/>
 
@@ -70,13 +74,17 @@
             android:exported="false"
             android:name=".preference.PreferenceActivity"
             android:label="@string/preference_activity_label"
-            android:theme="@style/AppThemeNoActionBar">
+            android:theme="@style/MaterialAppThemeNoActionBar">
 
             <intent-filter>
                 <action android:name="org.wheatgenetics.coordinate.preference.PreferenceActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
+            android:theme="@style/LibrariesTheme" />
 
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"

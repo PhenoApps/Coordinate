@@ -576,25 +576,18 @@ public class TemplatesActivity extends BackActivity
             final int grids = R.id.action_nav_grids;
             final int projects = R.id.action_nav_projects;
             final int settings = R.id.action_nav_settings;
-
-            switch (item.getItemId()) {
-                case grids:
-                    Intent gridsIntent = GridsActivity.intent(this);
-                    gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(gridsIntent);
-                    break;
-                case settings:
-                    Intent prefsIntent = PreferenceActivity.intent(this);
-                    prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(prefsIntent);
-                    break;
-                case projects:
-                    Intent projectIntent = ProjectsActivity.intent(this);
-                    projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(ProjectsActivity.intent(this));
-                    break;
-                default:
-                    break;
+            if (item.getItemId() == grids) {
+                Intent gridsIntent = GridsActivity.intent(this);
+                gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(gridsIntent);
+            } else if (item.getItemId() == settings) {
+                Intent prefsIntent = PreferenceActivity.intent(this);
+                prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(prefsIntent);
+            } else if (item.getItemId() == projects) {
+                Intent projectIntent = ProjectsActivity.intent(this);
+                projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(ProjectsActivity.intent(this));
             }
 
             return true;

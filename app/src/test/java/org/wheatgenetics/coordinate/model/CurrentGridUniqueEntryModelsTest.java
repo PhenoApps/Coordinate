@@ -41,15 +41,13 @@ implements StringGetter
     @Override @Nullable public String get(
     @StringRes final int resId)
     {
-        switch (resId)
-        {
-            case R.string.CurrentGridDuplicateCheckExceptionMsg:
-                return "The %s already has an entry with that value.";
-            case R.string.CurrentGridDuplicateCheckExceptionScope:
-                return "current grid";
-
-            default: Assert.fail(); return null;
+        if (resId == R.string.CurrentGridDuplicateCheckExceptionMsg) {
+            return "The %s already has an entry with that value.";
         }
+        if (resId == R.string.CurrentGridDuplicateCheckExceptionScope) {
+            return "current grid";
+        }
+        Assert.fail(); return null;
     }
 
     @Override @NonNull public String getQuantity(

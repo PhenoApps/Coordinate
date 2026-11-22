@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -45,8 +46,16 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
     @Override
     protected void onResume() {
         super.onResume();
-        getBottomNavigationBarView().setSelectedItemId(R.id.action_nav_settings);
         setupBottomNavigationBar();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (getSupportFragmentManager().findFragmentById(R.id.act_prefs_fragment)
+                instanceof SearchPreferenceFragment) {
+            setToolbarBackEnabled();
+        }
     }
 
     @NonNull
@@ -62,6 +71,19 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                handleSettingsBack();
+                setEnabled(false);
+                try {
+                    getOnBackPressedDispatcher().onBackPressed();
+                } finally {
+                    setEnabled(true);
+                }
+            }
+        });
+
 
         setContentView(R.layout.activity_preferences);
 
@@ -81,6 +103,8 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
                 setToolbarBackEnabled();
             }
             else if (currentFragment instanceof PreferenceFragment) {
+                SearchPreference searchPreference = prefsFragment.findPreference("searchPreference");
+                if (searchPreference != null) searchPreference.setVisible(true);
                 if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
                     // if navigated to PreferenceFragment from search results
                     // enable the back button
@@ -91,15 +115,21 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
             }
         });
 
-        prefsFragment = new PreferenceFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.act_prefs_fragment, prefsFragment).commit();
-
-        if (getIntent().getBooleanExtra(EXTRA_OPEN_PROFILE, false)) {
+        prefsFragment = (PreferenceFragment) getSupportFragmentManager()
+                .findFragmentByTag(PreferenceFragment.TAG);
+        if (savedInstanceState == null) {
+            prefsFragment = new PreferenceFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.act_prefs_fragment, new ProfilePreferencesFragment(null))
-                    .addToBackStack("ProfilePreferencesFragment")
+                    .replace(R.id.act_prefs_fragment, prefsFragment, PreferenceFragment.TAG)
                     .commit();
-            setToolbarBackEnabled();
+
+            if (getIntent().getBooleanExtra(EXTRA_OPEN_PROFILE, false)) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.act_prefs_fragment, new ProfilePreferencesFragment(null))
+                        .addToBackStack("ProfilePreferencesFragment")
+                        .commit();
+                setToolbarBackEnabled();
+            }
         }
     }
 
@@ -161,6 +191,8 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
             }
 
             applyBnvVisibility(bottomNavigationView);
+            // selecting settings must not invoke the previous navigation listener
+            bottomNavigationView.setOnItemSelectedListener(null);
             bottomNavigationView.setSelectedItemId(R.id.action_nav_settings);
 
             bottomNavigationView.setOnItemSelectedListener((item -> {
@@ -169,29 +201,20 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
                 final int templates = R.id.action_nav_templates;
                 final int projects = R.id.action_nav_projects;
                 final int settings = R.id.action_nav_settings;
-
-                switch (item.getItemId()) {
-                    case grids:
-                        Intent gridsIntent = GridsActivity.intent(this);
-                        gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(gridsIntent);
-                        break;
-                    case templates:
-                        Intent templateIntent = TemplatesActivity.intent(this);
-                        templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(templateIntent);
-                        break;
-                    case projects:
-                        Intent projectIntent = ProjectsActivity.intent(this);
-                        projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(projectIntent);
-                        break;
-                    case settings:
-                        callPreferenceFragment();
-                        break;
-                    default:
-                        break;
-
+                if (item.getItemId() == grids) {
+                    Intent gridsIntent = GridsActivity.intent(this);
+                    gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(gridsIntent);
+                } else if (item.getItemId() == templates) {
+                    Intent templateIntent = TemplatesActivity.intent(this);
+                    templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(templateIntent);
+                } else if (item.getItemId() == projects) {
+                    Intent projectIntent = ProjectsActivity.intent(this);
+                    projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(projectIntent);
+                } else if (item.getItemId() == settings) {
+                    callPreferenceFragment();
                 }
 
                 return true;
@@ -209,14 +232,12 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
         if (searchPreference != null) searchPreference.setVisible(true);
     }
 
-    @Override
-    public void onBackPressed() {
+    private void handleSettingsBack() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.act_prefs_fragment);
 
         if (currentFragment instanceof SearchPreferenceFragment) {
             SearchPreference searchPreference = prefsFragment.findPreference("searchPreference");
             if (searchPreference != null) searchPreference.setVisible(true);
         }
-        super.onBackPressed();
     }
 }

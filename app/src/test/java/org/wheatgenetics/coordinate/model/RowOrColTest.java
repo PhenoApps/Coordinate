@@ -39,12 +39,10 @@ extends Object implements StringGetter
     @StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
-        switch (resId)
-        {
-            case R.string.UtilsInvalidValue:
-                return "value must be >= %d";
-            default: Assert.fail(); return null;
+        if (resId == R.string.UtilsInvalidValue) {
+            return "value must be >= %d";
         }
+        Assert.fail(); return null;
     }
 
     @Override @NonNull public String getQuantity(
