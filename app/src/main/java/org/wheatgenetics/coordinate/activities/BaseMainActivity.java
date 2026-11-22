@@ -57,7 +57,17 @@ public abstract class BaseMainActivity extends AppCompatActivity
     private String versionName;
     private SharedPreferences
             sharedPreferencesInstances = null;                                              // lazy load
-    private boolean backPressed = false;
+    private final Handler backHandler = new Handler(android.os.Looper.getMainLooper());
+    private final OnBackPressedCallback exitConfirmationCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            Toast.makeText(BaseMainActivity.this, R.string.back_button_twice_press,
+                    Toast.LENGTH_SHORT).show();
+            setEnabled(false);
+            backHandler.postDelayed(resetExitConfirmation, 5000);
+        }
+    };
+    private final Runnable resetExitConfirmation = () -> exitConfirmationCallback.setEnabled(true);
     // endregion
 
     // region Package Methods
@@ -112,27 +122,12 @@ public abstract class BaseMainActivity extends AppCompatActivity
     }
     // endregion
 
-    private void handleBackPressed() {
-        if (backPressed) {
-            finish();
-        } else {
-            Toast.makeText(this, R.string.back_button_twice_press, Toast.LENGTH_SHORT).show();
-            backPressed = true;
-            new Handler().postDelayed(() -> backPressed = false, 5000);
-        }
-    }
-
     // region Overridden Methods
     @Override
     protected void onCreate(
             @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                handleBackPressed();
-            }
-        });
+        getOnBackPressedDispatcher().addCallback(this, exitConfirmationCallback);
 
         InsetHandler.enableEdgeToEdge(this);
 
@@ -207,7 +202,14 @@ public abstract class BaseMainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        backPressed = false;
+        backHandler.removeCallbacks(resetExitConfirmation);
+        exitConfirmationCallback.setEnabled(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        backHandler.removeCallbacks(resetExitConfirmation);
+        super.onDestroy();
     }
 
     @Override
